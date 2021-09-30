@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Stattrack</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hold_oversigt">Hold Oversigt</string>
+    <string name="seneste_kampe">Seneste Kampe</string>
+</resources>
