@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/simon/StudioProjects/Stattrack/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.30703125" />
         <entry key="..\:/Users/simon/StudioProjects/Stattrack/app/src/main/res/drawable/addbutton.xml" value="0.525" />
         <entry key="..\:/Users/simon/StudioProjects/Stattrack/app/src/main/res/layout-land/fragment_hold.xml" value="0.6036036036036037" />
         <entry key="..\:/Users/simon/StudioProjects/Stattrack/app/src/main/res/layout-sw600dp/fragment_hold.xml" value="0.8072289156626506" />
