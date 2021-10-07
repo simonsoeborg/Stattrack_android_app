@@ -4,4 +4,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hold_oversigt">Hold Oversigt</string>
     <string name="seneste_kampe">Seneste Kampe</string>
+    <string name="add_hold">Tilføj Hold</string>
+    <string name="add_hold_btn">Add Hold Button</string>
 </resources>
