@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stattrack">
         <activity
-            android:name=".View.MainActivity"
+            android:name=".Services.App"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
