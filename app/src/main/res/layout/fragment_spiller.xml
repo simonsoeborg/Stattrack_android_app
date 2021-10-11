@@ -6,60 +6,108 @@
     android:layout_height="match_parent"
     tools:context=".View.fragment_spiller">
 
+
+    <View
+        android:id="@+id/viewLine1"
+        android:layout_width="290dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="2dp"
+        android:background="#2196F3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tw_spiller_navn" />
+
+    <View
+        android:id="@+id/viewLine2"
+        android:layout_width="310dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="2dp"
+        android:background="#2196F3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tw_spiller_klub" />
+
     <TextView
         android:id="@+id/tw_spiller_klub"
-        android:layout_width="55dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="10dp"
         android:text="Klub"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tw_spiller_aargang" />
-
-    <TextView
-        android:id="@+id/tw_spiller_aargang"
-        android:layout_width="55dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="15dp"
-        android:text="Årgang"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tw_spiller_position" />
-
-    <TextView
-        android:id="@+id/tw_spiller_position"
-        android:layout_width="55dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="15dp"
-        android:text="Position"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tw_spiller_navn" />
 
     <TextView
-        android:id="@+id/spillerFragment"
+        android:id="@+id/tw_spiller_aargang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Player Fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:text="Årgang"
+        app:layout_constraintStart_toEndOf="@+id/tw_spiller_klub"
+        app:layout_constraintTop_toBottomOf="@+id/tw_spiller_position" />
+
+
+    <TextView
+        android:id="@+id/tw_spiller_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:text="Position"
+        app:layout_constraintStart_toEndOf="@+id/tw_spiller_navn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tw_spiller_navn"
-        android:layout_width="55dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="52dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="15dp"
         android:text="Navn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="50" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <Button
+        android:id="@+id/btn_spiller_alleSæsoner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="16dp"
+        android:text="Alle sæsoner"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/btn_spiller_denneSæson"
+        app:layout_constraintTop_toBottomOf="@+id/tw_spiller_aargang" />
+
+    <Button
+        android:id="@+id/btn_spiller_denneSæson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="16dp"
+        android:text="Denne sæson"
+        android:textSize="10sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tw_spiller_aargang" />
+
+
+    <FrameLayout
+        android:id="@+id/spillerInfo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_spiller_alleSæsoner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
