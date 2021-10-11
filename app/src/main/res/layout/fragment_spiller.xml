@@ -7,6 +7,39 @@
     tools:context=".View.fragment_spiller">
 
     <TextView
+        android:id="@+id/tw_spiller_klub"
+        android:layout_width="55dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="15dp"
+        android:text="Klub"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tw_spiller_aargang" />
+
+    <TextView
+        android:id="@+id/tw_spiller_aargang"
+        android:layout_width="55dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="15dp"
+        android:text="Årgang"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tw_spiller_position" />
+
+    <TextView
+        android:id="@+id/tw_spiller_position"
+        android:layout_width="55dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="15dp"
+        android:text="Position"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tw_spiller_navn" />
+
+    <TextView
         android:id="@+id/spillerFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,6 +47,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tw_spiller_navn"
+        android:layout_width="55dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="52dp"
+        android:text="Navn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.134"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
