@@ -17,13 +17,13 @@ class MainActivity : AppCompatActivity() {
         val playerFragment = fragment_spiller()
 
         // Initialize start fragment.
-//        supportFragmentManager.beginTransaction().apply {
-//            replace(R.id.flfragmentTest, playerFragment)
-//            commit()
-//        }
+        /*supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flfragmentTest, playerFragment)
+            commit()
+        }*/
 
 
-        // Initialize Fragment from button
+        // Initialize Fragment from button-pressed
         val btn = findViewById<Button>(R.id.btnFragmentSpiller)
         btn.setOnClickListener{
             supportFragmentManager.beginTransaction().apply {
