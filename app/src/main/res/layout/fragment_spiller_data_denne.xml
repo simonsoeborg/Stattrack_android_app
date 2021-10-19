@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.fragment_spiller_data_denne">
+    tools:context=".View.fragment_spiller_data">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/data_spiller_denne"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Data fra DENNE sæson" />

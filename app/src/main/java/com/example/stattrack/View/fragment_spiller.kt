@@ -1,19 +1,14 @@
 package com.example.stattrack.View
 
-import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.Color.blue
 import android.os.Bundle
-import android.text.TextUtils.replace
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.example.stattrack.R
-import androidx.fragment.app.FragmentActivity
-import com.example.stattrack.Hold
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -76,8 +71,8 @@ class fragment_spiller : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val playerInfoDenne = fragment_spiller_data_denne()
-        val playerInfoALle = fragment_spiller_data_alle()
+        val playerInfoDenne = fragment_spiller_data()
+        // val playerInfoALle = fragment_spiller_data_alle()
 
         // Hard Coded spillers Indledende info - Skal hentes fra database.
         view.findViewById<TextView>(R.id.tw_spiller_navn).text = "Simon Fridolf"
@@ -104,10 +99,10 @@ class fragment_spiller : Fragment() {
             btnThis.setBackgroundColor(Color.BLACK)
             btnThis.isEnabled = true
 
-            childFragmentManager.beginTransaction().apply {
-                replace(R.id.spillerInfo, playerInfoALle)
+           /* childFragmentManager.beginTransaction().apply {
+                replace(R.id.spillerInfo, )
                 commit()
-            }
+            }*/
         }
 
         btnThis.setOnClickListener {

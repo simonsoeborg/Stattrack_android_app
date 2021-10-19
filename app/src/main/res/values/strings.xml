@@ -6,4 +6,5 @@
     <string name="seneste_kampe">Seneste Kampe</string>
     <string name="add_hold">Tilføj Hold</string>
     <string name="add_hold_btn">Add Hold Button</string>
+    <string name="title_activity_compose_frag_spiller_data">compose_frag_spiller_data</string>
 </resources>
