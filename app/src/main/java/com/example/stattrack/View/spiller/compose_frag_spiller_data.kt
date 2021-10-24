@@ -1,4 +1,4 @@
-package com.example.stattrack.View
+package com.example.stattrack.View.spiller
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -19,8 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.stattrack.View.ui.theme.StattrackTheme
 
-
-class compose_frag_spiller_data : ComponentActivity() {
+/*class compose_frag_spiller_data : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -32,7 +32,7 @@ class compose_frag_spiller_data : ComponentActivity() {
             }
         }
     }
-}
+}*/
 
 @Composable
 fun FragmentSpillerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int) {
@@ -61,6 +61,9 @@ fun FragmentSpillerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAss
                     antalAssist = antalAssist,
                     antalSkud = antalSkud
                 )
+                Button(onClick = { /*TODO*/ }) {
+                    Text(text = "Hej")
+                }
             }
         }
 

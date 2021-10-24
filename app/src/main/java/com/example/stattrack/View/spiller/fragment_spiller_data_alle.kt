@@ -1,4 +1,4 @@
-package com.example.stattrack.View
+package com.example.stattrack.View.spiller
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

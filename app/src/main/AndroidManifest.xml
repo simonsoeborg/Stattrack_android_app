@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stattrack">
         <activity
-            android:name=".View.compose_frag_spiller_data"
+            android:name=".View.spiller.compose_frag_spiller_data"
             android:exported="true"
             android:label="@string/title_activity_compose_frag_spiller_data"
             android:theme="@style/Theme.Stattrack.NoActionBar" />
