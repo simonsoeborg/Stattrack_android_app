@@ -1,93 +1,70 @@
 package com.example.stattrack.View.navbar
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.People
-import androidx.compose.material.icons.filled.SportsHandball
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.stattrack.View.hold.HoldScreen
+import com.example.stattrack.View.spiller.fragment_spiller
 import com.example.stattrack.View.ui.theme.PrimaryBlue
 import com.example.stattrack.View.ui.theme.PrimaryWhite
-import com.example.stattrack.View.ui.theme.StattrackTheme
-import org.intellij.lang.annotations.JdkConstants
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     StattrackTheme {
-        build_navbar()
+        BottomNavigationBar()
+    }
+}*/
+
+@Composable
+fun BottomNavigationBar(navController: NavController) {
+    val items = listOf(
+        NavItem.Kamp,
+        NavItem.Hold
+    )
+    BottomNavigation(
+        backgroundColor = PrimaryWhite,
+        contentColor = PrimaryBlue
+    ) {
+        items.forEach { item ->
+            BottomNavigationItem(
+                icon = { Icon(item.icon, contentDescription = item.title) },
+                label = { Text(text = item.title) },
+                alwaysShowLabel = true,
+                selected = false,
+                onClick = {
+                    navController.navigate(item.route) {
+                        navController.graph.startDestinationRoute?.let {
+                            route -> popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+
+                }
+            )
+        }
     }
 }
 
 @Composable
-fun build_navbar() {
-    val padding = 10.dp
-    val margin = 25.dp
-
-    Column() {
-        Row(
-        )
-        {
-            Column ( horizontalAlignment = Alignment.CenterHorizontally )
-            {
-                navbtns(padding = padding)
-            }
+fun Navigation(navController: NavHostController) {
+    val context = LocalContext.current
+    NavHost(navController, startDestination = NavItem.Hold.route) {
+        composable(NavItem.Hold.route) {
+            HoldScreen()
+        }
+        composable(NavItem.Kamp.route) {
+        }
+        composable(NavItem.Spiller.route) {
         }
     }
-}
-
-@Composable
-fun navbtns(padding: Dp) {
-    Row {
-        Button(onClick = { /*TODO*/ },
-            modifier = Modifier
-                .padding(end = padding),
-            colors = ButtonDefaults.buttonColors(backgroundColor = PrimaryWhite),
-            border = BorderStroke(0.5.dp, PrimaryBlue)
-        ) {
-            Column(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentSize(Alignment.Center)
-                    .padding(padding),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    Icons.Default.SportsHandball,
-                    contentDescription = "Kamp",
-                    tint = PrimaryBlue
-                )
-                Text(text = "KAMP", color = PrimaryBlue)
-            }
-        }
-        Button(onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = PrimaryWhite),
-            border = BorderStroke(0.5.dp, PrimaryBlue)) {
-            Column(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentSize(Alignment.Center)
-                    .padding(padding),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    Icons.Default.People,
-                    contentDescription = "Hold",
-                    tint = PrimaryBlue
-                )
-                Text(text = "HOLD", color = PrimaryBlue)
-            }
-        }
-    }
-
 }

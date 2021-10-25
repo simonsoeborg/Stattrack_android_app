@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.example.stattrack.R
-import com.example.stattrack.View.navbar.build_navbar
 
 
 class fragment_spiller : Fragment() {
@@ -25,7 +24,6 @@ class fragment_spiller : Fragment() {
 
         val view = ComposeView(requireContext()).apply{
             setContent {
-                build_navbar()
             }
         }
 
