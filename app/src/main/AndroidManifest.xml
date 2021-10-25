@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stattrack">
         <activity
+            android:name=".View.spiller.compose_frag_spiller_data"
+            android:exported="true"
+            android:label="@string/title_activity_compose_frag_spiller_data"
+            android:theme="@style/Theme.Stattrack.NoActionBar" />
+        <activity
             android:name=".View.MainActivity"
             android:exported="true">
             <intent-filter>

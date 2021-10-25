@@ -2,14 +2,34 @@ package com.example.stattrack.View
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import android.widget.Button
 import com.example.stattrack.R
+import com.example.stattrack.View.spiller.fragment_spiller
+import com.example.stattrack.View.navbar.build_navbar as navbar
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val playerFragment = fragment_spiller()
+
+        // Initialize start fragment.
+        /*supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flfragmentTest, playerFragment)
+            commit()
+        }*/
+
+        // Initialize Fragment from button-pressed
+        val btn = findViewById<Button>(R.id.btnFragmentSpiller)
+        btn.setOnClickListener{
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.flfragmentTest, playerFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
     }
 }
+
+
