@@ -1,4 +1,4 @@
-package com.example.stattrack.View.spiller
+package com.example.stattrack.Presentation.spiller
 
 import android.os.Bundle
 import android.view.LayoutInflater

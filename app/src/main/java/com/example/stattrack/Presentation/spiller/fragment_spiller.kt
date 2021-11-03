@@ -1,15 +1,11 @@
-package com.example.stattrack.View.spiller
+package com.example.stattrack.Presentation.spiller
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import com.example.stattrack.R
 
 
 class fragment_spiller : Fragment() {

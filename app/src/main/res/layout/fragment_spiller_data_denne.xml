@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.spiller.fragment_spiller_data">
+    tools:context=".Presentation.spiller.fragment_spiller_data">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

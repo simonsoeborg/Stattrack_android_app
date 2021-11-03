@@ -1,15 +1,14 @@
-package com.example.stattrack.View.hold
+package com.example.stattrack.Presentation.hold
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.stattrack.View.ui.theme.PrimaryBlue
+import com.example.stattrack.Presentation.ui.theme.PrimaryBlue
 
 @Composable
 fun HoldScreen() {

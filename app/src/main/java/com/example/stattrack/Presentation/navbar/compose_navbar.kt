@@ -1,7 +1,5 @@
-package com.example.stattrack.View.navbar
+package com.example.stattrack.Presentation.navbar
 
-import android.content.Intent
-import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -9,10 +7,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.stattrack.View.hold.HoldScreen
-import com.example.stattrack.View.spiller.fragment_spiller
-import com.example.stattrack.View.ui.theme.PrimaryBlue
-import com.example.stattrack.View.ui.theme.PrimaryWhite
+import com.example.stattrack.Presentation.hold.HoldScreen
+import com.example.stattrack.Presentation.ui.theme.PrimaryBlue
+import com.example.stattrack.Presentation.ui.theme.PrimaryWhite
 
 /*@Preview(showBackground = true)
 @Composable

@@ -1,4 +1,4 @@
-package com.example.stattrack.View.ui.theme
+package com.example.stattrack.Presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
