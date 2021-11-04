@@ -7,15 +7,15 @@ import org.jetbrains.annotations.NotNull
 
 @Entity(tableName = "eventData")
 data class EventDataEntity (
-    @PrimaryKey val Id : Int,
-    val EventType : String,
-    val PlayerId : Int,
-    val Time : String,
-    @NotNull val KampId : Int
+    @PrimaryKey val id : Int,
+    val eventType : String,
+    val playerId : Int,
+    val time : String,
+    @NotNull val matchId : Int
 )
 
 fun EventDataEntity.toModel(): EventData =
-    EventData(Id, EventType, PlayerId, Time, KampId)
+    EventData(id, eventType, playerId, time, matchId)
 
 fun EventData.toEntity(): EventDataEntity =
-    EventDataEntity(Id, EventType, PlayerId, Time, KampId)
+    EventDataEntity(id, eventType, playerId, time, matchId)

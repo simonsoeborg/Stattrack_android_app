@@ -1,9 +1,9 @@
 package com.example.stattrack.Data.model
 
 data class EventData (
-    val Id : Int,
-    val EventType : String,
-    val PlayerId : Int,
-    val Time : String,
-    val KampId : Int
+    val id : Int,
+    val eventType : String,
+    val playerId : Int,
+    val time : String,
+    val matchId : Int
     )
