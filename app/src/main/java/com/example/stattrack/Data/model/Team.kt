@@ -1,6 +1,6 @@
 package com.example.stattrack.Data.model
 
-data class Hold(
+data class Team(
     val teamId : Int,
     val name : String,
     val clubName : String,

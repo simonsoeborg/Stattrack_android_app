@@ -2,7 +2,7 @@ package com.example.stattrack.Data.database.Entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.stattrack.Data.model.Hold
+import com.example.stattrack.Data.model.Team
 
 @Entity(tableName = "hold")
 data class TeamEntity(
@@ -14,8 +14,8 @@ data class TeamEntity(
     val division : String
 )
 
-fun TeamEntity.toModel(): Hold =
-    Hold(teamId, name, clubName,creatorId, teamUYear,division)
+fun TeamEntity.toModel(): Team =
+    Team(teamId, name, clubName,creatorId, teamUYear,division)
 
 fun TeamEntity.toEntity(): TeamEntity =
     TeamEntity(teamId, name, clubName,creatorId, teamUYear,division)

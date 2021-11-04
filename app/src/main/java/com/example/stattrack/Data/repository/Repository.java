@@ -1,4 +1,4 @@
 package com.example.stattrack.Data.repository;
 
-public class PlayerRepository {
+public class Repository {
 }

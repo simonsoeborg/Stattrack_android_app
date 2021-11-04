@@ -2,7 +2,7 @@ package com.example.stattrack.Data.database.Entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.stattrack.Data.model.Spiller
+import com.example.stattrack.Data.model.Player
 
 @Entity(tableName = "spiller")
 data class PlayerEntity(
@@ -13,10 +13,10 @@ data class PlayerEntity(
     val teamId: Int
 )
 
-fun PlayerEntity.toModel(): Spiller =
-    Spiller(playerId, name, position, yob, teamId)
+fun PlayerEntity.toModel(): Player =
+    Player(playerId, name, position, yob, teamId)
 
-fun Spiller.toEntity(): PlayerEntity =
+fun Player.toEntity(): PlayerEntity =
     PlayerEntity(playerId, name, position, yob, teamId)
 
 

@@ -2,7 +2,7 @@ package com.example.stattrack.Data.model
 
 import java.util.*
 
-data class KampData (
+data class MatchData (
     val Id : Int,
     val CreatorId : String,
     val CreatorTeamId : Int,

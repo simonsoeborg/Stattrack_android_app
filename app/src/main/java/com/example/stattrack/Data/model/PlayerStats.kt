@@ -1,6 +1,6 @@
 package com.example.stattrack.Data.model
 
-data class SpillerStats (
+data class PlayerStats (
     val Id : Int,
     val SpillerId : Int,
     val Tidspunkt : String,
