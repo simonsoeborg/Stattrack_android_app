@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlayerDao {
 
-        @Query("SELECT * FROM spiller WHERE playerId = :id")
+        @Query("SELECT * FROM player WHERE playerId = :id")
         fun loadById(id: String): Flow<PlayerEntity?>
 
-        @Query("SELECT * FROM spiller ORDER BY name DESC")
+        @Query("SELECT * FROM player ORDER BY name DESC")
         suspend fun loadAll(): List<PlayerEntity>
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)

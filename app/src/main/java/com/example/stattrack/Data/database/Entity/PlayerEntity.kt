@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.stattrack.Data.model.Player
 
-@Entity(tableName = "spiller")
+@Entity(tableName = "player")
 data class PlayerEntity(
     @PrimaryKey val playerId: Int,
     val name: String,
