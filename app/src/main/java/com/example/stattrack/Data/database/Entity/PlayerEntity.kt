@@ -1,20 +1,21 @@
 package com.example.stattrack.Data.database.Entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.stattrack.Data.model.Spiller
 
-@Entity(tableName = "asset")
+@Entity(tableName = "spiller")
 data class PlayerEntity(
-    @PrimaryKey val id: String,
+    @PrimaryKey val playerId: Int,
     val name: String,
-    val price: Float,
-    @ColumnInfo(name = "change_24") val change24Hr: Float,
-    @ColumnInfo(name = "volume_24", defaultValue = "0") val volume24Hr: Float,
+    val position: String,
+    val yob : Int
 )
 
-/*fun PlayerEntity.toModel(): Spiller =
-    Spiller(id, name, price, volume24Hr, change24Hr)
+fun PlayerEntity.toModel(): Spiller =
+    Spiller(playerId, name, position, yob)
 
 fun Spiller.toEntity(): PlayerEntity =
-    PlayerEntity(id, name, price, change24Hr, volume24Hr)*/
+    PlayerEntity(playerId, name, position, yob)
+
+

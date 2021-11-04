@@ -17,7 +17,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         fun build(context: Context): AppDatabase {
-            return Room.databaseBuilder(context, AppDatabase::class.java, "dtu-db")
+            return Room.databaseBuilder(context, AppDatabase::class.java, "stattrack-local-db")
                 .build()
         }
     }
