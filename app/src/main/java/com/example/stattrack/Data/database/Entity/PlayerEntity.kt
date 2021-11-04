@@ -17,6 +17,6 @@ fun PlayerEntity.toModel(): Player =
     Player(playerId, name, position, yob, teamId)
 
 fun Player.toEntity(): PlayerEntity =
-    PlayerEntity(playerId, name, position, yob, teamId)
+    PlayerEntity(id, name, position, yob, teamId)
 
 
