@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TeamDao {
 
-    @Query("SELECT * FROM hold WHERE teamId = :id")
+    @Query("SELECT * FROM team WHERE teamId = :id")
     fun loadById(id: String): Flow<TeamEntity?>
 
-    @Query("SELECT * FROM hold ORDER BY name DESC")
+    @Query("SELECT * FROM team ORDER BY name DESC")
     suspend fun loadAll(): List<TeamEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
