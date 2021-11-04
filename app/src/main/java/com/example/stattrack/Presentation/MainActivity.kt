@@ -1,22 +1,13 @@
-package com.example.stattrack.View
+package com.example.stattrack.Presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.compose.setContent
 import androidx.compose.material.*
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.rememberNavController
-import com.example.stattrack.R
-import com.example.stattrack.View.navbar.BottomNavigationBar
-import com.example.stattrack.View.navbar.NavItem
-import com.example.stattrack.View.navbar.Navigation
-import com.example.stattrack.View.spiller.fragment_spiller
-import com.example.stattrack.View.ui.theme.PrimaryBlue
-import com.example.stattrack.View.ui.theme.PrimaryWhite
+import com.example.stattrack.Presentation.navbar.BottomNavigationBar
+import com.example.stattrack.Presentation.navbar.Navigation
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
