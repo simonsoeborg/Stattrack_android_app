@@ -1,6 +1,7 @@
 package com.example.stattrack.Data.database
 
 import com.example.stattrack.Data.database.Entity.PlayerEntity
+import com.example.stattrack.Data.database.Entity.toModel
 import com.example.stattrack.Data.database.local.AppDatabase
 import com.example.stattrack.Data.model.Player
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,7 +43,10 @@ class Repository (
 
 
     /* Read */
-    fun loadPlayer() {}
+    fun loadPlayerByName(name: String): Player {
+        val playEntity: PlayerEntity =  database.PlayerDao().loadByName(name)
+        return playEntity.toModel()
+    }
 
     /* Update */
 

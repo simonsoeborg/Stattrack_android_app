@@ -11,7 +11,10 @@ import kotlinx.coroutines.flow.Flow
 interface PlayerDao {
 
         @Query("SELECT * FROM player WHERE playerId = :id")
-        fun loadById(id: String): Flow<PlayerEntity?>
+        fun loadById(id: Int): PlayerEntity
+
+        @Query("SELECT * FROM player WHERE name = :name")
+        fun loadByName(name: String): PlayerEntity
 
         @Query("SELECT * FROM player ORDER BY name DESC")
         suspend fun loadAll(): List<PlayerEntity>

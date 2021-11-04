@@ -15,7 +15,7 @@ object ServiceLocator {
     val database: AppDatabase by lazy { AppDatabase.build(applicationContext) }
 
     
-    private val repository: Repository by lazy {
+    val repository: Repository by lazy {
         Repository(database)
     }
 
