@@ -9,13 +9,14 @@ data class PlayerEntity(
     @PrimaryKey val playerId: Int,
     val name: String,
     val position: String,
-    val yob : Int
+    val yob : Int,
+    val teamId: Int
 )
 
 fun PlayerEntity.toModel(): Spiller =
-    Spiller(playerId, name, position, yob)
+    Spiller(playerId, name, position, yob, teamId)
 
 fun Spiller.toEntity(): PlayerEntity =
-    PlayerEntity(playerId, name, position, yob)
+    PlayerEntity(playerId, name, position, yob, teamId)
 
 
