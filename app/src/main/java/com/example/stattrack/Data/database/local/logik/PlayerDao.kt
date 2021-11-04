@@ -17,5 +17,5 @@ interface PlayerDao {
         suspend fun loadAll(): List<PlayerEntity>
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
-        suspend fun insert(asset: PlayerEntity)
+        suspend fun insert(PlayerEntity: PlayerEntity)
     }
