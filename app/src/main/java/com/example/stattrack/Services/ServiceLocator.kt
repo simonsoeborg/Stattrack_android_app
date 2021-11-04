@@ -1,6 +1,7 @@
 package com.example.stattrack.Services
 
 import android.app.Application
+import com.example.stattrack.Data.database.Repository
 import com.example.stattrack.Data.database.local.AppDatabase
 
 object ServiceLocator {
@@ -12,5 +13,10 @@ object ServiceLocator {
 
     // Effectively singleton
     val database: AppDatabase by lazy { AppDatabase.build(applicationContext) }
+
+    
+    private val repository: Repository by lazy {
+        Repository(database)
+    }
 
 }
