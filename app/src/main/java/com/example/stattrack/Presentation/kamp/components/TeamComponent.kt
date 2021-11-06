@@ -26,7 +26,7 @@ fun TeamComponent(hold1_name: String, hold2_name: String, hold1_sc: String, hold
         Column( // Main Column
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(17.dp)
         ) {
             Row( modifier = Modifier
                 .padding(2.dp)
