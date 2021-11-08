@@ -10,6 +10,8 @@ import androidx.navigation.compose.composable
 import com.example.stattrack.Presentation.hold.HoldScreen
 import com.example.stattrack.Presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.Presentation.ui.theme.PrimaryWhite
+import androidx.compose.material.Icon
+import com.example.stattrack.Presentation.kamp.KampScreen
 
 /*@Preview(showBackground = true)
 @Composable
@@ -22,8 +24,8 @@ fun DefaultPreview() {
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        NavItem.Kamp,
-        NavItem.Hold
+        NavItem.Hold,
+        NavItem.Kamp
     )
     BottomNavigation(
         backgroundColor = PrimaryWhite,
@@ -60,6 +62,7 @@ fun Navigation(navController: NavHostController) {
             HoldScreen()
         }
         composable(NavItem.Kamp.route) {
+            KampScreen()
         }
         composable(NavItem.Spiller.route) {
         }

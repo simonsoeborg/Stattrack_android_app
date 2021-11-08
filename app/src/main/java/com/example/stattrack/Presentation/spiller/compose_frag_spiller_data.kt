@@ -56,9 +56,6 @@ fun FragmentSpillerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAss
                     antalAssist = antalAssist,
                     antalSkud = antalSkud
                 )
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "Hej")
-                }
             }
         }
 
