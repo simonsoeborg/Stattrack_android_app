@@ -11,10 +11,8 @@ object ServiceLocator {
         this.applicationContext = applicationContext
     }
 
-    // Effectively singleton
     val database: AppDatabase by lazy { AppDatabase.build(applicationContext) }
 
-    
     val repository: Repository by lazy {
         Repository(database)
     }

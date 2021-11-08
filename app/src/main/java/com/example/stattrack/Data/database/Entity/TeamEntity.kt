@@ -17,5 +17,5 @@ data class TeamEntity(
 fun TeamEntity.toModel(): Team =
     Team(teamId, name, clubName,creatorId, teamUYear,division)
 
-fun TeamEntity.toEntity(): TeamEntity =
+fun Team.toEntity(): TeamEntity =
     TeamEntity(teamId, name, clubName,creatorId, teamUYear,division)

@@ -1,5 +1,7 @@
 package com.example.stattrack.Data.model
 
+import com.example.stattrack.Data.database.Entity.TeamEntity
+
 data class Team(
     val teamId : Int,
     val name : String,
@@ -9,3 +11,6 @@ data class Team(
     val teamUYear : String,
     val division : String
 )
+
+fun Team.toEntity(): TeamEntity =
+    TeamEntity(teamId,name,clubName,creatorId,teamUYear,division)
