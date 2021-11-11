@@ -1,17 +1,22 @@
 package com.example.stattrack.Presentation.kamp
 
+import android.os.Bundle
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.stattrack.Services.ServiceLocator.kampViewModel
+
 
 @Composable
 fun KampScreen() {
+    val viewModel: KampViewModel by lazy { kampViewModel }
     val hold1_navn by remember { mutableStateOf("Indtast Hold") }
     val hold1_score by remember { mutableStateOf("0")}
     val hold2_navn by remember { mutableStateOf( "Indtast Hold") }
     val hold2_score by remember { mutableStateOf("0")}
     val time by remember { mutableStateOf("00:00")}
+
 
     Column( // Main Column
         modifier = Modifier

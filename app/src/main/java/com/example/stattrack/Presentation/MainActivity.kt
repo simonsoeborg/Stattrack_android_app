@@ -8,18 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.example.stattrack.Presentation.navbar.BottomNavigationBar
 import com.example.stattrack.Presentation.navbar.Navigation
-import com.example.stattrack.Services.fillSQLiteWithDummyData
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent{
             MainScreen()
-        }
-        GlobalScope.launch {
-            fillSQLiteWithDummyData()
         }
 
 //        setContentView(R.layout.activity_main)

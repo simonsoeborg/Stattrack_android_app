@@ -65,7 +65,7 @@ class Repository (
 
     //fun fetchAllPlayers(): List<Player> {}
     //
-    fun fetchTeamByName(name: String): Flow<Team> =
+    suspend fun fetchTeamByName(name: String): Flow<Team> =
         database.TeamDao()
             .loadByName(name)
             .map { it?.toModel() ?: Team(0,"","","","","")}
