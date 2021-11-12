@@ -1,7 +1,7 @@
 package com.example.stattrack.services
 
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
@@ -11,13 +11,14 @@ import com.example.stattrack.model.database.AppDatabase
 import com.example.stattrack.presentation.kamp.KampViewModel
 
 object ServiceLocator {
-    private lateinit var applicationContext: Context
 
-    fun init(applicationContext: Context) {
-        this.applicationContext = applicationContext
+    private lateinit var application: Application
+
+    fun init(application: Application) {
+        this.application = application
     }
 
-    val database: AppDatabase by lazy { AppDatabase.build(applicationContext) }
+    val database: AppDatabase by lazy { AppDatabase.build(application) }
 
     val repository: Repository by lazy {
         Repository(database)
@@ -28,7 +29,7 @@ object ServiceLocator {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return when (modelClass) {
-                    KampViewModel::class.java -> KampViewModel(repository)
+                    KampViewModel::class -> KampViewModel(repository)
                     else -> throw IllegalArgumentException("Unsupported ViewModel $modelClass")
                 } as T
             }

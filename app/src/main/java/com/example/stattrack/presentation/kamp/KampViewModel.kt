@@ -2,12 +2,16 @@ package com.example.stattrack.presentation.kamp
 
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
-import com.example.stattrack.model.database.Repository
-import com.example.stattrack.model.model.Team
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
+import com.example.stattrack.model.database.Repository
+import com.example.stattrack.model.model.Team
+import com.example.stattrack.services.ServiceLocator.kampViewModel
+
 
 class KampViewModel(private val repository: Repository) : ViewModel() {
 
@@ -15,9 +19,9 @@ class KampViewModel(private val repository: Repository) : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
 
     // Fragment, compose or activity has no way of seeing this.
-    private val _teams: MutableLiveData<List<Team>> = MutableLiveData()
+    val _teams: MutableState<List<Team>> = mutableStateOf(listOf())
     // Read-only for the view-layer
-    val teams: LiveData<List<Team>> get() = _teams
+    /* val teams: LiveData<List<Team>> get() = _teams */
     val team = MutableLiveData(Team(0,"","","","",""))
     val id: LiveData<Int> = team.map{it.teamId}
     val name : LiveData<String> = team.map { it.name }
@@ -31,6 +35,7 @@ class KampViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
         repository.fetchTeamByName("Team1")
             .collect {team.value = it}
+            Log.d("StattrackDebug", "On fetchTeamByName: ${team.value?.name}")
         }
         //loadAvailableTeams()
         //loadAvailablePlayers()
