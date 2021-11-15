@@ -6,17 +6,19 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
+import com.example.stattrack.presentation.kamp.KampViewModel
 import com.example.stattrack.presentation.navbar.BottomNavigationBar
 import com.example.stattrack.presentation.navbar.Navigation
-import com.example.stattrack.services.ServiceLocator
+import com.example.stattrack.services.ServiceLocator.kampViewModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ServiceLocator.init(application)
         setContent{
             MainScreen()
         }
+        val viewModel: KampViewModel by lazy { kampViewModel }
+
 
 //        setContentView(R.layout.activity_main)
 //

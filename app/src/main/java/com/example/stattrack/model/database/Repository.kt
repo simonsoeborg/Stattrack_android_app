@@ -2,10 +2,8 @@ package com.example.stattrack.model.database
 
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
+import com.example.stattrack.model.model.defaultTeamDummyData
+import kotlinx.coroutines.flow.*
 
 class Repository (
     private val database: AppDatabase
@@ -67,10 +65,9 @@ class Repository (
             .map { it?.toModel() ?: Team(0,"","","","","")
     }
 
-   /* suspend fun fetchAllTeams(): List<Team> {
-        database.TeamDao()
-            .loadAll()
-    } */
+    fun fetchAllTeams(): List<Team> {
+       return defaultTeamDummyData
+    }
     /* Update */
 
     /* Delete */

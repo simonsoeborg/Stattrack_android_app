@@ -1,13 +1,20 @@
 package com.example.stattrack.presentation.kamp
 
+import android.app.Service
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import com.example.stattrack.presentation.kamp.components.TeamComponent
+import com.example.stattrack.services.ServiceLocator
+import com.example.stattrack.services.ServiceLocator.kampViewModel
 
 @Composable
-fun KampScreen(/* TODO: Figure out how to pass viewModel: KampViewModel here*/) {
+fun KampScreen() {
+    val kampViewModel: KampViewModel = ViewModelProvider(ServiceLocator.applic,ServiceLocator.viewModelFactory)
     val hold1_navn by remember { mutableStateOf("Indtast Hold") }
     val hold1_score by remember { mutableStateOf("0")}
     val hold2_navn by remember { mutableStateOf( "Indtast Hold") }
