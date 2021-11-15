@@ -50,7 +50,7 @@ class KampViewModel(private val repository: Repository) : ViewModel() {
         val teams: MutableList<Team> = mutableListOf()
         for (i in 1..9) {
             teams.add(i,Team(i,"Team$i","Club$i","ToBeDecided","199$i","$i. division"))
-            GlobalScope.launch {
+            viewModelScope.launch {
                 repository.insertTeam(teams.elementAt(i))
             }
         }

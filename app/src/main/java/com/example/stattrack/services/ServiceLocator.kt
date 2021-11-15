@@ -29,7 +29,7 @@ object ServiceLocator {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return when (modelClass) {
-                    KampViewModel::class -> KampViewModel(repository)
+                    KampViewModel::class.java -> KampViewModel(repository)
                     else -> throw IllegalArgumentException("Unsupported ViewModel $modelClass")
                 } as T
             }

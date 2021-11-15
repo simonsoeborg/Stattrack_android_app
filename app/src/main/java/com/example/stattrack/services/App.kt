@@ -1,6 +1,7 @@
-package com.example.stattrack.services
+package com.example.stattrack
 
 import android.app.Application
+import com.example.stattrack.services.ServiceLocator
 
 
 class App : Application() {
@@ -9,5 +10,4 @@ class App : Application() {
         super.onCreate()
         ServiceLocator.init(this)
     }
-
 }

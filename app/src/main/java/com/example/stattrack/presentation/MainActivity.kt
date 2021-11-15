@@ -8,10 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.example.stattrack.presentation.navbar.BottomNavigationBar
 import com.example.stattrack.presentation.navbar.Navigation
+import com.example.stattrack.services.ServiceLocator
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ServiceLocator.init(application)
         setContent{
             MainScreen()
         }
@@ -46,6 +48,5 @@ fun MainScreen() {
         bottomBar = { BottomNavigationBar(navController) }
     ) {
         Navigation(navController = navController)
-
     }
 }
