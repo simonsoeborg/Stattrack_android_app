@@ -4,7 +4,10 @@ import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.model.model.defaultDummyPlayerData
 import com.example.stattrack.model.model.defaultTeamDummyData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class Repository (
     private val database: AppDatabase
@@ -21,13 +24,7 @@ class Repository (
     /* Create */
     suspend fun insertPlayer(player: Player) {
         _states.value = State(isInProgress = true)
-        val dbPlayerEntity = PlayerEntity(
-                player.id,
-                player.name,
-                player.position,
-                player.yob,
-                player.teamId
-        )
+        val dbPlayerEntity = player.toEntity()
         try {
             database.PlayerDao().insert(dbPlayerEntity)
             _states.value = State(isInProgress = false)
@@ -35,21 +32,16 @@ class Repository (
             _states.value = State(isInProgress = false, error = ex.message)
         }
     }
-    fun insertPlayerStats() {}
 
-    suspend fun insertTeam(team:Team) {
+    fun insertTeam(team: Team) {
         _states.value = State(isInProgress = true)
-        try {
+        GlobalScope.launch(Dispatchers.IO){
             val dbTeam = team.toEntity()
             database.TeamDao().insert(dbTeam)
-            _states.value = State(isInProgress = false)
-        } catch (ex: Exception) {
-            _states.value = State(isInProgress = false, error = ex.message)
         }
+        _states.value = State(isInProgress = false)
     }
 
-    fun insertMatch() {}
-    fun insertEventData() {}
 
 
     /* Read */
@@ -58,19 +50,20 @@ class Repository (
         return playEntity.toModel()
     }
 
-    fun fetchAllPlayers(): List<Player> {
+    fun getAllPlayers(): List<Player> {
         return defaultDummyPlayerData
     }
 
-    fun fetchTeamByName(name: String): Flow<Team> =
+    fun getTeamByName(name: String): Flow<Team> =
         database.TeamDao()
             .loadByName(name)
-            .map { it?.toModel() ?: Team(0,"","","","","")
+            .map { it?.toModel() ?: Team(0,"null","null","null","null","null") }
+
+
+    fun getAllTeams(): Flow<List<Team>>{
+        return listOf(defaultTeamDummyData).asFlow()
     }
 
-    fun fetchAllTeams(): List<Team> {
-       return defaultTeamDummyData
-    }
 
 
     /* Update */
