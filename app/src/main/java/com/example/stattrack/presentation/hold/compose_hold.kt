@@ -65,14 +65,16 @@ fun HoldScreen() {
     }
 }
 
-@Composable
+// Old dummyData
+
+/*@Composable
 fun dummydata1() {
     val items = listOf("HØJ U19", "HØJ Elite", "HØJ 2", "HØJ 3")
 
     items.forEach { item ->
         Text(text = "$item", modifier = Modifier.padding(2.dp), color = PrimaryBlue)
     }
-}
+}*/
 
 
 @Composable
