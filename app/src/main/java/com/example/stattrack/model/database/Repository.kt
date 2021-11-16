@@ -60,8 +60,14 @@ class Repository (
             .map { it?.toModel() ?: Team(0,"null","null","null","null","null") }
 
 
-    fun getAllTeams(): Flow<List<Team>>{
+    // OBS OBS - Tidligere retunerede denne en Flow<List<Team>> (Hvilket ikke gave meget mening i det jeg lavede)
+    /*
+     fun getAllTeams(): Flow<List<Team>>{
         return listOf(defaultTeamDummyData).asFlow()
+    }
+     */
+    fun getAllTeams():List<Team>{
+        return defaultTeamDummyData
     }
 
 

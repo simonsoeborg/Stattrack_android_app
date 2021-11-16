@@ -1,6 +1,7 @@
 package com.example.stattrack.presentation.hold
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.presentation.match.MatchViewState
@@ -32,7 +33,7 @@ class TeamViewModel (private val repository: Repository) : ViewModel(){
 
          private fun loadAllTeams() {
             viewModelScope.launch {
-                val loadedTeams = repository.fetchAllTeams()
+                val loadedTeams = repository.getAllTeams()
                 _viewState.value = _viewState.value.copy(
                     teams = loadedTeams
                 )
@@ -41,7 +42,7 @@ class TeamViewModel (private val repository: Repository) : ViewModel(){
 
         private fun loadAllPlayers() {
             viewModelScope.launch {
-                val loadedPlayers = repository.fetchAllPlayers()
+                val loadedPlayers = repository.getAllPlayers()
                 _viewState.value = _viewState.value.copy(
                     players = loadedPlayers
                 )
