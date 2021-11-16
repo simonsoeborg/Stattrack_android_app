@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.stattrack.model.model.Team
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,8 +18,8 @@ interface TeamDao {
     fun loadByName(name: String): Flow<TeamEntity?>
 
     @Query("SELECT * FROM team ORDER BY teamId DESC")
-    fun loadAll(): LiveData<List<TeamEntity>>
+    fun loadAll(): Flow<List<TeamEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(teamEntity: TeamEntity)
+    suspend fun insert(team: TeamEntity)
 }

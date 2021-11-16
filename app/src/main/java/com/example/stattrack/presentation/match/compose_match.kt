@@ -1,23 +1,26 @@
 package com.example.stattrack.presentation.match
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stattrack.presentation.match.components.TeamComponent
+import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.services.ServiceLocator
 
 @Composable
 fun MatchScreen(matchViewModel: MatchViewModel) {
-    val currentState: State<MatchViewState> = matchViewModel.viewState.collectAsState()
-    if(currentState.value.showLoading){
-        /* Do something while loading */
-    }
 
-    val team1_name  = currentState.value.teams.first().clubName
-    val hold1_score by remember { mutableStateOf("0")}
-    val hold2_navn = currentState.value.teams[1].clubName
-    val hold2_score by remember { mutableStateOf("0")}
+    val nameTeam1  = matchViewModel.team.value.name
+    val scoreTeam1 by remember { mutableStateOf("0")}
+    val nameTeam2 by remember { mutableStateOf("Indtast hold 2")}
+    val scoreTeam2 by remember { mutableStateOf("0")}
     val time by remember { mutableStateOf("00:00")}
 
 
@@ -27,13 +30,16 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
             .fillMaxWidth()
     ) {
         Row( modifier = Modifier.fillMaxWidth()) {
-            TeamComponent(hold1_name = team1_name, hold2_name = hold2_navn, hold1_sc = hold1_score, hold2_sc = hold2_score)
+            TeamComponent(hold1_name = nameTeam1, hold2_name = nameTeam2, hold1_sc = scoreTeam1, hold2_sc = scoreTeam2)
         }
         Row( modifier = Modifier.fillMaxWidth()) {
             StopWatchComponent(time)
         }
         Row( modifier = Modifier.fillMaxWidth()) {
             EventComponent()
+        }
+        OutlinedButton(onClick = { Log.d("ButtonClick","We pressing"); matchViewModel.fillSQLiteWithDummyData() }) {
+            Icon(Icons.Default.PlayCircle, contentDescription = "Play", tint = PrimaryBlue)
         }
         Row( modifier = Modifier.fillMaxWidth()) {
             LogComponent()
