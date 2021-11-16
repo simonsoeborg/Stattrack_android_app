@@ -2,6 +2,7 @@ package com.example.stattrack.model.database
 
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
+import com.example.stattrack.model.model.defaultDummyPlayerData
 import com.example.stattrack.model.model.defaultTeamDummyData
 import kotlinx.coroutines.flow.*
 
@@ -57,8 +58,10 @@ class Repository (
         return playEntity.toModel()
     }
 
-    //fun fetchAllPlayers(): List<Player> {}
-    //
+    fun fetchAllPlayers(): List<Player> {
+        return defaultDummyPlayerData
+    }
+
     fun fetchTeamByName(name: String): Flow<Team> =
         database.TeamDao()
             .loadByName(name)
@@ -68,7 +71,18 @@ class Repository (
     fun fetchAllTeams(): List<Team> {
        return defaultTeamDummyData
     }
+
+
     /* Update */
 
     /* Delete */
+
+
+    /* Dummy functions used for @Preview in Compose */
+    fun fetchDummyTeams(): List<Team> {
+        return defaultTeamDummyData
+    }
+    fun fetchDummyPlayers(): List<Player> {
+        return defaultDummyPlayerData
+    }
 }

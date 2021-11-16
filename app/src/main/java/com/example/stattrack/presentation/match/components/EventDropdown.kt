@@ -1,4 +1,4 @@
-package com.example.stattrack.presentation.kamp
+package com.example.stattrack.presentation.match
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.stattrack.presentation.kamp.data.EventItems
-import com.example.stattrack.presentation.kamp.data.PlayerItems
+import com.example.stattrack.presentation.match.data.EventItems
+import com.example.stattrack.presentation.match.data.PlayerItems
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 

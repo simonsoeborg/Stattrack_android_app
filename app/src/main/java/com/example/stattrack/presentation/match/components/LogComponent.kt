@@ -1,4 +1,4 @@
-package com.example.stattrack.presentation.kamp
+package com.example.stattrack.presentation.match
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.stattrack.presentation.kamp.data.LogItems
+import com.example.stattrack.presentation.match.data.LogItems
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 @Composable

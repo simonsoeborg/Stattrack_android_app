@@ -1,4 +1,4 @@
-package com.example.stattrack.presentation.kamp.data
+package com.example.stattrack.presentation.match.data
 
 sealed class LogItems(var entry: String) {
     object LogGoal : LogItems("10:38 | Anders Andersen | Scorede mål | Stilling: 5 - 7")

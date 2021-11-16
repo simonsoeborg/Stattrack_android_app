@@ -1,4 +1,4 @@
-package com.example.stattrack.presentation.kamp.data
+package com.example.stattrack.presentation.match.data
 
 sealed class EventItems(var title: String) {
     object Default : EventItems("Vælg hændelse")

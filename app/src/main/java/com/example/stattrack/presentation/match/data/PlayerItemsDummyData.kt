@@ -1,4 +1,4 @@
-package com.example.stattrack.presentation.kamp.data
+package com.example.stattrack.presentation.match.data
 
 sealed class PlayerItems(var name: String, var playerNumber: Int, var playerPosition: String) {
     object DefaultPlayer : PlayerItems("Vælg spiller", 0, "N/A")

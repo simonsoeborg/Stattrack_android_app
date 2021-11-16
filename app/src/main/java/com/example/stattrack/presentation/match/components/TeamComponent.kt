@@ -1,4 +1,4 @@
-package com.example.stattrack.presentation.kamp.components
+package com.example.stattrack.presentation.match.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

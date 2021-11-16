@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.get
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.database.AppDatabase
-import com.example.stattrack.presentation.kamp.KampViewModel
+import com.example.stattrack.presentation.match.MatchViewModel
 
 object ServiceLocator {
 
@@ -29,7 +29,7 @@ object ServiceLocator {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return when (modelClass) {
-                    KampViewModel::class.java -> KampViewModel(repository)
+                    MatchViewModel::class.java -> MatchViewModel(repository)
                     else -> throw IllegalArgumentException("Unsupported ViewModel $modelClass")
                 } as T
             }
@@ -37,7 +37,7 @@ object ServiceLocator {
     }
 
 
-    val ViewModelStoreOwner.kampViewModel: KampViewModel
+    val ViewModelStoreOwner.matchViewModel: MatchViewModel
         get() = ViewModelProvider(this, viewModelFactory).get()
 
 }
