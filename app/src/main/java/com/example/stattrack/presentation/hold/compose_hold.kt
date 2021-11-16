@@ -92,6 +92,7 @@ fun TeamList(currentState: State<MatchViewState>) {
 
         ) {
                     team ->
+            // Clickable sender kun test-data pt.
             Surface(modifier = Modifier.clickable { println(team.name + team.teamId)}){
                     Text(team.name,modifier = Modifier.padding(2.dp), color = PrimaryBlue)
             }
