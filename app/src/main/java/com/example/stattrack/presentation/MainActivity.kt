@@ -12,17 +12,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.stattrack.presentation.hold.HoldScreen
+import com.example.stattrack.presentation.hold.TeamViewModel
 import com.example.stattrack.presentation.match.MatchScreen
 import com.example.stattrack.presentation.match.MatchViewModel
 import com.example.stattrack.presentation.navbar.NavItem
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.services.ServiceLocator.matchViewModel
+import com.example.stattrack.services.ServiceLocator.teamViewModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val matchVM: MatchViewModel by lazy { matchViewModel }
+        val teamVM: TeamViewModel by lazy { teamViewModel }
 
         setContent {
             val navController = rememberNavController()
@@ -31,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 NavHost(navController, startDestination = NavItem.Hold.route) {
                     composable(NavItem.Hold.route) {
-                        HoldScreen()
+                        HoldScreen(teamViewModel = teamVM)
                     }
                     composable(NavItem.Kamp.route) {
                         MatchScreen(matchViewModel = matchVM)
