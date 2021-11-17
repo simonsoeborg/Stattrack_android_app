@@ -10,11 +10,19 @@ import kotlinx.coroutines.flow.Flow
 interface MatchDataDao {
 
     @Query("SELECT * FROM matchData WHERE Id = :id")
-    fun loadById(id: String): Flow<MatchDataEntity?>
+    fun loadById(id: Int): Flow<MatchDataEntity?>
+
+    /* Load all matches that a specific CreatorId has created (A trainer e.g.) */
+    @Query("SELECT * FROM matchData WHERE creatorId = :creatorId")
+    fun loadByCreatorId(creatorId: String): Flow<List<MatchDataEntity?>>
+
+    /* Load all matches played on a specific date */
+    @Query("SELECT * FROM matchData WHERE matchDate = :matchDate")
+    fun loadByMatchDate(matchDate: String): Flow<List<MatchDataEntity?>>
 
     @Query("SELECT * FROM matchData ORDER BY id DESC")
-    suspend fun loadAll(): List<MatchDataEntity>
+    fun loadAll(): Flow<List<MatchDataEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(asset: MatchDataEntity)
+    suspend fun insert(matchData: MatchDataEntity)
 }

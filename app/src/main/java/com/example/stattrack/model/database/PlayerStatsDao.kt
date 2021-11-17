@@ -9,10 +9,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlayerStatsDao {
 
-    @Query("SELECT * FROM playerStats WHERE id = :id")
-    fun loadById(id: String): Flow<PlayerStatsEntity?>
+    @Query("SELECT * FROM playerStats WHERE id = :playerId")
+    fun loadById(playerId: Int): Flow<PlayerStatsEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(asset: PlayerEntity)
-
+    suspend fun insert(PlayerStatsEntity: PlayerStatsEntity)
 }
