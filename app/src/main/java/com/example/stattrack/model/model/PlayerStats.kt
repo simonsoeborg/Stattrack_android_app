@@ -10,5 +10,5 @@ data class PlayerStats (
     val mins2 : Int,
     val yellowCards : Int,
     val redCards : Int,
-    val MatchId : Int
+    val matchId : Int
 )
