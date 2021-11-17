@@ -35,8 +35,8 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         *  Use viewState.value in Compose */
         fillSQLiteWithDummyData()
         viewModelScope.launch {
-           repository.getTeamByName("Jylland")
-               .collect { team.value = it }
+           repository.getAllTeams()
+               .collect { teams.value = it }
         }
         //loadAllTeams()
         //loadAllPlayers()

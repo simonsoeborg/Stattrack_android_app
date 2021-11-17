@@ -11,7 +11,7 @@ interface EventDataDao {
 
 
     @Query("SELECT * FROM eventData WHERE Id = :id")
-    fun loadById(id: String): Flow<List<EventDataEntity>?>
+    fun loadById(id: Int): Flow<EventDataEntity?>
 
     /* Load events that a player has participated in */
     @Query("SELECT * FROM eventData WHERE playerId = :playerId")
@@ -19,7 +19,7 @@ interface EventDataDao {
 
     /* Load event from previously played match */
     @Query("SELECT * FROM eventData WHERE matchId = :matchId")
-    fun loadByMatchId(matchId: Int): Flow<List<EventDataEntity>?>
+    fun loadByMatchId(matchId: Int): Flow<EventDataEntity?>
 
     @Query("SELECT * FROM eventData ORDER BY id DESC")
     fun loadAll(): Flow<List<EventDataEntity>>
