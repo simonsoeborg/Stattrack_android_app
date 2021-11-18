@@ -14,22 +14,21 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
-/*class compose_frag_spiller_data : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            StattrackTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    FragmentSpillerData(9,5,20,7)
-                }
-            }
+@Composable
+fun PlayerClass(){
+
+    /*Column(modifier = Modifier.padding(10.dp))
+    {
+        Row()
+        {
+           Text(text = "Simon Lindhard Fridolf")
         }
-    }
-}*/
+
+    }*/
+}
 
 @Composable
-fun FragmentSpillerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int) {
+fun PlayerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int) {
 
     val padding = 10.dp
 
@@ -104,6 +103,7 @@ fun BarChartView() {
 @Composable
 fun DefaultPreview() {
     StattrackTheme {
-        FragmentSpillerData(9,5,20,7)
+        PlayerClass()
+        PlayerData(9,5,20,7)
     }
 }
