@@ -1,9 +1,14 @@
 package com.example.stattrack.presentation.match
 
 
+import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -36,27 +41,29 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     val hotMatchState = _hotMatchState.asStateFlow()
     */
 
-    private val _teams = MutableStateFlow(repository.getAllTeams())
-    val teams = _teams.asStateFlow()
+    val teams = MutableLiveData(defaultTeamDummyData)
+
+
+
 
 
     init {
+        teams.postValue(listOf(Team(0,"null","null","null","null","null")))
         loadAllTeams()
     }
 
     fun testDataManipulationFromCompose(){
         val testHold = Team(0,"Virker det?"," ","", " "," ")
         val testList = listOf(testHold)
-        val matchViewStateTest = MatchViewState(
-        testList,
-        defaultDummyPlayerData,
-        defaultDummyMatchData
-        )
-        //_hotMatchState.value = matchViewStateTest
+        teams.value = testList
     }
 
     private fun loadAllTeams() {
-        viewModelScope.launch {
+        viewModelScope.launch() {
+            repository.getAllTeams().collect{
+                teams.postValue(it)
+                Log.d("viewModelScope-test", it[0].name)
+            }
         }
     }
 

@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,11 +20,9 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.services.ServiceLocator
 import com.example.stattrack.services.ServiceLocator.matchViewModel
-import com.example.stattrack.services.ServiceLocator.repository
 import com.example.stattrack.services.ServiceLocator.teamViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         val matchVM: MatchViewModel by lazy { matchViewModel }
         val teamVM: TeamViewModel by lazy { teamViewModel }
 
-        prepopulateSQLiteDB()
+        //prepopulateSQLiteDB()
 
         setContent {
             val navController = rememberNavController()
