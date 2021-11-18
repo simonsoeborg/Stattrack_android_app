@@ -4,11 +4,11 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
-import kotlinx.coroutines.launch
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 /**
  * [MatchViewModel] takes as parameter a repository to request data
@@ -34,12 +34,12 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         /* Fetch data from DB when init so it is ready for use later on
         *  Use viewState.value in Compose */
         fillSQLiteWithDummyData()
-        viewModelScope.launch {
+        /*viewModelScope.launch {
            repository.getAllTeams()
                .collect { teams.value = it }
-        }
-        //loadAllTeams()
-        //loadAllPlayers()
+        }*/
+        loadAllTeams()
+        loadAllPlayers()
     }
 
     private fun loadAllTeams() {

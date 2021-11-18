@@ -32,7 +32,7 @@ class TeamViewModel (private val repository: Repository) : ViewModel(){
 
          private fun loadAllTeams() {
             viewModelScope.launch {
-                val loadedTeams = repository.getAllTeams()
+                val loadedTeams = repository.getDummyTeams()
                 _viewState.value = _viewState.value.copy(
                     teams = loadedTeams
                 )
