@@ -15,7 +15,7 @@ interface EventDataDao {
 
     /* Load events that a player has participated in */
     @Query("SELECT * FROM eventData WHERE playerId = :playerId")
-    fun loadByPlayerId(playerId: Int): Flow<List<EventDataEntity>?>
+    fun loadByPlayerId(playerId: Int): Flow<List<EventDataEntity>>
 
     /* Load event from previously played match */
     @Query("SELECT * FROM eventData WHERE matchId = :matchId")
