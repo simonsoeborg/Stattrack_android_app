@@ -16,6 +16,15 @@ import kotlinx.coroutines.launch
  * for the view to render the relevant information
  */
 class MatchViewModel(private val repository: Repository) : ViewModel() {
+    val matchState: Flow<MatchViewState> = repository.getPlayerByName("asd")
+        .combine(repository.getTeamByName("asda")) { player, team ->
+            MatchViewState(teams = listOf(team), players = listOf(player))
+        }
+
+    private val _hotMatchState = MutableStateFlow<MatchViewState?>(null)
+    val hotMatchState = _hotMatchState.asStateFlow()
+
+
     var teamsTest : List<Team> = emptyList()
     var players : List<Player> = emptyList()
     val teams : MutableState<List<Team>> = mutableStateOf(ArrayList())
@@ -28,6 +37,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     val teamUYear : LiveData<String> = team.map { it.teamUYear }
     val division :  LiveData<String> = team.map { it.division } */
 
+    val mutableFlow = MutableStateFlow(4)
 
 
     init {
@@ -50,7 +60,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     private fun loadAllPlayers() {
         viewModelScope.launch {
-
+            _hotMatchState.value = MatchViewState()
         }
     }
 
@@ -74,6 +84,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     fun loadDummyData() {
         viewModelScope.launch {
             val dummyTeams = repository.getDummyTeams()
+
             teams.value = dummyTeams
 
         }

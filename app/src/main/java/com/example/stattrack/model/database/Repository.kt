@@ -1,5 +1,6 @@
 package com.example.stattrack.model.database
 
+import com.example.stattrack.ext.mapIterable
 import com.example.stattrack.model.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -83,13 +84,15 @@ class Repository (
             .loadById(eventDataId)
             .map { it?.toModel() ?: EventData(0, " ", 0, " ", 0) }
 
-    /* TODO: Implement me
-    fun getEventDataByPlayerId(playerid: Int): Flow<EventData> =
+
+    fun getEventDataByPlayerId(playerid: Int): Flow<List<EventData>> =
         database.EventDataDao()
             .loadByPlayerId(playerId = playerid)
-            .map { it?.toModel() ?: EventData(0, " ", 0, " ", 0) }
+            .mapIterable { eventEntity ->
+                eventEntity.toModel() ?: EventData(0, " ", 0, " ", 0)
+            }
 
-     */
+
 
     fun getEventDataByMatchId(matchId: Int): Flow<EventData> =
         database.EventDataDao()

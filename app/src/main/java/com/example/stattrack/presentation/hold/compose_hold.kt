@@ -1,7 +1,10 @@
 package com.example.stattrack.presentation.hold
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
@@ -14,10 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.stattrack.model.model.Team
-import com.example.stattrack.model.model.defaultTeamDummyData
-import com.example.stattrack.presentation.match.MatchScreen
-import com.example.stattrack.presentation.match.MatchViewModel
 import com.example.stattrack.presentation.match.MatchViewState
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.services.ServiceLocator
@@ -78,7 +77,6 @@ fun dummydata1() {
     }
 }*/
 
-
 @Composable
 fun TeamList(currentState: State<MatchViewState>) {
     LazyColumn() {
@@ -93,7 +91,7 @@ fun TeamList(currentState: State<MatchViewState>) {
         ) {
                     team ->
             // Clickable sender kun test-data pt.
-            Surface(modifier = Modifier.clickable { println(team.name + team.teamId)}){
+            Surface(modifier = Modifier.clickable { println(team.name+team.teamId)}){
                     Text(team.name,modifier = Modifier.padding(2.dp), color = PrimaryBlue)
             }
         }
