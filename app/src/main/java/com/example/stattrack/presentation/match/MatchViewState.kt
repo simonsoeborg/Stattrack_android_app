@@ -1,8 +1,6 @@
 package com.example.stattrack.presentation.match
 
-import com.example.stattrack.model.model.MatchData
-import com.example.stattrack.model.model.Player
-import com.example.stattrack.model.model.Team
+import com.example.stattrack.model.model.*
 
 
 /** [MatchViewState] This data class represents the view state for the Match screen. */

@@ -81,7 +81,6 @@ fun dummydata1() {
 @Composable
 fun TeamList(currentState: State<MatchViewState>, navController: NavHostController) {
     LazyColumn() {
-
         items(
             items = currentState.value.teams,
             key = { team ->
@@ -91,8 +90,6 @@ fun TeamList(currentState: State<MatchViewState>, navController: NavHostControll
 
         ) {
                     team ->
-
-
             // Clickable sender kun test-data pt.
             Surface(modifier = Modifier.clickable {
                 println(team.name+team.teamId)

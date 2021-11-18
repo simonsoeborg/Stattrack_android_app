@@ -1,5 +1,6 @@
 package com.example.stattrack.presentation.match
 
+import androidx.compose.foundation.layout.*
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.runtime.Composable
@@ -23,7 +25,8 @@ import com.example.stattrack.services.ServiceLocator
 @Composable
 fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController) {
 
-    val nameTeam1  = matchViewModel.team.value.name
+
+    val nameTeam1 = matchViewModel.teams.value?.get(0)?.name
     val scoreTeam1 by remember { mutableStateOf("0")}
     val nameTeam2 by remember { mutableStateOf("Indtast hold 2")}
     val scoreTeam2 by remember { mutableStateOf("0")}
@@ -36,7 +39,9 @@ fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController
             .fillMaxWidth()
     ) {
         Row( modifier = Modifier.fillMaxWidth()) {
-            TeamComponent(hold1_name = nameTeam1, hold2_name = nameTeam2, hold1_sc = scoreTeam1, hold2_sc = scoreTeam2)
+            if (nameTeam1 != null) {
+                TeamComponent(hold1_name = nameTeam1, hold2_name = nameTeam2, hold1_sc = scoreTeam1, hold2_sc = scoreTeam2)
+            }
         }
         Row( modifier = Modifier.fillMaxWidth()) {
             StopWatchComponent(time)
@@ -44,7 +49,7 @@ fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController
         Row( modifier = Modifier.fillMaxWidth()) {
             EventComponent()
         }
-        OutlinedButton(onClick = { Log.d("ButtonClick","We pressing"); matchViewModel.fillSQLiteWithDummyData() }) {
+        OutlinedButton(onClick = { matchViewModel.testDataManipulationFromCompose() }) {
             Icon(Icons.Default.PlayCircle, contentDescription = "Play", tint = PrimaryBlue)
         }
         Row( modifier = Modifier.fillMaxWidth()) {
@@ -58,6 +63,5 @@ fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController
 @Composable
 fun MatchScreenPreview() {
     val previewModel = MatchViewModel(ServiceLocator.repository)
-    previewModel.loadDummyData()
-    //MatchScreen(previewModel, navController)
+    MatchScreen(previewModel)
 }
