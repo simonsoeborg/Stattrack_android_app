@@ -1,30 +1,38 @@
 package com.example.stattrack.presentation.spiller
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
 @Composable
 fun PlayerClass(){
-
-    /*Column(modifier = Modifier.padding(10.dp))
+    Column(modifier = Modifier.padding(10.dp), )
     {
-        Row()
-        {
-           Text(text = "Simon Lindhard Fridolf")
+        Box(modifier = Modifier.fillMaxWidth()) {
+        Row(Modifier.align(Alignment.CenterEnd)) {
+            Text(
+                text = "Simon Lindhard Fridolf",
+                modifier = Modifier.padding(end = 20.dp),
+                fontSize = 18.sp)
+
+            Text(
+                text = "Målmand",
+                modifier = Modifier.padding(end = 10.dp),
+                fontSize = 15.sp)
+        }
         }
 
-    }*/
+        PlayerData(9,5,20,7)
+    }
 }
 
 @Composable
@@ -64,6 +72,7 @@ fun PlayerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int)
 
 @Composable
 fun SpillerInfoText (padding: Dp) {
+
     Text(text = "Antal kampe spillede:", Modifier.padding(padding))
 
     Text(text = "Antal mål:", Modifier.padding(padding))
@@ -104,6 +113,6 @@ fun BarChartView() {
 fun DefaultPreview() {
     StattrackTheme {
         PlayerClass()
-        PlayerData(9,5,20,7)
+
     }
 }

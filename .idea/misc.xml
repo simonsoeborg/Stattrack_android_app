@@ -3,10 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Fridolf/StudioProjects/Stattrack_android_app/app/src/main/res/layout/activity_main.xml" value="0.125" />
-        <entry key="..\:/Users/Fridolf/StudioProjects/Stattrack_android_app/app/src/main/res/layout/fragment_hold.xml" value="0.125" />
-        <entry key="..\:/Users/Fridolf/StudioProjects/Stattrack_android_app/app/src/main/res/layout/fragment_kamp.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/Fridolf/StudioProjects/Stattrack_android_app/app/src/main/res/layout/fragment_spiller.xml" value="0.125" />
         <entry key="..\:/Users/simon/StudioProjects/Stattrack/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.30703125" />
         <entry key="..\:/Users/simon/StudioProjects/Stattrack/app/src/main/res/drawable/addbutton.xml" value="0.525" />
         <entry key="..\:/Users/simon/StudioProjects/Stattrack/app/src/main/res/layout-land/fragment_hold.xml" value="0.6036036036036037" />

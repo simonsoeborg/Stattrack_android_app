@@ -1,20 +1,30 @@
 package com.example.stattrack.presentation.match
 
 import androidx.compose.foundation.layout.*
+import android.util.Log
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayCircle
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.stattrack.presentation.match.components.TeamComponent
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.services.ServiceLocator
 
 @Composable
-fun MatchScreen(matchViewModel: MatchViewModel) {
+fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController) {
 
 
     val nameTeam1 = matchViewModel.teams.value?.get(0)?.name
@@ -54,5 +64,7 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
 @Composable
 fun MatchScreenPreview() {
     val previewModel = MatchViewModel(ServiceLocator.repository)
-    MatchScreen(previewModel)
+    val navController = rememberNavController()
+
+    MatchScreen(previewModel, navController =  navController)
 }

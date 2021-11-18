@@ -17,12 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.stattrack.presentation.match.MatchViewState
+import androidx.navigation.NavHostController
+import com.example.stattrack.presentation.match.TeamViewState
+import com.example.stattrack.presentation.navbar.NavItem
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.services.ServiceLocator
 
 @Composable
-fun HoldScreen(teamViewModel: TeamViewModel) {
+fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController) {
     val currentState: State<TeamViewState> = teamViewModel.viewState.collectAsState()
     if(currentState.value.showLoading){
         /* Do something while loading */
@@ -44,7 +46,7 @@ fun HoldScreen(teamViewModel: TeamViewModel) {
                     ) {
                         Text(text = "Hold oversigt", fontSize = 32.sp, color = PrimaryBlue)
                         Column(modifier = Modifier.padding(10.dp)) {
-                            TeamList(currentState)
+                            TeamList(currentState, navController)
                         }
                     }
                 }
@@ -65,19 +67,8 @@ fun HoldScreen(teamViewModel: TeamViewModel) {
     }
 }
 
-// Old dummyData
-
-/*@Composable
-fun dummydata1() {
-    val items = listOf("HØJ U19", "HØJ Elite", "HØJ 2", "HØJ 3")
-
-    items.forEach { item ->
-        Text(text = "$item", modifier = Modifier.padding(2.dp), color = PrimaryBlue)
-    }
-}*/
-
 @Composable
-fun TeamList(currentState: State<TeamViewState>) {
+fun TeamList(currentState: State<TeamViewState>, navController: NavHostController) {
     LazyColumn() {
         items(
             items = currentState.value.teams,
@@ -89,12 +80,16 @@ fun TeamList(currentState: State<TeamViewState>) {
         ) {
                     team ->
             // Clickable sender kun test-data pt.
-            Surface(modifier = Modifier.clickable { println(team.name+team.teamId)}){
-                    Text(team.name,modifier = Modifier.padding(2.dp), color = PrimaryBlue)
+            Surface(modifier = Modifier.clickable {
+                println(team.name+team.teamId)
+                navController.navigate(NavItem.SpecifikTeam.route)
+            }){
+                Text(team.name,modifier = Modifier.padding(2.dp), color = PrimaryBlue)
             }
         }
     }
 }
+
 
 
 
@@ -111,6 +106,6 @@ fun dummydata2() {
 @Preview(showBackground = true)
 @Composable
 fun HoldScreenPreview() {
-    val previewModel = TeamViewModel(ServiceLocator.repository)
-    HoldScreen(previewModel)
+    //val previewModel = TeamViewModel(ServiceLocator.repository)
+   // HoldScreen(previewModel, navController)
 }
