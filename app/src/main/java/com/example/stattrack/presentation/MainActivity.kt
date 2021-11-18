@@ -21,9 +21,11 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.services.ServiceLocator
 import com.example.stattrack.services.ServiceLocator.matchViewModel
+import com.example.stattrack.services.ServiceLocator.repository
 import com.example.stattrack.services.ServiceLocator.teamViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val matchVM: MatchViewModel by lazy { matchViewModel }
         val teamVM: TeamViewModel by lazy { teamViewModel }
+
         prepopulateSQLiteDB()
 
         setContent {

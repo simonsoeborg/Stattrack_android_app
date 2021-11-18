@@ -11,11 +11,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.stattrack.presentation.match.components.TeamComponent
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.services.ServiceLocator
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @Composable
 fun MatchScreen(matchViewModel: MatchViewModel) {
 
-    val nameTeam1  by remember { mutableStateOf("Test-Hold 1")}
+    val nameTeam1 = "Test-hold 1"
     val scoreTeam1 by remember { mutableStateOf("0")}
     val nameTeam2 by remember { mutableStateOf("Indtast hold 2")}
     val scoreTeam2 by remember { mutableStateOf("0")}
@@ -36,7 +39,7 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
         Row( modifier = Modifier.fillMaxWidth()) {
             EventComponent()
         }
-        OutlinedButton(onClick = {  }) {
+        OutlinedButton(onClick = { matchViewModel.testDataManipulationFromCompose() }) {
             Icon(Icons.Default.PlayCircle, contentDescription = "Play", tint = PrimaryBlue)
         }
         Row( modifier = Modifier.fillMaxWidth()) {

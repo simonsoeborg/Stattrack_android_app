@@ -32,40 +32,12 @@ class TeamViewModel (private val repository: Repository) : ViewModel(){
 
          private fun loadAllTeams() {
             viewModelScope.launch {
-                val loadedTeams = repository.getDummyTeams()
-                _viewState.value = _viewState.value.copy(
-                    teams = loadedTeams
-                )
             }
         }
 
         private fun loadAllPlayers() {
             viewModelScope.launch {
-                val loadedPlayers = repository.getAllPlayers()
-                _viewState.value = _viewState.value.copy(
-                    //players = loadedPlayers
-                )
             }
         }
-
-        /*
-        Only used for making @Preview work in compose-files
-         */
-
-        fun loadDummyData() {
-            viewModelScope.launch {
-                val dummyTeams = repository.getDummyTeams()
-                _viewState.value = _viewState.value.copy(
-                    teams = dummyTeams
-                )
-            }
-            viewModelScope.launch {
-                val dummyPlayers = repository.getDummyPlayers()
-                _viewState.value = _viewState.value.copy(
-                    players = dummyPlayers
-                )
-            }
-        }
-
-    }
+}
 

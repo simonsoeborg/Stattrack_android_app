@@ -9,7 +9,7 @@ data class EventData (
     )
 
 val defaultDummyEventData = listOf(
-    EventData(1,"Landskamp",1,"23:50",1),
+    EventData(1,"Træningskamp",1,"23:50",1),
     EventData(2,"Landskamp",1,"23:50",2),
     EventData(3,"Landskamp",1,"23:50",3),
     EventData(4,"Landskamp",1,"23:50",4),
