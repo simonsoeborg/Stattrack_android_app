@@ -1,15 +1,14 @@
 package com.example.stattrack.presentation.match
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stattrack.presentation.match.components.TeamComponent
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.services.ServiceLocator
@@ -17,7 +16,8 @@ import com.example.stattrack.services.ServiceLocator
 @Composable
 fun MatchScreen(matchViewModel: MatchViewModel) {
 
-    val nameTeam1  = matchViewModel.team.value.name
+
+    val nameTeam1 = matchViewModel.teams.value?.get(0)?.name
     val scoreTeam1 by remember { mutableStateOf("0")}
     val nameTeam2 by remember { mutableStateOf("Indtast hold 2")}
     val scoreTeam2 by remember { mutableStateOf("0")}
@@ -30,7 +30,9 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
             .fillMaxWidth()
     ) {
         Row( modifier = Modifier.fillMaxWidth()) {
-            TeamComponent(hold1_name = nameTeam1, hold2_name = nameTeam2, hold1_sc = scoreTeam1, hold2_sc = scoreTeam2)
+            if (nameTeam1 != null) {
+                TeamComponent(hold1_name = nameTeam1, hold2_name = nameTeam2, hold1_sc = scoreTeam1, hold2_sc = scoreTeam2)
+            }
         }
         Row( modifier = Modifier.fillMaxWidth()) {
             StopWatchComponent(time)
@@ -38,7 +40,7 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
         Row( modifier = Modifier.fillMaxWidth()) {
             EventComponent()
         }
-        OutlinedButton(onClick = { Log.d("ButtonClick","We pressing"); matchViewModel.fillSQLiteWithDummyData() }) {
+        OutlinedButton(onClick = { matchViewModel.testDataManipulationFromCompose() }) {
             Icon(Icons.Default.PlayCircle, contentDescription = "Play", tint = PrimaryBlue)
         }
         Row( modifier = Modifier.fillMaxWidth()) {
@@ -52,6 +54,5 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
 @Composable
 fun MatchScreenPreview() {
     val previewModel = MatchViewModel(ServiceLocator.repository)
-    previewModel.loadDummyData()
     MatchScreen(previewModel)
 }

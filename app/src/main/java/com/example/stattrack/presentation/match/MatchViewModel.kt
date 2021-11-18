@@ -1,12 +1,14 @@
 package com.example.stattrack.presentation.match
 
+
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
-import com.example.stattrack.model.model.Player
-import com.example.stattrack.model.model.Team
+import com.example.stattrack.model.model.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -16,81 +18,57 @@ import kotlinx.coroutines.launch
  * for the view to render the relevant information
  */
 class MatchViewModel(private val repository: Repository) : ViewModel() {
+    /* cold-flow way of binding ui to viewmodel */
+    /*
     val matchState: Flow<MatchViewState> = repository.getPlayerByName("asd")
         .combine(repository.getTeamByName("asda")) { player, team ->
             MatchViewState(teams = listOf(team), players = listOf(player))
         }
 
-    private val _hotMatchState = MutableStateFlow<MatchViewState?>(null)
+    val matchStateTest: Flow<MatchViewState> = repository.getAllPlayers()
+        .combine(repository.getAllTeams()) { player, team ->
+            MatchViewState(teams = team, players = player)
+        }
+
+
+    /* Hot-flow way of binding UI to ViewModel */
+    private val matchViewState = MatchViewState(
+        defaultTeamDummyData,
+        defaultDummyPlayerData,
+        defaultDummyMatchData
+    )
+    private val _hotMatchState = MutableStateFlow(matchStateTest)
     val hotMatchState = _hotMatchState.asStateFlow()
+    */
+
+    val teams = MutableLiveData(defaultTeamDummyData)
 
 
-    var teamsTest : List<Team> = emptyList()
-    var players : List<Player> = emptyList()
-    val teams : MutableState<List<Team>> = mutableStateOf(ArrayList())
-    val team : MutableState<Team> = mutableStateOf(Team(0,"null","null","null","null","null"))
-    /*private val team = MutableLiveData(Team(0,"null","null","null","null","null"))
-    val teamId :    LiveData<Int>    = team.map { it.teamId }
-    val name :      LiveData<String> = team.map { it.name }
-    val clubName :  LiveData<String> = team.map { it.clubName }
-    val creatorId : LiveData<String> = team.map { it.creatorId }
-    val teamUYear : LiveData<String> = team.map { it.teamUYear }
-    val division :  LiveData<String> = team.map { it.division } */
 
-    val mutableFlow = MutableStateFlow(4)
 
 
     init {
-        /* Fetch data from DB when init so it is ready for use later on
-        *  Use viewState.value in Compose */
-        fillSQLiteWithDummyData()
-        /*viewModelScope.launch {
-           repository.getAllTeams()
-               .collect { teams.value = it }
-        }*/
+        teams.postValue(listOf(Team(0,"null","null","null","null","null")))
         loadAllTeams()
-        loadAllPlayers()
+    }
+
+    fun testDataManipulationFromCompose(){
+        val testHold = Team(0,"Virker det?"," ","", " "," ")
+        val testList = listOf(testHold)
+        teams.value = testList
     }
 
     private fun loadAllTeams() {
-        viewModelScope.launch {
-
+        viewModelScope.launch() {
+            repository.getAllTeams().collect{
+                teams.postValue(it)
+                Log.d("viewModelScope-test", it[0].name)
+            }
         }
     }
 
     private fun loadAllPlayers() {
         viewModelScope.launch {
-            _hotMatchState.value = MatchViewState()
-        }
-    }
-
-    fun fillSQLiteWithDummyData(){
-        viewModelScope.launch {
-            val dummyTeams = repository.getDummyTeams()
-            for (team in dummyTeams){
-                viewModelScope.launch {
-                    repository.insertTeam(team)
-                    Log.d("Team", team.name)
-                    Log.d("ViewModelScope","Inserting into DB")
-                }
-            }
-        }
-    }
-
-
-    /*
-    Only used for making @Preview work in compose-files
-     */
-    fun loadDummyData() {
-        viewModelScope.launch {
-            val dummyTeams = repository.getDummyTeams()
-
-            teams.value = dummyTeams
-
-        }
-        viewModelScope.launch {
-            val dummyPlayers = repository.getDummyPlayers()
-            players = dummyPlayers
         }
     }
 }
