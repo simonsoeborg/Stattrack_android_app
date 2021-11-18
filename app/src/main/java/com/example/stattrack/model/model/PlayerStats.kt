@@ -12,3 +12,14 @@ data class PlayerStats (
     val redCards : Int,
     val matchId : Int
 )
+
+val defaultPlayerStatsDummy = listOf(
+        PlayerStats(0,"13:30",5,3,0,3,2,1,0,1),
+        PlayerStats(1,"13:30",5,3,0,3,2,1,0,1),
+        PlayerStats(2,"13:30",5,3,0,3,2,1,0,1),
+        PlayerStats(3,"13:30",5,3,0,3,2,1,0,1),
+        PlayerStats(4,"13:30",5,3,0,3,2,1,0,1),
+        PlayerStats(5,"13:30",5,3,0,3,2,1,0,1),
+        PlayerStats(6,"13:30",5,3,0,3,2,1,0,1),
+        PlayerStats(7,"13:30",5,3,0,3,2,1,0,1)
+        )

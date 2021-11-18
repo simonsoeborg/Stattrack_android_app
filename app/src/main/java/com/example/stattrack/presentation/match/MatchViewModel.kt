@@ -16,26 +16,16 @@ import kotlinx.coroutines.launch
  * for the view to render the relevant information
  */
 class MatchViewModel(private val repository: Repository) : ViewModel() {
+    /* cold-flow way of binding ui to viewmodel
     val matchState: Flow<MatchViewState> = repository.getPlayerByName("asd")
         .combine(repository.getTeamByName("asda")) { player, team ->
             MatchViewState(teams = listOf(team), players = listOf(player))
-        }
-
+        } */
+    
+    /* Hot-flow way of binding UI to ViewModel */
     private val _hotMatchState = MutableStateFlow<MatchViewState?>(null)
     val hotMatchState = _hotMatchState.asStateFlow()
 
-
-    var teamsTest : List<Team> = emptyList()
-    var players : List<Player> = emptyList()
-    val teams : MutableState<List<Team>> = mutableStateOf(ArrayList())
-    val team : MutableState<Team> = mutableStateOf(Team(0,"null","null","null","null","null"))
-    /*private val team = MutableLiveData(Team(0,"null","null","null","null","null"))
-    val teamId :    LiveData<Int>    = team.map { it.teamId }
-    val name :      LiveData<String> = team.map { it.name }
-    val clubName :  LiveData<String> = team.map { it.clubName }
-    val creatorId : LiveData<String> = team.map { it.creatorId }
-    val teamUYear : LiveData<String> = team.map { it.teamUYear }
-    val division :  LiveData<String> = team.map { it.division } */
 
     val mutableFlow = MutableStateFlow(4)
 

@@ -1,6 +1,5 @@
 package com.example.stattrack.presentation.match
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
@@ -9,7 +8,6 @@ import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stattrack.presentation.match.components.TeamComponent
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.services.ServiceLocator
@@ -38,7 +36,7 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
         Row( modifier = Modifier.fillMaxWidth()) {
             EventComponent()
         }
-        OutlinedButton(onClick = { Log.d("ButtonClick","We pressing"); matchViewModel.fillSQLiteWithDummyData() }) {
+        OutlinedButton(onClick = {  }) {
             Icon(Icons.Default.PlayCircle, contentDescription = "Play", tint = PrimaryBlue)
         }
         Row( modifier = Modifier.fillMaxWidth()) {
