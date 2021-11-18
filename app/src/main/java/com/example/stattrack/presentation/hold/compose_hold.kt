@@ -23,7 +23,7 @@ import com.example.stattrack.services.ServiceLocator
 
 @Composable
 fun HoldScreen(teamViewModel: TeamViewModel) {
-    val currentState: State<MatchViewState> = teamViewModel.viewState.collectAsState()
+    val currentState: State<TeamViewState> = teamViewModel.viewState.collectAsState()
     if(currentState.value.showLoading){
         /* Do something while loading */
     }
@@ -77,9 +77,8 @@ fun dummydata1() {
 }*/
 
 @Composable
-fun TeamList(currentState: State<MatchViewState>) {
+fun TeamList(currentState: State<TeamViewState>) {
     LazyColumn() {
-
         items(
             items = currentState.value.teams,
             key = { team ->
@@ -96,7 +95,6 @@ fun TeamList(currentState: State<MatchViewState>) {
         }
     }
 }
-
 
 
 
