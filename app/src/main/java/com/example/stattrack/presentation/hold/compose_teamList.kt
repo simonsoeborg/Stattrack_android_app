@@ -67,17 +67,6 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
     }
 }
 
-// Old dummyData
-
-/*@Composable
-fun dummydata1() {
-    val items = listOf("HØJ U19", "HØJ Elite", "HØJ 2", "HØJ 3")
-
-    items.forEach { item ->
-        Text(text = "$item", modifier = Modifier.padding(2.dp), color = PrimaryBlue)
-    }
-}*/
-
 @Composable
 fun TeamList(currentState: State<TeamViewState>, navController: NavHostController) {
     LazyColumn() {
@@ -95,7 +84,7 @@ fun TeamList(currentState: State<TeamViewState>, navController: NavHostControlle
                 println(team.name+team.teamId)
                 navController.navigate(NavItem.SpecifikTeam.route)
             }){
-                    Text(team.name,modifier = Modifier.padding(2.dp), color = PrimaryBlue)
+                Text(team.name,modifier = Modifier.padding(2.dp), color = PrimaryBlue)
             }
         }
     }
@@ -117,6 +106,6 @@ fun dummydata2() {
 @Preview(showBackground = true)
 @Composable
 fun HoldScreenPreview() {
-    val previewModel = TeamViewModel(ServiceLocator.repository)
+    //val previewModel = TeamViewModel(ServiceLocator.repository)
    // HoldScreen(previewModel, navController)
 }
