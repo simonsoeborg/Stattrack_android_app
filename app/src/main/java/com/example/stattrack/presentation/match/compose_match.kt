@@ -15,7 +15,7 @@ import com.example.stattrack.services.ServiceLocator
 @Composable
 fun MatchScreen(matchViewModel: MatchViewModel) {
 
-    val nameTeam1  = matchViewModel.team.value.name
+    val nameTeam1  by remember { mutableStateOf("Test-Hold 1")}
     val scoreTeam1 by remember { mutableStateOf("0")}
     val nameTeam2 by remember { mutableStateOf("Indtast hold 2")}
     val scoreTeam2 by remember { mutableStateOf("0")}
@@ -50,6 +50,5 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
 @Composable
 fun MatchScreenPreview() {
     val previewModel = MatchViewModel(ServiceLocator.repository)
-    previewModel.loadDummyData()
     MatchScreen(previewModel)
 }

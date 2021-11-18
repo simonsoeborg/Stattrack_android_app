@@ -21,7 +21,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         .combine(repository.getTeamByName("asda")) { player, team ->
             MatchViewState(teams = listOf(team), players = listOf(player))
         } */
-    
+
     /* Hot-flow way of binding UI to ViewModel */
     private val _hotMatchState = MutableStateFlow<MatchViewState?>(null)
     val hotMatchState = _hotMatchState.asStateFlow()
@@ -33,7 +33,6 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     init {
         /* Fetch data from DB when init so it is ready for use later on
         *  Use viewState.value in Compose */
-        fillSQLiteWithDummyData()
         /*viewModelScope.launch {
            repository.getAllTeams()
                .collect { teams.value = it }
@@ -53,21 +52,9 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
             _hotMatchState.value = MatchViewState()
         }
     }
+}
 
-    fun fillSQLiteWithDummyData(){
-        viewModelScope.launch {
-            val dummyTeams = repository.getDummyTeams()
-            for (team in dummyTeams){
-                viewModelScope.launch {
-                    repository.insertTeam(team)
-                    Log.d("Team", team.name)
-                    Log.d("ViewModelScope","Inserting into DB")
-                }
-            }
-        }
-    }
-
-
+/*
     /*
     Only used for making @Preview work in compose-files
      */
@@ -84,6 +71,6 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 }
-
+*/
 
 

@@ -164,16 +164,4 @@ class Repository (
     /* TODO:: Currently we dont have any delete methods                   */
     /* ------------------------------------------------------------------ */
 
-
-    /* ------------------------------------------------------------------ */
-    /* Dummy functions used for @Preview in Compose */
-    fun getDummyTeams(): List<Team> {
-        return defaultTeamDummyData
-    }
-
-    fun getDummyPlayers(): List<Player> {
-        return defaultDummyPlayerData
-    }
-
-    /* ------------------------------------------------------------------ */
 }

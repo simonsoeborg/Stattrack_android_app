@@ -43,7 +43,7 @@ class TeamViewModel (private val repository: Repository) : ViewModel(){
             viewModelScope.launch {
                 val loadedPlayers = repository.getAllPlayers()
                 _viewState.value = _viewState.value.copy(
-                    players = loadedPlayers
+                    //players = loadedPlayers
                 )
             }
         }
