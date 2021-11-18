@@ -18,14 +18,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.stattrack.presentation.match.MatchViewState
+import com.example.stattrack.presentation.match.TeamViewState
 import com.example.stattrack.presentation.navbar.NavItem
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.services.ServiceLocator
 
 @Composable
 fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController) {
-    val currentState: State<MatchViewState> = teamViewModel.viewState.collectAsState()
+    val currentState: State<TeamViewState> = teamViewModel.viewState.collectAsState()
     if(currentState.value.showLoading){
         /* Do something while loading */
     }
@@ -79,7 +79,7 @@ fun dummydata1() {
 }*/
 
 @Composable
-fun TeamList(currentState: State<MatchViewState>, navController: NavHostController) {
+fun TeamList(currentState: State<TeamViewState>, navController: NavHostController) {
     LazyColumn() {
         items(
             items = currentState.value.teams,

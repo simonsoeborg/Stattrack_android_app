@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.stattrack.presentation.match.components.TeamComponent
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.services.ServiceLocator
@@ -63,5 +64,7 @@ fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController
 @Composable
 fun MatchScreenPreview() {
     val previewModel = MatchViewModel(ServiceLocator.repository)
-    MatchScreen(previewModel)
+    val navController = rememberNavController()
+
+    MatchScreen(previewModel, navController =  navController)
 }

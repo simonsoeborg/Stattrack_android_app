@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.stattrack.presentation.hold.MyTeamsScreen
 import com.example.stattrack.presentation.hold.SpecificTeamScreen
 import com.example.stattrack.model.model.*
-import com.example.stattrack.presentation.hold.HoldScreen
 import com.example.stattrack.presentation.hold.TeamViewModel
 import com.example.stattrack.presentation.match.MatchScreen
 import com.example.stattrack.presentation.match.MatchViewModel
