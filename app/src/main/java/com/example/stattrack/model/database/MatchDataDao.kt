@@ -14,11 +14,11 @@ interface MatchDataDao {
 
     /* Load all matches that a specific CreatorId has created (A trainer e.g.) */
     @Query("SELECT * FROM matchData WHERE creatorId = :creatorId")
-    fun loadByCreatorId(creatorId: String): Flow<List<MatchDataEntity?>>
+    fun loadByCreatorId(creatorId: String): Flow<List<MatchDataEntity>>
 
     /* Load all matches played on a specific date */
     @Query("SELECT * FROM matchData WHERE matchDate = :matchDate")
-    fun loadByMatchDate(matchDate: String): Flow<List<MatchDataEntity?>>
+    fun loadByMatchDate(matchDate: String): Flow<List<MatchDataEntity>>
 
     @Query("SELECT * FROM matchData ORDER BY id DESC")
     fun loadAll(): Flow<List<MatchDataEntity>>

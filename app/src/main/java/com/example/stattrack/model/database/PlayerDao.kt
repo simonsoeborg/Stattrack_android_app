@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 interface PlayerDao {
 
         @Query("SELECT * FROM player WHERE playerId = :id")
-        fun loadById(id: Int): Flow<PlayerEntity>
+        fun loadById(id: Int): Flow<PlayerEntity?>
 
         @Query("SELECT * FROM player WHERE name = :name")
-        fun loadByName(name: String): Flow<PlayerEntity>
+        fun loadByName(name: String): Flow<PlayerEntity?>
 
         /* Load a whole team in */
         @Query("SELECT * FROM player WHERE teamId = :teamId")
