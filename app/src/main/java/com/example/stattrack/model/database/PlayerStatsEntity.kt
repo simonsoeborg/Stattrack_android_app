@@ -21,5 +21,5 @@ data class PlayerStatsEntity(
 fun PlayerStatsEntity.toModel(): PlayerStats =
     PlayerStats(id, time, attempts,goals, keeperSaves,assists,mins2,yellowCards,redCards,matchId)
 
-fun PlayerStatsEntity.toEntity(): PlayerStatsEntity =
+fun PlayerStats.toEntity(): PlayerStatsEntity =
     PlayerStatsEntity(id, time, attempts,goals, keeperSaves,assists,mins2,yellowCards,redCards,matchId)

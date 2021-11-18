@@ -4,12 +4,11 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
-import androidx.lifecycle.map
-import kotlinx.coroutines.launch
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 /**
  * [MatchViewModel] takes as parameter a repository to request data
@@ -35,12 +34,12 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         /* Fetch data from DB when init so it is ready for use later on
         *  Use viewState.value in Compose */
         fillSQLiteWithDummyData()
-        viewModelScope.launch {
-           repository.getTeamByName("Jylland")
-               .collect { team.value = it }
-        }
-        //loadAllTeams()
-        //loadAllPlayers()
+        /*viewModelScope.launch {
+           repository.getAllTeams()
+               .collect { teams.value = it }
+        }*/
+        loadAllTeams()
+        loadAllPlayers()
     }
 
     private fun loadAllTeams() {
@@ -57,7 +56,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     fun fillSQLiteWithDummyData(){
         viewModelScope.launch {
-            val dummyTeams = repository.fetchDummyTeams()
+            val dummyTeams = repository.getDummyTeams()
             for (team in dummyTeams){
                 viewModelScope.launch {
                     repository.insertTeam(team)
@@ -74,12 +73,12 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
      */
     fun loadDummyData() {
         viewModelScope.launch {
-            val dummyTeams = repository.fetchDummyTeams()
+            val dummyTeams = repository.getDummyTeams()
             teams.value = dummyTeams
 
         }
         viewModelScope.launch {
-            val dummyPlayers = repository.fetchDummyPlayers()
+            val dummyPlayers = repository.getDummyPlayers()
             players = dummyPlayers
         }
     }
