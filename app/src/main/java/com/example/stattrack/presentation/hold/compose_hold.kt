@@ -28,7 +28,6 @@ fun HoldScreen(teamViewModel: TeamViewModel) {
         /* Do something while loading */
     }
 
-    else
     Column {
         Row(
             modifier = Modifier
