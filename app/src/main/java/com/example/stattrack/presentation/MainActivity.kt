@@ -9,7 +9,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.stattrack.presentation.hold.HoldScreen
+import com.example.stattrack.presentation.hold.MyTeamsScreen
+import com.example.stattrack.presentation.hold.SpecificTeamScreen
 import com.example.stattrack.presentation.hold.TeamViewModel
 import com.example.stattrack.presentation.match.MatchScreen
 import com.example.stattrack.presentation.match.MatchViewModel
@@ -25,19 +26,23 @@ class MainActivity : AppCompatActivity() {
         val matchVM: MatchViewModel by lazy { matchViewModel }
         val teamVM: TeamViewModel by lazy { teamViewModel }
 
+
+
         setContent {
             val navController = rememberNavController()
+
             Scaffold(
                 bottomBar = { BottomNavigationBar(navController) }
             ) {
                 NavHost(navController, startDestination = NavItem.Hold.route) {
                     composable(NavItem.Hold.route) {
-                        HoldScreen(teamViewModel = teamVM)
+                        MyTeamsScreen(teamViewModel = teamVM, navController)
                     }
-                    composable(NavItem.Kamp.route) {
-                        MatchScreen(matchViewModel = matchVM)
+                    composable(NavItem.Kamp.route, ) {
+                        MatchScreen(matchViewModel = matchVM, navController)
                     }
-                    composable(NavItem.Spiller.route) {
+                    composable(NavItem.SpecifikTeam.route) {
+                        SpecificTeamScreen(navController)
                     }
                 }
             }
