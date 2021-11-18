@@ -21,7 +21,7 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 @Composable
 fun StopWatchComponent(timeValue: String) {
-    var time by remember { mutableStateOf( timeValue) }
+    var time by remember { mutableStateOf( timeValue ) }
     Column( modifier = Modifier
         .fillMaxWidth()
         .padding(10.dp)) {

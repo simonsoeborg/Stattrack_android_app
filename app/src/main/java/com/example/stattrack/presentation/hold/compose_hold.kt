@@ -100,10 +100,6 @@ fun TeamList(currentState: State<MatchViewState>) {
     }
 }
 
-
-
-
-
 @Composable
 fun dummydata2() {
     val items = listOf("HØJ U19 mod FIF U19", "HØJ Elite mod BSV", "HØJ 2 mod Randers", "HØJ 3 mod Rudersdal")
