@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
-import androidx.lifecycle.map
 import kotlinx.coroutines.launch
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.Player
@@ -36,8 +35,8 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         *  Use viewState.value in Compose */
         fillSQLiteWithDummyData()
         viewModelScope.launch {
-           repository.getTeamByName("Jylland")
-               .collect { team.value = it }
+           repository.getAllTeams()
+               .collect { teams.value = it }
         }
         //loadAllTeams()
         //loadAllPlayers()
@@ -57,7 +56,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     fun fillSQLiteWithDummyData(){
         viewModelScope.launch {
-            val dummyTeams = repository.fetchDummyTeams()
+            val dummyTeams = repository.getDummyTeams()
             for (team in dummyTeams){
                 viewModelScope.launch {
                     repository.insertTeam(team)
@@ -74,12 +73,12 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
      */
     fun loadDummyData() {
         viewModelScope.launch {
-            val dummyTeams = repository.fetchDummyTeams()
+            val dummyTeams = repository.getDummyTeams()
             teams.value = dummyTeams
 
         }
         viewModelScope.launch {
-            val dummyPlayers = repository.fetchDummyPlayers()
+            val dummyPlayers = repository.getDummyPlayers()
             players = dummyPlayers
         }
     }
