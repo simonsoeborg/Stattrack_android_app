@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         val matchVM: MatchViewModel by lazy { matchViewModel }
         val teamVM: TeamViewModel by lazy { teamViewModel }
 
-        //prepopulateSQLiteDB()
+        prepopulateSQLiteDB()
 
         setContent {
             val navController = rememberNavController()
@@ -88,7 +88,7 @@ fun BottomNavigationBar(navController: NavController) {
 }
 
 fun prepopulateSQLiteDB(){
-    GlobalScope.launch(Dispatchers.IO) {
+    GlobalScope.launch() {
         val repo = ServiceLocator.repository
         val eventData = defaultDummyEventData
         val matchData = defaultDummyMatchData
@@ -97,27 +97,27 @@ fun prepopulateSQLiteDB(){
         val teamData = defaultTeamDummyData
         Log.d("prepopulateSQLiteDB","Prepopulation begun")
         for (eventdata in eventData){
-            GlobalScope.launch(Dispatchers.IO) {
+            GlobalScope.launch() {
                 repo.insertEventData(eventdata)
             }
         }
         for (matchdata in matchData){
-            GlobalScope.launch(Dispatchers.IO) {
+            GlobalScope.launch() {
                 repo.insertMatchData(matchdata)
             }
         }
         for (playerdata in playerData){
-            GlobalScope.launch(Dispatchers.IO) {
+            GlobalScope.launch() {
                 repo.insertPlayer(playerdata)
             }
         }
         for (playerstatsdata in playerStatsData){
-            GlobalScope.launch(Dispatchers.IO) {
+            GlobalScope.launch() {
                 repo.insertPlayerStats(playerstatsdata)
             }
         }
         for (team in teamData){
-            GlobalScope.launch(Dispatchers.IO) {
+            GlobalScope.launch() {
                 repo.insertTeam(team)
             }
         }
