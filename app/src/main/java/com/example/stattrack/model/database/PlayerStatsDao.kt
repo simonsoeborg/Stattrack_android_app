@@ -12,6 +12,9 @@ interface PlayerStatsDao {
     @Query("SELECT * FROM playerStats WHERE id = :playerId")
     fun loadById(playerId: Int): Flow<PlayerStatsEntity?>
 
+    @Query("SELECT * FROM playerStats ORDER BY id DESC")
+    fun loadAll(): Flow<List<PlayerStatsEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(PlayerStatsEntity: PlayerStatsEntity)
 }

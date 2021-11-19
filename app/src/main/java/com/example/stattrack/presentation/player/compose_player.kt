@@ -1,4 +1,4 @@
-package com.example.stattrack.presentation.spiller
+package com.example.stattrack.presentation.player
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
