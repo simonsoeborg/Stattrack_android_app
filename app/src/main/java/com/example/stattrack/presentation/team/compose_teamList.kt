@@ -24,7 +24,7 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 @Composable
 fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController) {
-    val currentState: State<MatchViewState> = teamViewModel.viewState.collectAsState()
+    val currentState: State<TeamViewState> = teamViewModel.viewState.collectAsState()
     if(currentState.value.showLoading){
         /* Do something while loading */
     }
@@ -67,7 +67,7 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
 }
 
 @Composable
-fun TeamList(currentState: State<MatchViewState>, navController: NavHostController) {
+fun TeamList(currentState: State<TeamViewState>, navController: NavHostController) {
     LazyColumn() {
         items(
             items = currentState.value.teams,
