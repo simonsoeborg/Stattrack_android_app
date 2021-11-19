@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.get
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.database.AppDatabase
-import com.example.stattrack.presentation.hold.TeamViewModel
+import com.example.stattrack.presentation.team.TeamViewModel
 import com.example.stattrack.presentation.match.MatchViewModel
 
 object ServiceLocator {

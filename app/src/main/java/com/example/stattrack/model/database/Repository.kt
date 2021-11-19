@@ -137,6 +137,12 @@ class Repository (
             .loadById(playerId)
             .map { it?.toModel() ?: PlayerStats(0,"null",0,0,0,0,0,0,0,0) }
 
+    fun getAllPlayerStats(): Flow<List<PlayerStats>> =
+        database.PlayerStatsDao()
+            .loadAll()
+            .mapIterable { playerStatsEntity ->
+                playerStatsEntity.toModel() }
+
     // Team
     fun getTeamById(teamId: Int): Flow<Team> =
         database.TeamDao()

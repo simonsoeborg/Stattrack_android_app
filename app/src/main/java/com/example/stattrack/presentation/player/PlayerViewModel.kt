@@ -1,23 +1,18 @@
-package com.example.stattrack.presentation.match
+package com.example.stattrack.presentation.player
 
 
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 /**
- * [MatchViewModel] takes as parameter a repository to request data
- * that can be exposed by the [compose_match] flow in order
+ * [PlayerViewModel] takes as parameter a repository to request data
+ * that can be exposed by the [PlayerViewState] into [compose_match] flow in order
  * for the view to render the relevant information
  */
-class MatchViewModel(private val repository: Repository) : ViewModel() {
+class PlayerViewModel(private val repository: Repository) : ViewModel() {
     /* cold-flow way of binding ui to viewmodel */
     /*
     val matchState: Flow<MatchViewState> = repository.getPlayerByName("asd")
@@ -42,10 +37,10 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     */
 
     // View-layer has no way of seeing this.
-    private val _viewState = MutableStateFlow(MatchViewState())
+    private val _viewState = MutableStateFlow(PlayerViewState())
 
     // Read-only for the view-layer
-    val viewState: StateFlow<MatchViewState> = _viewState
+    val viewState: StateFlow<PlayerViewState> = _viewState
 
     init {
         /* Fetch data from DB when init so it is ready for use later on

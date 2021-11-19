@@ -10,10 +10,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.stattrack.presentation.hold.MyTeamsScreen
-import com.example.stattrack.presentation.hold.SpecificTeamScreen
+import com.example.stattrack.presentation.team.MyTeamsScreen
+import com.example.stattrack.presentation.team.SpecificTeamScreen
 import com.example.stattrack.model.model.*
-import com.example.stattrack.presentation.hold.TeamViewModel
+import com.example.stattrack.presentation.team.TeamViewModel
 import com.example.stattrack.presentation.match.MatchScreen
 import com.example.stattrack.presentation.match.MatchViewModel
 import com.example.stattrack.presentation.navbar.NavItem
@@ -22,7 +22,6 @@ import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.services.ServiceLocator
 import com.example.stattrack.services.ServiceLocator.matchViewModel
 import com.example.stattrack.services.ServiceLocator.teamViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

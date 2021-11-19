@@ -1,4 +1,4 @@
-package com.example.stattrack.presentation.hold
+package com.example.stattrack.presentation.team
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
