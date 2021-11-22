@@ -6,7 +6,7 @@ data class MatchData(
     val creatorTeamId: Int,
     val opponent: String,
     val matchDate: String,
-    val creatorTeamGoals: Int,
+    var creatorTeamGoals: Int,
     val opponentGoals: Int
     )
 

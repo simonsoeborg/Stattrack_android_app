@@ -20,32 +20,32 @@ import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.di.ServiceLocator.matchViewModel
 import com.example.stattrack.di.ServiceLocator.prepopulateSQLiteDB
 import com.example.stattrack.di.ServiceLocator.teamViewModel
+import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val matchVM: MatchViewModel by lazy { matchViewModel }
         val teamVM: TeamViewModel by lazy { teamViewModel }
-
-
-
+        /* For development purposes */
         prepopulateSQLiteDB()
 
         setContent {
             val navController = rememberNavController()
-
-            Scaffold(
-                bottomBar = { BottomNavigationBar(navController) }
-            ) {
-                NavHost(navController, startDestination = NavItem.Hold.route) {
-                    composable(NavItem.Hold.route) {
-                        MyTeamsScreen(teamViewModel = teamVM, navController)
-                    }
-                    composable(NavItem.Kamp.route, ) {
-                        MatchScreen(matchViewModel = matchVM, navController)
-                    }
-                    composable(NavItem.SpecifikTeam.route) {
-                        SpecificTeamScreen(navController)
+            StattrackTheme {
+                Scaffold(
+                    bottomBar = { BottomNavigationBar(navController) })
+                {
+                    NavHost(navController, startDestination = NavItem.Hold.route) {
+                        composable(NavItem.Hold.route) {
+                            MyTeamsScreen(teamViewModel = teamVM, navController)
+                        }
+                        composable(NavItem.Kamp.route,) {
+                            MatchScreen(matchViewModel = matchVM, navController)
+                        }
+                        composable(NavItem.SpecifikTeam.route) {
+                            SpecificTeamScreen(navController)
+                        }
                     }
                 }
             }
@@ -80,7 +80,6 @@ fun BottomNavigationBar(navController: NavController) {
                         launchSingleTop = true
                         restoreState = true
                     }
-
                 }
             )
         }

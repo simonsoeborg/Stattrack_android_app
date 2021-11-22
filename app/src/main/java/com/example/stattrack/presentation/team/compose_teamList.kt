@@ -25,14 +25,17 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 @Composable
 fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController) {
     val currentState: State<TeamViewState> = teamViewModel.viewState.collectAsState()
-    if(currentState.value.showLoading){
+    if (currentState.value.showLoading) {
         /* Do something while loading */
-    }
+    } else MyTeamsScreenContent(state = currentState, navController = navController )
+}
+
+@Composable
+fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostController){
 
     Column {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
                 .fillMaxWidth()
                 .align(alignment = CenterHorizontally)
         ) {
@@ -45,7 +48,7 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
                     ) {
                         Text(text = "Hold oversigt", fontSize = 32.sp, color = PrimaryBlue)
                         Column(modifier = Modifier.padding(10.dp)) {
-                            TeamList(currentState, navController)
+                            TeamList(state, navController)
                         }
                     }
                 }
@@ -66,11 +69,12 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
     }
 }
 
+
 @Composable
-fun TeamList(currentState: State<TeamViewState>, navController: NavHostController) {
+fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
     LazyColumn() {
         items(
-            items = currentState.value.teams,
+            items = state.value.teams,
             key = { team ->
                 // Return a stable + unique key for the item
                 team.teamId

@@ -15,7 +15,7 @@ data class MatchViewState(
     val showLoading: Boolean
         get() = teams.isEmpty() && players.isEmpty() && matchData.isEmpty() && eventData.isEmpty() && playerStats.isEmpty()
 
-    val currentEventId: Int = 1
-    val currentMatchId: Int = 1
+    var currentEventId: Int = 1
+    var currentMatchId: Int = 1
 
 }

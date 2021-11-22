@@ -15,7 +15,7 @@ interface TeamDao {
     @Query("SELECT * FROM team WHERE name = :name")
     fun loadByName(name: String): Flow<TeamEntity>
 
-    @Query("SELECT * FROM team ORDER BY teamId DESC")
+    @Query("SELECT * FROM team ORDER BY teamId ASC")
     fun loadAll(): Flow<List<TeamEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

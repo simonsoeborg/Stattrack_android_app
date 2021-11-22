@@ -27,6 +27,9 @@ fun MatchScreenContent(matchViewModel: MatchViewModel, navController: NavHostCon
     val matchId = currentState.value.currentMatchId
     val teamOneId = 0
     val teamTwoId = 2
+    val score: Int by matchViewModel.score.collectAsState()
+
+
 
     Column( // Main Column
         modifier = Modifier
@@ -38,17 +41,18 @@ fun MatchScreenContent(matchViewModel: MatchViewModel, navController: NavHostCon
             TeamComponent(
                 hold1_name = currentState.value.teams[teamOneId].name,
                 hold2_name = currentState.value.teams[teamTwoId].name,
-                hold1_sc = currentState.value.matchData[matchId].creatorTeamGoals.toString(),
+                hold1_sc = score.toString(),
                 hold2_sc = currentState.value.matchData[matchId].opponentGoals.toString())
         }
         Row( modifier = Modifier.fillMaxWidth()) {
             Button(
                 onClick = {
-                    matchViewModel.updateScore(
+                    /*matchViewModel.updateScore(
                         matchId = matchId,
                         teamName = currentState.value.teams[teamOneId].name,
                         newScore = currentState.value.matchData[matchId].creatorTeamGoals+1
-                    )
+                    )*/
+                    matchViewModel.updateScore()
                 }) {
                 Text("Click me to test")
             }

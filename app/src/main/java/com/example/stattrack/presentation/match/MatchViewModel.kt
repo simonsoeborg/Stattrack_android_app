@@ -44,6 +44,9 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     // Read-only for the view-layer
     val viewState: StateFlow<MatchViewState> = _viewState
 
+    private val _score = MutableStateFlow(0)
+    val score: StateFlow<Int> = _score
+
     init {
         /* Fetch data from DB when init so it is ready for use later on
         *  Use viewState.value in Compose */
@@ -54,7 +57,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         loadAllPlayerStats()
     }
 
-    fun updateScore(matchId: Int,teamName: String, newScore: Int){
+    /*fun updateScore(matchId: Int,teamName: String, newScore: Int){
         Log.d("UpdateScore-MatchId:  ", matchId.toString())
         Log.d("UpdateScore-TeamName: ", teamName)
         Log.d("UpdateScore-NewScore: ", newScore.toString())
@@ -70,6 +73,9 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             repository.insertMatchData(matchData = matchData)
         }
+    } */
+    fun updateScore(){
+        _score.value++
     }
 
     private fun loadAllTeams() {
