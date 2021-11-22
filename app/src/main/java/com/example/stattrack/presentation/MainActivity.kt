@@ -1,7 +1,6 @@
 package com.example.stattrack.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.*
@@ -12,18 +11,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.stattrack.presentation.team.MyTeamsScreen
 import com.example.stattrack.presentation.team.SpecificTeamScreen
-import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.team.TeamViewModel
 import com.example.stattrack.presentation.match.MatchScreen
 import com.example.stattrack.presentation.match.MatchViewModel
 import com.example.stattrack.presentation.navbar.NavItem
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
-import com.example.stattrack.services.ServiceLocator
-import com.example.stattrack.services.ServiceLocator.matchViewModel
-import com.example.stattrack.services.ServiceLocator.teamViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.stattrack.di.ServiceLocator.matchViewModel
+import com.example.stattrack.di.ServiceLocator.prepopulateSQLiteDB
+import com.example.stattrack.di.ServiceLocator.teamViewModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,42 +87,5 @@ fun BottomNavigationBar(navController: NavController) {
     }
 }
 
-fun prepopulateSQLiteDB(){
-    GlobalScope.launch() {
-        val repo = ServiceLocator.repository
-        val eventData = defaultDummyEventData
-        val matchData = defaultDummyMatchData
-        val playerData = defaultDummyPlayerData
-        val playerStatsData = defaultDummyPlayerStatsData
-        val teamData = defaultTeamDummyData
-        Log.d("prepopulateSQLiteDB","Prepopulation begun")
-        for (eventdata in eventData){
-            GlobalScope.launch() {
-                repo.insertEventData(eventdata)
-            }
-        }
-        for (matchdata in matchData){
-            GlobalScope.launch() {
-                repo.insertMatchData(matchdata)
-            }
-        }
-        for (playerdata in playerData){
-            GlobalScope.launch() {
-                repo.insertPlayer(playerdata)
-            }
-        }
-        for (playerstatsdata in playerStatsData){
-            GlobalScope.launch() {
-                repo.insertPlayerStats(playerstatsdata)
-            }
-        }
-        for (team in teamData){
-            GlobalScope.launch() {
-                repo.insertTeam(team)
-            }
-        }
-        Log.d("prepopulateSQLiteDB","Prepopulation finished")
-    }
-}
 
 

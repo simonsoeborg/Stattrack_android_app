@@ -2,15 +2,12 @@ package com.example.stattrack.presentation.match
 
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+
 
 /**
  * [MatchViewModel] takes as parameter a repository to request data
@@ -57,13 +54,32 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         loadAllPlayerStats()
     }
 
+    fun updateScore(matchId: Int,teamName: String, newScore: Int){
+        Log.d("UpdateScore-MatchId:  ", matchId.toString())
+        Log.d("UpdateScore-TeamName: ", teamName)
+        Log.d("UpdateScore-NewScore: ", newScore.toString())
+        var matchData = MatchData(
+            id = 7,
+            creatorId = _viewState.value.matchData[matchId].creatorId,
+            creatorTeamId = _viewState.value.matchData[matchId].creatorTeamId,
+            opponent = _viewState.value.matchData[matchId].opponent,
+            matchDate = _viewState.value.matchData[matchId].matchDate,
+            creatorTeamGoals = newScore,
+            opponentGoals = _viewState.value.matchData[matchId].opponentGoals
+        )
+        viewModelScope.launch {
+            repository.insertMatchData(matchData = matchData)
+        }
+    }
+
     private fun loadAllTeams() {
         viewModelScope.launch() {
             repository.getAllTeams().collect{
-                _viewState.value.teams=it
+                _viewState.value.teams = it
             }
         }
     }
+
     private fun loadAllPlayers() {
         viewModelScope.launch() {
             repository.getAllPlayers().collect {

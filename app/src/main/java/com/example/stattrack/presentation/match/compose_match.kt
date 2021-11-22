@@ -1,38 +1,32 @@
 package com.example.stattrack.presentation.match
 
 import androidx.compose.foundation.layout.*
-import android.util.Log
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayCircle
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.stattrack.presentation.match.components.TeamComponent
-import com.example.stattrack.presentation.ui.theme.PrimaryBlue
-import com.example.stattrack.services.ServiceLocator
 
 @Composable
 fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController) {
+    val currentState: State<MatchViewState> = matchViewModel.viewState.collectAsState()
 
+    if (currentState.value.showLoading){
+        /* Do something while loading */
+    } else
+        MatchScreenContent(matchViewModel = matchViewModel, navController = navController )
 
-    val nameTeam1 = matchViewModel.teams.value?.get(0)?.name
-    val scoreTeam1 by remember { mutableStateOf("0")}
-    val nameTeam2 by remember { mutableStateOf("Indtast hold 2")}
-    val scoreTeam2 by remember { mutableStateOf("0")}
-    val time by remember { mutableStateOf("00:00")}
+}
 
+@Composable
+fun MatchScreenContent(matchViewModel: MatchViewModel, navController: NavHostController) {
+    val currentState: State<MatchViewState> = matchViewModel.viewState.collectAsState()
+    val eventId = currentState.value.currentEventId
+    val matchId = currentState.value.currentMatchId
+    val teamOneId = 0
+    val teamTwoId = 2
 
     Column( // Main Column
         modifier = Modifier
@@ -40,18 +34,31 @@ fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController
             .fillMaxWidth()
     ) {
         Row( modifier = Modifier.fillMaxWidth()) {
-            if (nameTeam1 != null) {
-                TeamComponent(hold1_name = nameTeam1, hold2_name = nameTeam2, hold1_sc = scoreTeam1, hold2_sc = scoreTeam2)
+
+            TeamComponent(
+                hold1_name = currentState.value.teams[teamOneId].name,
+                hold2_name = currentState.value.teams[teamTwoId].name,
+                hold1_sc = currentState.value.matchData[matchId].creatorTeamGoals.toString(),
+                hold2_sc = currentState.value.matchData[matchId].opponentGoals.toString())
+        }
+        Row( modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = {
+                    matchViewModel.updateScore(
+                        matchId = matchId,
+                        teamName = currentState.value.teams[teamOneId].name,
+                        newScore = currentState.value.matchData[matchId].creatorTeamGoals+1
+                    )
+                }) {
+                Text("Click me to test")
             }
         }
         Row( modifier = Modifier.fillMaxWidth()) {
-            StopWatchComponent(time)
+            StopWatchComponent(
+                "15:20")
         }
         Row( modifier = Modifier.fillMaxWidth()) {
             EventComponent()
-        }
-        OutlinedButton(onClick = { matchViewModel.testDataManipulationFromCompose() }) {
-            Icon(Icons.Default.PlayCircle, contentDescription = "Play", tint = PrimaryBlue)
         }
         Row( modifier = Modifier.fillMaxWidth()) {
             LogComponent()
@@ -63,8 +70,5 @@ fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController
 @Preview(showBackground = true)
 @Composable
 fun MatchScreenPreview() {
-    val previewModel = MatchViewModel(ServiceLocator.repository)
-    val navController = rememberNavController()
 
-    MatchScreen(previewModel, navController =  navController)
 }

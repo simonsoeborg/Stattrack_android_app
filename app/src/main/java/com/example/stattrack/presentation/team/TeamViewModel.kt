@@ -37,7 +37,7 @@ class TeamViewModel (private val repository: Repository) : ViewModel(){
     private fun loadAllTeams() {
         viewModelScope.launch() {
             repository.getAllTeams().collect{
-                _viewState.value.teams=it
+                _viewState.value.teams = it
             }
         }
     }

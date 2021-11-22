@@ -11,5 +11,5 @@ data class TeamViewState(
 
 ) {
     val showLoading: Boolean
-        get() = teams.isEmpty() && players.isEmpty()
+        get() = teams.isEmpty() && players.isEmpty() && matchData.isEmpty() && eventData.isEmpty() && playerStats.isEmpty()
 }

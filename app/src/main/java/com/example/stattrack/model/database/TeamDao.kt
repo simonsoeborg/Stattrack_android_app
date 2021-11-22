@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 interface TeamDao {
 
     @Query("SELECT * FROM team WHERE teamId = :teamId")
-    fun loadById(teamId: Int): Flow<TeamEntity?>
+    fun loadById(teamId: Int): Flow<TeamEntity>
 
     @Query("SELECT * FROM team WHERE name = :name")
-    fun loadByName(name: String): Flow<TeamEntity?>
+    fun loadByName(name: String): Flow<TeamEntity>
 
     @Query("SELECT * FROM team ORDER BY teamId DESC")
     fun loadAll(): Flow<List<TeamEntity>>
