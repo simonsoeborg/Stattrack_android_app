@@ -1,7 +1,6 @@
 package com.example.stattrack.presentation.match
 
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
@@ -15,37 +14,21 @@ import kotlinx.coroutines.launch
  * for the view to render the relevant information
  */
 class MatchViewModel(private val repository: Repository) : ViewModel() {
-    /* cold-flow way of binding ui to viewmodel */
-    /*
-    val matchState: Flow<MatchViewState> = repository.getPlayerByName("asd")
-        .combine(repository.getTeamByName("asda")) { player, team ->
-            MatchViewState(teams = listOf(team), players = listOf(player))
-        }
 
-    val matchStateTest: Flow<MatchViewState> = repository.getAllPlayers()
-        .combine(repository.getAllTeams()) { player, team ->
-            MatchViewState(teams = team, players = player)
-        }
-
-
-    /* Hot-flow way of binding UI to ViewModel */
-    private val matchViewState = MatchViewState(
-        defaultTeamDummyData,
-        defaultDummyPlayerData,
-        defaultDummyMatchData
-    )
-    private val _hotMatchState = MutableStateFlow(matchStateTest)
-    val hotMatchState = _hotMatchState.asStateFlow()
-    */
+    var teams: List<Team> = emptyList()
+    var players: List<Player> = emptyList()
+    var matchData: List<MatchData> = emptyList()
+    var eventData: List<EventData> = emptyList()
+    var playerStats: List<PlayerStats> = emptyList()
+    val showLoading: Boolean
+        get() = teams.isEmpty() && players.isEmpty() && matchData.isEmpty() && eventData.isEmpty() && playerStats.isEmpty()
+    var currentEventId: Int = 1
+    var currentMatchId: Int = 1
 
     // View-layer has no way of seeing this.
-    private val _viewState = MutableStateFlow(MatchViewState())
-
+    private val _viewState = MutableStateFlow(matchData)
     // Read-only for the view-layer
-    val viewState: StateFlow<MatchViewState> = _viewState
-
-    private val _score = MutableStateFlow(0)
-    val score: StateFlow<Int> = _score
+    val viewState: StateFlow<List<MatchData>> = _viewState.asStateFlow()
 
     init {
         /* Fetch data from DB when init so it is ready for use later on
@@ -57,31 +40,11 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         loadAllPlayerStats()
     }
 
-    /*fun updateScore(matchId: Int,teamName: String, newScore: Int){
-        Log.d("UpdateScore-MatchId:  ", matchId.toString())
-        Log.d("UpdateScore-TeamName: ", teamName)
-        Log.d("UpdateScore-NewScore: ", newScore.toString())
-        var matchData = MatchData(
-            id = 7,
-            creatorId = _viewState.value.matchData[matchId].creatorId,
-            creatorTeamId = _viewState.value.matchData[matchId].creatorTeamId,
-            opponent = _viewState.value.matchData[matchId].opponent,
-            matchDate = _viewState.value.matchData[matchId].matchDate,
-            creatorTeamGoals = newScore,
-            opponentGoals = _viewState.value.matchData[matchId].opponentGoals
-        )
-        viewModelScope.launch {
-            repository.insertMatchData(matchData = matchData)
-        }
-    } */
-    fun updateScore(){
-        _score.value++
-    }
 
     private fun loadAllTeams() {
         viewModelScope.launch() {
             repository.getAllTeams().collect{
-                _viewState.value.teams = it
+                teams = it
             }
         }
     }
@@ -89,32 +52,55 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private fun loadAllPlayers() {
         viewModelScope.launch() {
             repository.getAllPlayers().collect {
-                _viewState.value.players = it
+                players = it
             }
         }
     }
     private fun loadAllMatchData() {
         viewModelScope.launch() {
             repository.getAllMatchData().collect {
-                _viewState.value.matchData = it
+                matchData = it
             }
         }
     }
     private fun loadAllEventData() {
         viewModelScope.launch() {
             repository.getAllEvents().collect {
-                _viewState.value.eventData = it
+                eventData = it
             }
         }
     }
     private fun loadAllPlayerStats() {
-        viewModelScope.launch() {
-            repository.getAllPlayerStats().collect {
-                _viewState.value.playerStats = it
-            }
-        }
+       viewModelScope.launch() {
+           repository.getAllPlayerStats().collect {
+               playerStats = it
+           }
+       }
     }
 }
 
+/*
+/* cold-flow way of binding ui to viewmodel */
 
+    val matchState: Flow<MatchViewState> = repository.getPlayerByName("asd")
+        .combine(repository.getTeamByName("asda")) { player, team ->
+            MatchViewState(teams = listOf(team), players = listOf(player))
+        }
+
+    val matchStateTest: Flow<MatchViewState> = repository.getAllPlayers()
+        .combine(repository.getAllTeams()) { player, team ->
+            MatchViewState(teams = team, players = player)
+        }
+
+
+
+    /* Hot-flow way of binding UI to ViewModel */
+    private val matchViewState = MatchViewState(
+        defaultTeamDummyData,
+        defaultDummyPlayerData,
+        defaultDummyMatchData
+    )
+    private val _hotMatchState = MutableStateFlow(matchStateTest)
+    val hotMatchState = _hotMatchState.asStateFlow()
+ */
 

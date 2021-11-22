@@ -19,8 +19,9 @@ private val defaultColors = lightColors(
 )
 
 @Composable
-fun StattrackTheme(content: @Composable() () -> Unit) {
-
+fun StattrackTheme(
+    content: @Composable() () -> Unit)
+{
     MaterialTheme(
         colors = defaultColors,
         typography = Typography,
