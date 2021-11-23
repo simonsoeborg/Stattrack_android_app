@@ -7,40 +7,33 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import com.example.stattrack.R
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.airbnb.lottie.compose.*
 import com.example.stattrack.presentation.navbar.NavItem
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
-import kotlinx.coroutines.delay
-
-private const val SplashWaitTime: Long = 3500
 
 @Composable
 fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController) {
     val currentState: State<TeamViewState> = teamViewModel.viewState.collectAsState()
-    /*var showLandingScreen by remember { mutableStateOf(true) }
-    if (showLandingScreen) {
-        LandingScreen(onTimeout = { showLandingScreen = false })
-    } else {
-    }*/
 
-    MyTeamsScreenContent(state = currentState, navController = navController, onUpdateTeam = {teamViewModel.updateTeam()} )
+    MyTeamsScreenContent(
+        state = currentState,
+        navController = navController,
+        onUpdateTeam = {teamViewModel.updateTeam()}
+    )
 }
 
 @Composable
-fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostController, onUpdateTeam: () -> Unit){
+fun MyTeamsScreenContent(
+    state: State<TeamViewState>,
+    navController: NavHostController,
+    onUpdateTeam: () -> Unit) {
+
     val currentOnUpdateTeam by rememberUpdatedState(newValue = onUpdateTeam)
     Column {
         Row(
@@ -80,7 +73,6 @@ fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostCont
         }
     }
 }
-
 
 @Composable
 fun TeamList(state: State<TeamViewState>, navController: NavHostController) {

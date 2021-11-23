@@ -34,6 +34,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         MatchViewState(t, p,  m, e, pl)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), MatchViewState())
 
+
     init {
         /* Fetch data from DB when init so it is ready for use later on
         *  Use viewState.value in Compose */
