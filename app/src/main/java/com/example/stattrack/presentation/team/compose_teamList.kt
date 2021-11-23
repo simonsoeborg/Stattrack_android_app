@@ -5,14 +5,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import com.example.stattrack.R
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,24 +28,25 @@ import com.airbnb.lottie.model.content.CircleShape
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.presentation.navbar.NavItem
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
-import kotlinx.coroutines.delay
-
-private const val SplashWaitTime: Long = 3500
 
 @Composable
 fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController) {
     val currentState: State<TeamViewState> = teamViewModel.viewState.collectAsState()
-    var showLandingScreen by remember { mutableStateOf(true) }
-    if (showLandingScreen) {
-        LandingScreen(onTimeout = { showLandingScreen = false })
-    } else {
-        MyTeamsScreenContent(state = currentState, navController = navController )
-    }
+
+    MyTeamsScreenContent(
+        state = currentState,
+        navController = navController,
+        onUpdateTeam = {teamViewModel.updateTeam()}
+    )
 }
 
 @Composable
-fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostController){
+fun MyTeamsScreenContent(
+    state: State<TeamViewState>,
+    navController: NavHostController,
+    onUpdateTeam: () -> Unit) {
 
+    val currentOnUpdateTeam by rememberUpdatedState(newValue = onUpdateTeam)
     Column {
         Column(
             modifier = Modifier
@@ -98,7 +100,6 @@ fun NewTeamButton(){
     }
 }
 
-
 @Composable
 fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
     LazyColumn() {
@@ -128,49 +129,7 @@ fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
     }
 }
 
-@Composable
-fun LandingScreen (onTimeout: () -> Unit) {
-    val currentOnTimeout by rememberUpdatedState(newValue = onTimeout)
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentSize(Center),
-        horizontalAlignment = CenterHorizontally
-    ) {
-        Row(modifier = Modifier.padding(top = 100.dp)) {
-            Text(
-                text = "StatTrack",
-                color = PrimaryBlue,
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 36.sp,
-                //textAlign = TextAlign.Center
-            )
-        }
-
-        Row{
-
-            val compositionResult: LottieCompositionResult = rememberLottieComposition(
-                spec = LottieCompositionSpec.RawRes(
-                    R.raw.handball
-                )
-            )
-            val progress by animateLottieCompositionAsState(
-                composition = compositionResult.value,
-                isPlaying = true,
-                iterations = 1,
-                speed = 1.0f
-            )
-
-            LottieAnimation(composition = compositionResult.value, progress = progress)
-
-            LaunchedEffect(key1 = true) {
-                delay(SplashWaitTime)
-                currentOnTimeout()
-            }
-        }
-    }
-}
 
 
 @Composable
