@@ -1,17 +1,21 @@
 package com.example.stattrack.presentation.team
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import com.example.stattrack.R
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.*
+import com.airbnb.lottie.model.content.CircleShape
 import com.example.stattrack.presentation.navbar.NavItem
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import kotlinx.coroutines.delay
@@ -40,12 +45,6 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
 fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostController){
 
     Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(alignment = CenterHorizontally)
-        ) {
-            Column {
                 Row {
                     Column(
                         modifier = Modifier
@@ -58,6 +57,7 @@ fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostCont
                         }
                     }
                 }
+
                 Row() {
                     Column(
                         modifier = Modifier
@@ -72,6 +72,19 @@ fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostCont
                 }
             }
         }
+
+
+
+@Composable
+fun NewTeamButton(){
+    OutlinedButton(onClick = { /*TODO*/ },
+        modifier= Modifier.size(50.dp),  //avoid the oval shape
+        shape = CircleShape,
+        border= BorderStroke(1.dp, PrimaryBlue),
+        contentPadding = PaddingValues(0.dp),  //avoid the little icon
+        colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
+    ) {
+        Icon(Icons.Default.Add, contentDescription = "NewTeam Button")
     }
 }
 
