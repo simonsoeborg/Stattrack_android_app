@@ -57,7 +57,9 @@ fun LandingScreen (navController: NavController/*onTimeout: () -> Unit*/) {
 
             LaunchedEffect(key1 = true) {
                 delay(SplashWaitTime)
-                navController.navigate(NavItem.Team.route)
+                navController.navigate(NavItem.Team.route){
+                    popUpTo(NavItem.Team.route) { inclusive = true }
+                }
             }
         }
     }

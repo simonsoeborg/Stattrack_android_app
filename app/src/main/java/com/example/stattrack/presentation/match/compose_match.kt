@@ -17,11 +17,11 @@ import com.example.stattrack.presentation.match.components.TeamComponent
 @Composable
 fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController) {
     val state: State<MatchViewState> = matchViewModel.viewState.collectAsState()
-
+    //Log.d("MatchScreen: ${state.value.teams[0].name}","if null wrong connection to db")
     MatchScreenContent(
         state,
         navController = navController,
-        onUpdateTeam = { Log.d("MatchCompose: ${state.value.teams[0].name}","if null wrong connection to db") }
+        onUpdateTeam = { /*Log.d("MatchCompose: ${state.value.teams[0].name}","if null wrong connection to db")*/ }
     )
 }
 
@@ -37,6 +37,7 @@ fun MatchScreenContent(
     val nameTeam2 by remember { mutableStateOf("Indtast hold 2")}
     val scoreTeam2 by remember { mutableStateOf("0")}
     val time by remember { mutableStateOf("00:00")}
+    //Log.d("MatchContent: ${state.value.teams[0].name}","if null wrong connection to db")
 
     Column( // Main Column
         modifier = Modifier

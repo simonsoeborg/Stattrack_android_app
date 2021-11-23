@@ -1,5 +1,7 @@
 package com.example.stattrack.model.model
 
+import android.graphics.Color
+
 data class Team(
     val teamId : Int,
     val name : String,
