@@ -5,7 +5,6 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +20,7 @@ import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.di.ServiceLocator.matchViewModel
 import com.example.stattrack.di.ServiceLocator.prepopulateSQLiteDB
 import com.example.stattrack.di.ServiceLocator.teamViewModel
+import com.example.stattrack.model.model.Team
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
 class MainActivity : AppCompatActivity() {
@@ -45,8 +45,18 @@ class MainActivity : AppCompatActivity() {
                         composable(NavItem.Kamp.route,) {
                             MatchScreen(matchViewModel = matchVM, navController)
                         }
-                        composable(NavItem.SpecifikTeam.route) {
-                            SpecificTeamScreen(navController)
+                        composable(NavItem.SpecifikTeam.route){
+
+                            val teamObject = navController.previousBackStackEntry?.arguments?.getParcelable<Team>("specifikTeam")
+
+                            if (teamObject != null) {
+                                println(teamObject.name+"test!")
+                                SpecificTeamScreen(navController = navController, team = teamObject)
+                            }
+
+                            if(teamObject == null){
+                                println("TeamObject er null")
+                            }
                         }
                     }
                 }
@@ -74,10 +84,10 @@ fun BottomNavigationBar(navController: NavController) {
                 selected = false,
                 onClick = {
                     navController.navigate(item.route) {
-                        navController.graph.startDestinationRoute?.let {
+                        navController.graph.startDestinationRoute?.let {/*
                                 route -> popUpTo(route) {
                             saveState = true
-                        }
+                        }*/
                         }
                         launchSingleTop = true
                         restoreState = true

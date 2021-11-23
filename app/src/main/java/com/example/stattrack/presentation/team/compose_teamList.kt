@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.*
 import com.airbnb.lottie.model.content.CircleShape
+import com.example.stattrack.model.model.Team
 import com.example.stattrack.presentation.navbar.NavItem
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import kotlinx.coroutines.delay
@@ -112,8 +113,14 @@ fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
                     team ->
             // Clickable sender kun test-data pt.
             Surface(modifier = Modifier.clickable {
-                println(team.name+team.teamId)
+
+                // Pass data
+                val specifikTeam = Team(team.teamId,team.name,team.clubName,team.creatorId,team.teamUYear,team.division) // User is a parcelable data class.
+
+                navController.currentBackStackEntry?.arguments?.putParcelable("specifikTeam", specifikTeam)
                 navController.navigate(NavItem.SpecifikTeam.route)
+
+                println(team.name+team.teamId)
             }){
                 Text(team.name,modifier = Modifier.padding(2.dp), color = PrimaryBlue)
             }
