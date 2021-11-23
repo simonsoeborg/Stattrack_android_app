@@ -26,7 +26,7 @@ fun SpecificTeamScreen(navController: NavHostController, teamViewModel: Specific
         SpecificTeamScreenContent(team = team,
         onUpdatePlayers = {teamViewModel.loadAllPlayersFromTeam(team.teamId)})
 
-        Button(onClick = { navController.navigate(NavItem.Hold.route)}) {
+        Button(onClick = { navController.navigate(NavItem.Team.route)}) {
         }
     }
 }
