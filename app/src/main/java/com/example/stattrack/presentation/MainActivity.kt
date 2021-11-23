@@ -19,8 +19,10 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.di.ServiceLocator.matchViewModel
 import com.example.stattrack.di.ServiceLocator.prepopulateSQLiteDB
+import com.example.stattrack.di.ServiceLocator.specificTeamViewModel
 import com.example.stattrack.di.ServiceLocator.teamViewModel
 import com.example.stattrack.model.model.Team
+import com.example.stattrack.presentation.team.SpecificTeamViewModel
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val matchVM: MatchViewModel by lazy { matchViewModel }
         val teamVM: TeamViewModel by lazy { teamViewModel }
+        val sTeamVM: SpecificTeamViewModel by lazy {specificTeamViewModel}
+
+
         /* For development purposes */
         prepopulateSQLiteDB()
 
@@ -42,16 +47,14 @@ class MainActivity : AppCompatActivity() {
                         composable(NavItem.Hold.route) {
                             MyTeamsScreen(teamViewModel = teamVM, navController)
                         }
-                        composable(NavItem.Kamp.route,) {
+                        composable(NavItem.Kamp.route) {
                             MatchScreen(matchViewModel = matchVM, navController)
                         }
                         composable(NavItem.SpecifikTeam.route){
 
                             val teamObject = navController.previousBackStackEntry?.arguments?.getParcelable<Team>("specifikTeam")
-
                             if (teamObject != null) {
-                                println(teamObject.name+"test!")
-                                SpecificTeamScreen(navController = navController, team = teamObject)
+                                SpecificTeamScreen(navController = navController,team = teamObject, teamViewModel = sTeamVM)
                             }
 
                             if(teamObject == null){

@@ -12,12 +12,16 @@ import com.example.stattrack.model.database.AppDatabase
 import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.team.TeamViewModel
 import com.example.stattrack.presentation.match.MatchViewModel
+import com.example.stattrack.presentation.team.SpecificTeamViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 object ServiceLocator {
 
+
     private lateinit var application: Application
+
+    var id : Int = 0
 
     fun init(application: Application) {
         ServiceLocator.application = application
@@ -34,12 +38,17 @@ object ServiceLocator {
                 return when (modelClass) {
                     MatchViewModel::class.java -> MatchViewModel(repository)
                     TeamViewModel::class.java -> TeamViewModel(repository)
+                    SpecificTeamViewModel::class.java -> SpecificTeamViewModel(repository)
+
+
                     else -> throw IllegalArgumentException("Unsupported ViewModel $modelClass")
                 } as T
             }
         }
     }
 
+    val ViewModelStoreOwner.specificTeamViewModel: SpecificTeamViewModel
+        get() = ViewModelProvider(this, viewModelFactory).get()
 
     val ViewModelStoreOwner.matchViewModel: MatchViewModel
         get() = ViewModelProvider(this, viewModelFactory).get()
