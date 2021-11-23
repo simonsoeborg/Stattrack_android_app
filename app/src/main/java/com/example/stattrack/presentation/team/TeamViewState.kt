@@ -3,11 +3,11 @@ import com.example.stattrack.model.model.*
 
 /** [TeamViewState] This data class represents the view state for the Match screen. */
 data class TeamViewState(
-    var teams: List<Team> = emptyList(),
-    var players: List<Player> = emptyList(),
-    var matchData: List<MatchData> = emptyList(),
-    var eventData: List<EventData> = emptyList(),
-    var playerStats: List<PlayerStats> = emptyList()
+    val teams: List<Team> = emptyList(),
+    val players: List<Player> = emptyList(),
+    val matchData: List<MatchData> = emptyList(),
+    val eventData: List<EventData> = emptyList(),
+    val playerStats: List<PlayerStats> = emptyList()
 
 ) {
     val showLoading: Boolean

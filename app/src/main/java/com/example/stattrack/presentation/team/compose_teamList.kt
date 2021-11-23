@@ -4,10 +4,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import com.example.stattrack.R
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -28,17 +30,18 @@ private const val SplashWaitTime: Long = 3500
 @Composable
 fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController) {
     val currentState: State<TeamViewState> = teamViewModel.viewState.collectAsState()
-    var showLandingScreen by remember { mutableStateOf(true) }
+    /*var showLandingScreen by remember { mutableStateOf(true) }
     if (showLandingScreen) {
         LandingScreen(onTimeout = { showLandingScreen = false })
     } else {
-        MyTeamsScreenContent(state = currentState, navController = navController )
-    }
+    }*/
+
+    MyTeamsScreenContent(state = currentState, navController = navController, onUpdateTeam = {teamViewModel.updateTeam()} )
 }
 
 @Composable
-fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostController){
-
+fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostController, onUpdateTeam: () -> Unit){
+    val currentOnUpdateTeam by rememberUpdatedState(newValue = onUpdateTeam)
     Column {
         Row(
             modifier = Modifier
@@ -64,6 +67,9 @@ fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostCont
                             .fillMaxWidth()
                             .padding(10.dp)
                     ) {
+                        Button(onClick = {currentOnUpdateTeam()}) {
+                            Text("Click me to add team to database")
+                        }
                         Text(text = "Kamp oversigt", fontSize = 32.sp, color = PrimaryBlue)
                         Column(modifier = Modifier.padding(10.dp)) {
                             dummydata2()
@@ -91,7 +97,7 @@ fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
             // Clickable sender kun test-data pt.
             Surface(modifier = Modifier.clickable {
                 println(team.name+team.teamId)
-                navController.navigate(NavItem.SpecifikTeam.route)
+                navController.navigate(NavItem.SpecificTeam.route)
             }){
                 Text(team.name,modifier = Modifier.padding(2.dp), color = PrimaryBlue)
             }
@@ -99,49 +105,7 @@ fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
     }
 }
 
-@Composable
-fun LandingScreen (onTimeout: () -> Unit) {
-    val currentOnTimeout by rememberUpdatedState(newValue = onTimeout)
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentSize(Center),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(modifier = Modifier.padding(top = 100.dp)) {
-            Text(
-                text = "StatTrack",
-                color = PrimaryBlue,
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 36.sp,
-                //textAlign = TextAlign.Center
-            )
-        }
-
-        Row{
-
-            val compositionResult: LottieCompositionResult = rememberLottieComposition(
-                spec = LottieCompositionSpec.RawRes(
-                    R.raw.handball
-                )
-            )
-            val progress by animateLottieCompositionAsState(
-                composition = compositionResult.value,
-                isPlaying = true,
-                iterations = 1,
-                speed = 1.0f
-            )
-
-            LottieAnimation(composition = compositionResult.value, progress = progress)
-
-            LaunchedEffect(key1 = true) {
-                delay(SplashWaitTime)
-                currentOnTimeout()
-            }
-        }
-    }
-}
 
 
 @Composable

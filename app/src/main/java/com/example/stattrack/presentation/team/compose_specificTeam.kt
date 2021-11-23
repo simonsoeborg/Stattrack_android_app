@@ -14,7 +14,7 @@ fun SpecificTeamScreen(navController: NavHostController) {
     Column(Modifier.fillMaxSize()) {
         Text(text = "This is the specific team page")
         
-        Button(onClick = { navController.navigate(NavItem.Hold.route)}) {
+        Button(onClick = { navController.navigate(NavItem.Team.route)}) {
             
         }
     }

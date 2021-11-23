@@ -1,6 +1,7 @@
 package com.example.stattrack.presentation
 
 import android.os.Bundle
+import android.view.Window
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.*
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val matchVM: MatchViewModel by lazy { matchViewModel }
         val teamVM: TeamViewModel by lazy { teamViewModel }
+        supportActionBar?.hide() // Hide the title bar so the app shows in fullscreen
         /* For development purposes */
         prepopulateSQLiteDB()
 
@@ -37,15 +39,18 @@ class MainActivity : AppCompatActivity() {
                 Scaffold(
                     bottomBar = { BottomNavigationBar(navController) })
                 {
-                    NavHost(navController, startDestination = NavItem.Hold.route)
+                    NavHost(navController, startDestination = NavItem.Landing.route)
                     {
-                        composable(NavItem.Hold.route) {
+                        composable(NavItem.Landing.route) {
+                            LandingScreen(navController)
+                        }
+                        composable(NavItem.Team.route) {
                             MyTeamsScreen(teamViewModel = teamVM, navController)
                         }
-                        composable(NavItem.Kamp.route,) {
+                        composable(NavItem.Match.route,) {
                             MatchScreen(matchViewModel = matchVM, navController)
                         }
-                        composable(NavItem.SpecifikTeam.route) {
+                        composable(NavItem.SpecificTeam.route) {
                             SpecificTeamScreen(navController)
                         }
                     }
@@ -59,8 +64,8 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        NavItem.Hold,
-        NavItem.Kamp
+        NavItem.Team,
+        NavItem.Match
     )
     BottomNavigation(
         backgroundColor = PrimaryWhite,
