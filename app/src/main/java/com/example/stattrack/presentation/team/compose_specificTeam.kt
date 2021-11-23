@@ -1,43 +1,103 @@
 package com.example.stattrack.presentation.team
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import android.graphics.Paint
+import android.graphics.fonts.FontStyle
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.ListItem
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontStyle.Companion.Italic
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.presentation.navbar.NavItem
 import com.example.stattrack.presentation.player.PlayerClass
+import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
 @Composable
 fun SpecificTeamScreen(navController: NavHostController, teamViewModel: SpecificTeamViewModel, team : Team ) {
-    Column(Modifier.fillMaxSize()) {
-
-        val myPlayers : State<List<Player>> = teamViewModel.players.collectAsState()
+    val myPlayers : State<List<Player>> = teamViewModel.players.collectAsState()
 
 
+    Column() {
         SpecificTeamScreenContent(team = team,
-        onUpdatePlayers = {teamViewModel.loadAllPlayersFromTeam(team.teamId)})
+        onUpdatePlayers = {teamViewModel.loadAllPlayersFromTeam(team.teamId)},
+        myPlayers)
 
-        Button(onClick = { navController.navigate(NavItem.Team.route)}) {
+        //Button(onClick = { navController.navigate(NavItem.Team.route)}) {
+        }
+    }
+
+
+@Composable
+fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, state: State<List<Player>>) {
+
+
+    Column() {
+
+        val currentOnUpdateTeam by rememberUpdatedState(newValue = onUpdatePlayers)
+
+        Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
+
+
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(){
+                        Text(text = team.name, fontSize = 32.sp, color = PrimaryBlue)
+                    }
+
+                    Box(Modifier.align(Alignment.CenterEnd)) {
+                        Row() {
+                            Column() {
+                                Text(text = "Division", color = Color.Gray, fontStyle = Italic)
+                                Text(text = "Årgang", color = Color.Gray, fontStyle = Italic)
+                            }
+                            Column() {
+                                Text(text = team.division, color = PrimaryBlue, modifier = Modifier.padding(start = 10.dp))
+                                Text(text = team.teamUYear, color = PrimaryBlue, modifier = Modifier.padding(start = 10.dp))
+                            }
+                        }
+                    }
+                }
+
+                Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+
+                LazyColumn() {
+
+                }
+
+            }
         }
     }
 }
 
+
 @Composable
-fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit) {
-    Column() {
-        Text(text = "This is the specific team page")
-        Text(text = team.name)
+fun PlayerList(team : Team, onUpdatePlayers: () -> Unit, state: State<List<Player>>) {
+
+    LazyColumn() {
+
     }
 }
+
 
 
 

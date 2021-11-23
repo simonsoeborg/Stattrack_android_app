@@ -122,7 +122,7 @@ fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
                 navController.currentBackStackEntry?.arguments?.putParcelable("specifikTeam", specifikTeam)
                 navController.navigate(NavItem.SpecifikTeam.route)
 
-                println(team.name+team.teamId)
+               // println(team.name+team.teamId)
             }){
                 Text(team.name,modifier = Modifier.padding(2.dp), color = PrimaryBlue)
             }
