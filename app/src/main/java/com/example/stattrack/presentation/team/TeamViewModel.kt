@@ -46,7 +46,7 @@ class TeamViewModel (private val repository: Repository) : ViewModel() {
         loadAllPlayerStats()
     }
     fun updateTeam(){
-        var id = (10..100).random()
+        val id = (10..100).random()
         viewModelScope.launch {
         repository.insertTeam(Team(id,"Hej fra databasen id: $id","UpdatedClubName","UpdatedCreator","2005","Top-top-proff"))
         }

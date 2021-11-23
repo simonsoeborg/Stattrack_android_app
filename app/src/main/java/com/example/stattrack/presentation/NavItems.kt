@@ -7,8 +7,9 @@ import androidx.compose.material.icons.filled.SportsHandball
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class NavItem(var route: String, var icon: ImageVector, var title: String) {
-    object Team : NavItem("Hold", Icons.Default.People, "HOLD")
-    object Match : NavItem("Kamp", Icons.Default.SportsHandball, "KAMP")
-    object SpecifikTeam : NavItem("SpecificTeam/{Team}", Icons.Default.Person, "TheTEAM")
+    object Team : NavItem("Team", Icons.Default.People, "Hold")
+    object Match : NavItem("Match", Icons.Default.SportsHandball, "Kamp")
+    object Player : NavItem("Player", Icons.Default.Person, "Spiller")
+    object SpecificTeam : NavItem("SpecificTeam", Icons.Default.Person, "TheTEAM")
     object Landing : NavItem("Landing", Icons.Default.Person, "Intro")
 }

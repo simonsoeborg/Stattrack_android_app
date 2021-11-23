@@ -66,6 +66,9 @@ class MainActivity : AppCompatActivity() {
                                 println("TeamObject er null")
                             }
                         }
+                        composable(NavItem.Player.route) {
+
+                        }
                     }
                 }
             }
@@ -75,6 +78,72 @@ class MainActivity : AppCompatActivity() {
 
 
 @Composable
+fun BottomNavigationBar(navController: NavController) {
+
+    BottomNavigation(
+        backgroundColor = PrimaryWhite,
+        contentColor = PrimaryBlue
+    ) {
+        BottomNavigationItem(
+            icon = { Icon(NavItem.Match.icon, contentDescription = NavItem.Match.title) },
+            label = { Text(text = NavItem.Match.title) },
+            alwaysShowLabel = true,
+            selected = false,
+            onClick = {
+                navController.navigate(NavItem.Match.route) {
+                    navController.graph.startDestinationRoute?.let {
+                            route -> popUpTo(route) {
+                        saveState = true
+                    }
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+
+        BottomNavigationItem(
+            icon = { Icon(NavItem.Team.icon, contentDescription = NavItem.Team.title) },
+            label = { Text(text = NavItem.Team.title) },
+            alwaysShowLabel = true,
+            selected = false,
+            onClick = {
+                navController.navigate(NavItem.Team.route) {
+                    navController.graph.startDestinationRoute?.let {
+                            route -> popUpTo(route) {
+                        saveState = true
+                    }
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+
+        BottomNavigationItem(
+            icon = { Icon(NavItem.Player.icon, contentDescription = NavItem.Player.title) },
+            label = { Text(text = NavItem.Player.title) },
+            alwaysShowLabel = true,
+            selected = false,
+            onClick = {
+                navController.navigate(NavItem.Player.route) {
+                    navController.graph.startDestinationRoute?.let {
+                            route -> popUpTo(route) {
+                        saveState = true
+                    }
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+
+        }
+    }
+
+
+
+/*@Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
         NavItem.Team,
@@ -104,7 +173,7 @@ fun BottomNavigationBar(navController: NavController) {
             )
         }
     }
-}
-
+} 
+* */
 
 
