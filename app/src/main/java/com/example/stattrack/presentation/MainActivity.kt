@@ -1,55 +1,58 @@
 package com.example.stattrack.presentation
 
 import android.os.Bundle
-import android.util.Log
+import android.view.Window
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.stattrack.presentation.team.MyTeamsScreen
 import com.example.stattrack.presentation.team.SpecificTeamScreen
-import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.team.TeamViewModel
 import com.example.stattrack.presentation.match.MatchScreen
 import com.example.stattrack.presentation.match.MatchViewModel
 import com.example.stattrack.presentation.navbar.NavItem
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
-import com.example.stattrack.services.ServiceLocator
-import com.example.stattrack.services.ServiceLocator.matchViewModel
-import com.example.stattrack.services.ServiceLocator.teamViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.stattrack.di.ServiceLocator.matchViewModel
+import com.example.stattrack.di.ServiceLocator.prepopulateSQLiteDB
+import com.example.stattrack.di.ServiceLocator.teamViewModel
+import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val matchVM: MatchViewModel by lazy { matchViewModel }
         val teamVM: TeamViewModel by lazy { teamViewModel }
-
-
-
+        supportActionBar?.hide() // Hide the title bar so the app shows in fullscreen
+        /* For development purposes */
         prepopulateSQLiteDB()
 
         setContent {
             val navController = rememberNavController()
-
-            Scaffold(
-                bottomBar = { BottomNavigationBar(navController) }
-            ) {
-                NavHost(navController, startDestination = NavItem.Hold.route) {
-                    composable(NavItem.Hold.route) {
-                        MyTeamsScreen(teamViewModel = teamVM, navController)
-                    }
-                    composable(NavItem.Kamp.route, ) {
-                        MatchScreen(matchViewModel = matchVM, navController)
-                    }
-                    composable(NavItem.SpecifikTeam.route) {
-                        SpecificTeamScreen(navController)
+            StattrackTheme {
+                Scaffold(
+                    bottomBar = { BottomNavigationBar(navController) })
+                {
+                    NavHost(navController, startDestination = NavItem.Landing.route)
+                    {
+                        composable(NavItem.Landing.route) {
+                            LandingScreen(navController)
+                        }
+                        composable(NavItem.Team.route) {
+                            MyTeamsScreen(teamViewModel = teamVM, navController)
+                        }
+                        composable(NavItem.Match.route,) {
+                            MatchScreen(matchViewModel = matchVM, navController)
+                        }
+                        composable(NavItem.SpecificTeam.route) {
+                            SpecificTeamScreen(navController)
+                        }
                     }
                 }
             }
@@ -61,8 +64,8 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        NavItem.Hold,
-        NavItem.Kamp
+        NavItem.Team,
+        NavItem.Match
     )
     BottomNavigation(
         backgroundColor = PrimaryWhite,
@@ -84,49 +87,11 @@ fun BottomNavigationBar(navController: NavController) {
                         launchSingleTop = true
                         restoreState = true
                     }
-
                 }
             )
         }
     }
 }
 
-fun prepopulateSQLiteDB(){
-    GlobalScope.launch() {
-        val repo = ServiceLocator.repository
-        val eventData = defaultDummyEventData
-        val matchData = defaultDummyMatchData
-        val playerData = defaultDummyPlayerData
-        val playerStatsData = defaultDummyPlayerStatsData
-        val teamData = defaultTeamDummyData
-        Log.d("prepopulateSQLiteDB","Prepopulation begun")
-        for (eventdata in eventData){
-            GlobalScope.launch() {
-                repo.insertEventData(eventdata)
-            }
-        }
-        for (matchdata in matchData){
-            GlobalScope.launch() {
-                repo.insertMatchData(matchdata)
-            }
-        }
-        for (playerdata in playerData){
-            GlobalScope.launch() {
-                repo.insertPlayer(playerdata)
-            }
-        }
-        for (playerstatsdata in playerStatsData){
-            GlobalScope.launch() {
-                repo.insertPlayerStats(playerstatsdata)
-            }
-        }
-        for (team in teamData){
-            GlobalScope.launch() {
-                repo.insertTeam(team)
-            }
-        }
-        Log.d("prepopulateSQLiteDB","Prepopulation finished")
-    }
-}
 
 

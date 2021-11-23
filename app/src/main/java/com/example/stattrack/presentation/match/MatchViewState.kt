@@ -2,16 +2,10 @@ package com.example.stattrack.presentation.match
 
 import com.example.stattrack.model.model.*
 
-
-/** [MatchViewState] This data class represents the view state for the Match screen. */
 data class MatchViewState(
-    var teams: List<Team> = emptyList(),
-    var players: List<Player> = emptyList(),
-    var matchData: List<MatchData> = emptyList(),
-    var eventData: List<EventData> = emptyList(),
-    var playerStats: List<PlayerStats> = emptyList()
-
-) {
-    val showLoading: Boolean
-        get() = teams.isEmpty() && players.isEmpty()
-}
+    val teams: List<Team> = emptyList(),
+    val players: List<Player> = emptyList(),
+    val matchData: List<MatchData> = emptyList(),
+    val eventData: List<EventData> = emptyList(),
+    val playerStats: List<PlayerStats> = emptyList()
+)

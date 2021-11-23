@@ -1,28 +1,40 @@
 package com.example.stattrack.presentation.team
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stattrack.model.database.Repository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import com.example.stattrack.model.model.*
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 
 
 /**
  * [TeamViewModel] takes as parameter a repository to request data and insert
- * into a [TeamViewModel] that can be exposed by the [TeamViewModel] flow in order
+ * into a [TeamViewState] that can be exposed to the [compose_teamList] flow in order
  * for the view to render the relevant information
  */
 
-class TeamViewModel (private val repository: Repository) : ViewModel(){
+class TeamViewModel (private val repository: Repository) : ViewModel() {
 
-    // View-layer has no way of seeing this.
-    private val _viewState = MutableStateFlow(TeamViewState())
+    private val teams = MutableStateFlow<List<Team>>(emptyList())
+    private val players = MutableStateFlow<List<Player>>(emptyList())
+    private val matchData = MutableStateFlow<List<MatchData>>(emptyList())
+    private val eventData = MutableStateFlow<List<EventData>>(emptyList())
+    private val playerStats = MutableStateFlow<List<PlayerStats>>(emptyList())
+
 
     // Read-only for the view-layer
-    val viewState: StateFlow<TeamViewState> = _viewState
+    val viewState: StateFlow<TeamViewState> = combine(
+        teams,
+        players,
+        matchData,
+        eventData,
+        playerStats
+    ) { t, p, m, e, pl  ->
+        TeamViewState(t, p,  m, e, pl)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(),TeamViewState())
 
     init {
         /* Fetch data from DB when init so it is ready for use later on
@@ -33,39 +45,44 @@ class TeamViewModel (private val repository: Repository) : ViewModel(){
         loadAllEventData()
         loadAllPlayerStats()
     }
-
+    fun updateTeam(){
+        var id = (10..100).random()
+        viewModelScope.launch {
+        repository.insertTeam(Team(id,"Hej fra databasen id: $id","UpdatedClubName","UpdatedCreator","2005","Top-top-proff"))
+        }
+    }
     private fun loadAllTeams() {
         viewModelScope.launch() {
             repository.getAllTeams().collect{
-                _viewState.value.teams=it
+                teams.value = it
             }
         }
     }
     private fun loadAllPlayers() {
         viewModelScope.launch() {
             repository.getAllPlayers().collect {
-                _viewState.value.players = it
+                players.value = it
             }
         }
     }
     private fun loadAllMatchData() {
         viewModelScope.launch() {
             repository.getAllMatchData().collect {
-                _viewState.value.matchData = it
+                matchData.value = it
             }
         }
     }
     private fun loadAllEventData() {
         viewModelScope.launch() {
             repository.getAllEvents().collect {
-                _viewState.value.eventData = it
+                eventData.value = it
             }
         }
     }
     private fun loadAllPlayerStats() {
         viewModelScope.launch() {
             repository.getAllPlayerStats().collect {
-                _viewState.value.playerStats = it
+                playerStats.value = it
             }
         }
     }
