@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,7 +37,8 @@ class MainActivity : AppCompatActivity() {
                 Scaffold(
                     bottomBar = { BottomNavigationBar(navController) })
                 {
-                    NavHost(navController, startDestination = NavItem.Hold.route) {
+                    NavHost(navController, startDestination = NavItem.Hold.route)
+                    {
                         composable(NavItem.Hold.route) {
                             MyTeamsScreen(teamViewModel = teamVM, navController)
                         }
