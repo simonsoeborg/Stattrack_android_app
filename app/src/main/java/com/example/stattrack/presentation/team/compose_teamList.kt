@@ -45,43 +45,52 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
 fun MyTeamsScreenContent(state: State<TeamViewState>, navController: NavHostController){
 
     Column {
-                Row {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp)
-                    ) {
-                        Text(text = "Hold oversigt", fontSize = 32.sp, color = PrimaryBlue)
-                        Column(modifier = Modifier.padding(10.dp)) {
-                            TeamList(state, navController)
-                        }
-                    }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Box(Modifier.align(Alignment.CenterStart)) {
+                    Text(text = "Hold oversigt", fontSize = 32.sp, color = PrimaryBlue)
                 }
 
-                Row() {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp)
-                    ) {
-                        Text(text = "Kamp oversigt", fontSize = 32.sp, color = PrimaryBlue)
-                        Column(modifier = Modifier.padding(10.dp)) {
-                            dummydata2()
-                        }
+                Box(Modifier.align(Alignment.CenterEnd)) {
+                    Column(horizontalAlignment = CenterHorizontally) {
+                        NewTeamButton()
+                        Text(text = "New Team", color = PrimaryBlue)
                     }
                 }
             }
+
+            Column(modifier = Modifier.padding(start = 10.dp)) {
+                TeamList(state, navController)
+            }
         }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Text(text = "Kamp oversigt", fontSize = 32.sp, color = PrimaryBlue)
+            Column(modifier = Modifier.padding(10.dp)) {
+                dummydata2()
+            }
+        }
+    }
+}
 
-
-
+// Inspired by: https://stackoverflow.com/questions/66671902/how-to-create-a-circular-outlined-button-with-jetpack-compose
 @Composable
 fun NewTeamButton(){
     OutlinedButton(onClick = { /*TODO*/ },
-        modifier= Modifier.size(50.dp),  //avoid the oval shape
+        modifier= Modifier
+            .padding(top = 5.dp)
+            .size(40.dp),
         shape = CircleShape,
         border= BorderStroke(1.dp, PrimaryBlue),
-        contentPadding = PaddingValues(0.dp),  //avoid the little icon
+        contentPadding = PaddingValues(0.dp),
         colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
     ) {
         Icon(Icons.Default.Add, contentDescription = "NewTeam Button")
@@ -119,7 +128,7 @@ fun LandingScreen (onTimeout: () -> Unit) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentSize(Center),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         Row(modifier = Modifier.padding(top = 100.dp)) {
             Text(
