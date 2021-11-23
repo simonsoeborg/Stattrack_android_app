@@ -120,7 +120,7 @@ fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
                 val specifikTeam = Team(team.teamId,team.name,team.clubName,team.creatorId,team.teamUYear,team.division) // User is a parcelable data class.
 
                 navController.currentBackStackEntry?.arguments?.putParcelable("specifikTeam", specifikTeam)
-                navController.navigate(NavItem.SpecifikTeam.route)
+                navController.navigate(NavItem.SpecificTeam.route)
 
                // println(team.name+team.teamId)
             }){

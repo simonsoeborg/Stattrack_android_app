@@ -5,6 +5,7 @@ import android.graphics.fonts.FontStyle
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.ListItem
@@ -30,13 +31,14 @@ import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
 @Composable
 fun SpecificTeamScreen(navController: NavHostController, teamViewModel: SpecificTeamViewModel, team : Team ) {
+    teamViewModel.loadAllPlayersFromTeam(team.teamId)
     val myPlayers : State<List<Player>> = teamViewModel.players.collectAsState()
 
 
     Column() {
         SpecificTeamScreenContent(team = team,
         onUpdatePlayers = {teamViewModel.loadAllPlayersFromTeam(team.teamId)},
-        myPlayers)
+        myPlayers.value)
 
         //Button(onClick = { navController.navigate(NavItem.Team.route)}) {
         }
@@ -44,7 +46,7 @@ fun SpecificTeamScreen(navController: NavHostController, teamViewModel: Specific
 
 
 @Composable
-fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, state: State<List<Player>>) {
+fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, players: List<Player>) {
 
 
     Column() {
@@ -80,7 +82,12 @@ fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, state: S
 
                 Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
 
-                LazyColumn() {
+                LazyColumn() { 
+
+
+
+
+
 
                 }
 
