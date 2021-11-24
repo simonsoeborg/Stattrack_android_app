@@ -3,6 +3,7 @@ package com.example.stattrack.presentation.team
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
 import kotlinx.coroutines.flow.*
@@ -51,6 +52,7 @@ class TeamViewModel (private val repository: Repository) : ViewModel() {
         repository.insertTeam(Team(id,"Hej fra databasen id: $id","UpdatedClubName","UpdatedCreator","2005","Top-top-proff"))
         }
     }
+
     private fun loadAllTeams() {
         viewModelScope.launch() {
             repository.getAllTeams().collect{

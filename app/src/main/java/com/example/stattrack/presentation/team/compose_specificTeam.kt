@@ -23,30 +23,35 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
+import com.example.stattrack.presentation.navbar.Screen
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 @Composable
 fun SpecificTeamScreen(navController: NavHostController, teamViewModel: SpecificTeamViewModel, team : Team ) {
     teamViewModel.loadAllPlayersFromTeam(team.teamId)
-    val myPlayers : State<List<Player>> = teamViewModel.players.collectAsState()
+    val specificTeamPlayers : State<List<Player>> = teamViewModel.players.collectAsState()
 
 
     Column() {
         SpecificTeamScreenContent(team = team,
-        onUpdatePlayers = {teamViewModel.loadAllPlayersFromTeam(team.teamId)},
-        myPlayers.value)
-
-        //Button(onClick = { navController.navigate(NavItem.Team.route)}) {
-        }
+        onAddPlayer = {/*teamViewModel.insertPlayer(player = player)*/},
+        specificTeamPlayers.value,
+        navController = navController
+        )}
     }
 
 
 @Composable
-fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, players: List<Player>) {
+fun SpecificTeamScreenContent(
+    team : Team,
+    onAddPlayer: (player: Player) -> Unit,
+    specificTeamPlayers: List<Player>,
+    navController: NavHostController
+) {
 
     Column() {
-
-        val currentOnUpdateTeam by rememberUpdatedState(newValue = onUpdatePlayers)
+        val placeholderPlayer = Player(1000,"placeholder", "placeholder",2021,1000)
+        val currentOnAddPlayer by rememberUpdatedState(newValue = onAddPlayer(placeholderPlayer))
 
         Column {
             Column(
@@ -54,10 +59,9 @@ fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, players:
                     .fillMaxWidth()
                     .padding(10.dp)
             ) {
-
-
                 Box(modifier = Modifier.fillMaxWidth()) {
-                    Box(){
+
+                    Box(){ // Headline for team name
                         Text(text = team.name, fontSize = 32.sp, color = PrimaryBlue)
                     }
 
@@ -75,43 +79,19 @@ fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, players:
                     }
                 }
 
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Box(Modifier.align(Alignment.CenterStart)) {
-                        Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
-                    }
-
-                    Box(Modifier.align(Alignment.CenterEnd)) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            NewPlayerButton()
-                            Text(text = "Tilføj Spiller", color = PrimaryBlue)
-                        }
-                    }
+                Row(){
+                    NewPlayerButton(navController = navController, team = team)
+                    Text(text = "Tilføj Spiller", color = PrimaryBlue)
                 }
+                Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
 
                 LazyColumn(contentPadding = PaddingValues(5.dp)) {
-                    items(players) { player ->
+                    items(specificTeamPlayers) { player ->
                         PlayerListItem(player = player)
                     }
                 }
             }
         }
-    }
-}
-
-
-// Inspired by: https://stackoverflow.com/questions/66671902/how-to-create-a-circular-outlined-button-with-jetpack-compose
-@Composable
-fun NewPlayerButton(){
-    OutlinedButton(onClick = { /*TODO*/ },
-        modifier= Modifier
-            .padding(top = 5.dp)
-            .size(40.dp),
-        shape = CircleShape,
-        border= BorderStroke(1.dp, PrimaryBlue),
-        contentPadding = PaddingValues(0.dp),
-        colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
-    ) {
-        Icon(Icons.Default.Add, contentDescription = "NewPlayer Button")
     }
 }
 
@@ -129,7 +109,21 @@ fun PlayerListItem(player: Player){
     }
 }
 
-
+// Inspired by: https://stackoverflow.com/questions/66671902/how-to-create-a-circular-outlined-button-with-jetpack-compose
+@Composable
+fun NewPlayerButton(navController: NavHostController, team: Team){
+    OutlinedButton(onClick = { navController.navigate(Screen.Landing.route) },
+        modifier= Modifier
+            .padding(top = 5.dp)
+            .size(40.dp),
+        shape = CircleShape,
+        border= BorderStroke(1.dp, PrimaryBlue),
+        contentPadding = PaddingValues(0.dp),
+        colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
+    ) {
+        Icon(Icons.Default.Add, contentDescription = "NewPlayer Button")
+    }
+}
 
 
 @Preview(showBackground = true)

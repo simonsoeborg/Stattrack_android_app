@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                         }
                         composable(Screen.SpecificTeam.route){
 
-                            val teamObject = navController.previousBackStackEntry?.arguments?.getParcelable<Team>("specifikTeam")
+                            val teamObject = navController.previousBackStackEntry?.arguments?.getParcelable<Team>("specificTeam")
                             if (teamObject != null) {
                                 SpecificTeamScreen(navController = navController,team = teamObject, teamViewModel = sTeamVM)
                             }

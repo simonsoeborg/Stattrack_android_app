@@ -25,4 +25,10 @@ class SpecificTeamViewModel(private val repository: Repository) : ViewModel()  {
             }
         }
 
+    fun insertPlayer(player: Player){
+        viewModelScope.launch {
+            repository.insertPlayer(player)
+        }
+    }
+
     }
