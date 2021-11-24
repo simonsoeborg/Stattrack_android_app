@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.*
 import com.example.stattrack.R
-import com.example.stattrack.presentation.navbar.NavItem
+import com.example.stattrack.presentation.navbar.Screen
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import kotlinx.coroutines.delay
 
@@ -57,8 +57,9 @@ fun LandingScreen (navController: NavController/*onTimeout: () -> Unit*/) {
 
             LaunchedEffect(key1 = true) {
                 delay(SplashWaitTime)
-                navController.navigate(NavItem.Team.route){
-                    popUpTo(NavItem.Team.route) { inclusive = true }
+                navController.navigate(Screen.Team.route){
+                    navController.popBackStack(Screen.Landing.route, true, false)
+
                 }
             }
         }
