@@ -79,11 +79,18 @@ fun SpecificTeamScreenContent(
                     }
                 }
 
-                Row(){
-                    NewPlayerButton(navController = navController, team = team)
-                    Text(text = "Tilføj Spiller", color = PrimaryBlue)
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(Modifier.align(Alignment.CenterStart)) {
+                        Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+                    }
+
+                    Box(Modifier.align(Alignment.CenterEnd)) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            NewPlayerButton(navController = navController, team = team)
+                            Text(text = "Tilføj Spiller", color = PrimaryBlue)
+                        }
+                    }
                 }
-                Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
 
                 LazyColumn(contentPadding = PaddingValues(5.dp)) {
                     items(specificTeamPlayers) { player ->
