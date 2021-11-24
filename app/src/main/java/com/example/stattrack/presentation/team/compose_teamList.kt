@@ -110,9 +110,9 @@ fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
             Surface(modifier = Modifier.clickable {
 
                 // Pass data
-                val specifikTeam = Team(team.teamId,team.name,team.clubName,team.creatorId,team.teamUYear,team.division) // User is a parcelable data class.
+                val specificTeam = Team(team.teamId,team.name,team.clubName,team.creatorId,team.teamUYear,team.division) // User is a parcelable data class.
 
-                navController.currentBackStackEntry?.arguments?.putParcelable("specifikTeam", specifikTeam)
+                navController.currentBackStackEntry?.arguments?.putParcelable("specificTeam", specificTeam)
                 navController.navigate(Screen.SpecificTeam.route)
 
                // println(team.name+team.teamId)
