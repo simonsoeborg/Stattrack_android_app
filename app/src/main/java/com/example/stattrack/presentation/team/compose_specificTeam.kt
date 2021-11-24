@@ -1,9 +1,16 @@
 package com.example.stattrack.presentation.team
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,7 +75,18 @@ fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, players:
                     }
                 }
 
-                Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(Modifier.align(Alignment.CenterStart)) {
+                        Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+                    }
+
+                    Box(Modifier.align(Alignment.CenterEnd)) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            NewPlayerButton()
+                            Text(text = "Tilføj Spiller", color = PrimaryBlue)
+                        }
+                    }
+                }
 
                 LazyColumn(contentPadding = PaddingValues(5.dp)) {
                     items(players) { player ->
@@ -77,6 +95,23 @@ fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, players:
                 }
             }
         }
+    }
+}
+
+
+// Inspired by: https://stackoverflow.com/questions/66671902/how-to-create-a-circular-outlined-button-with-jetpack-compose
+@Composable
+fun NewPlayerButton(){
+    OutlinedButton(onClick = { /*TODO*/ },
+        modifier= Modifier
+            .padding(top = 5.dp)
+            .size(40.dp),
+        shape = CircleShape,
+        border= BorderStroke(1.dp, PrimaryBlue),
+        contentPadding = PaddingValues(0.dp),
+        colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
+    ) {
+        Icon(Icons.Default.Add, contentDescription = "NewPlayer Button")
     }
 }
 
