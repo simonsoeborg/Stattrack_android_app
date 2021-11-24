@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
 
 
         supportActionBar?.hide() // Hide the title bar so the app shows in fullscreen
-        /* For development purposes */
-        prepopulateSQLiteDB()
+
+        prepopulateSQLiteDB() // For development purposes
 
         setContent {
             val navController = rememberNavController()

@@ -56,7 +56,7 @@ fun MyTeamsScreenContent(
                 Box(Modifier.align(Alignment.CenterEnd)) {
                     Column(horizontalAlignment = CenterHorizontally) {
                         NewTeamButton()
-                        Text(text = "New Team", color = PrimaryBlue)
+                        Text(text = "Tilføj Hold", color = PrimaryBlue)
                     }
                 }
             }

@@ -2,6 +2,7 @@ package com.example.stattrack.presentation.team
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -36,7 +37,6 @@ fun SpecificTeamScreen(navController: NavHostController, teamViewModel: Specific
 @Composable
 fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, players: List<Player>) {
 
-
     Column() {
 
         val currentOnUpdateTeam by rememberUpdatedState(newValue = onUpdatePlayers)
@@ -56,13 +56,13 @@ fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, players:
 
                     Box(Modifier.align(Alignment.CenterEnd)) {
                         Row() {
-                            Column() {
+                            Column(modifier = Modifier.padding(end = 5.dp)) {
                                 Text(text = "Division", color = Color.Gray, fontStyle = Italic)
                                 Text(text = "Årgang", color = Color.Gray, fontStyle = Italic)
                             }
-                            Column() {
-                                Text(text = team.division, color = PrimaryBlue, modifier = Modifier.padding(start = 10.dp))
-                                Text(text = team.teamUYear, color = PrimaryBlue, modifier = Modifier.padding(start = 10.dp))
+                            Column(modifier = Modifier.padding(start = 15.dp)) {
+                                Text(text = team.division, color = PrimaryBlue)
+                                Text(text = team.teamUYear, color = PrimaryBlue)
                             }
                         }
                     }
@@ -70,26 +70,27 @@ fun SpecificTeamScreenContent(team : Team, onUpdatePlayers: () -> Unit, players:
 
                 Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
 
-                LazyColumn() { 
-
-
-
-
-
-
+                LazyColumn(contentPadding = PaddingValues(5.dp)) {
+                    items(players) { player ->
+                        PlayerListItem(player = player)
+                    }
                 }
-
             }
         }
     }
 }
 
 
+
 @Composable
-fun PlayerList(team : Team, onUpdatePlayers: () -> Unit, state: State<List<Player>>) {
-
-    LazyColumn() {
-
+fun PlayerListItem(player: Player){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        Text(text = player.name, color = PrimaryBlue, modifier = Modifier.padding(start = 10.dp))
+        Text(text = player.position, color = PrimaryBlue, modifier = Modifier.padding(start = 10.dp))
     }
 }
 
