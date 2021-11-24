@@ -53,6 +53,18 @@ class TeamViewModel (private val repository: Repository) : ViewModel() {
         }
     }
 
+    fun insertTeam(team: Team){
+        viewModelScope.launch {
+            repository.insertTeam(Team(
+                teams.value.size+1,
+                name = team.name,
+                clubName = team.clubName,
+                creatorId = team.creatorId,
+                teamUYear = team.teamUYear,
+                division = team.division
+            ))
+        }
+    }
     private fun loadAllTeams() {
         viewModelScope.launch() {
             repository.getAllTeams().collect{

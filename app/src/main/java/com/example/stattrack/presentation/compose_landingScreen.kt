@@ -21,9 +21,8 @@ import kotlinx.coroutines.delay
 private const val SplashWaitTime = 3500L
 
 @Composable
-fun LandingScreen (navController: NavController/*onTimeout: () -> Unit*/) {
-    //val currentOnTimeout by rememberUpdatedState(newValue = onTimeout)
-
+fun LandingScreen (navController: NavController) {
+    
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentSize(Alignment.Center),

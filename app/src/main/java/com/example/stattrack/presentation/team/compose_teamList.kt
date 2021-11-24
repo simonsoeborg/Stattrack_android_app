@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.stattrack.model.model.Team
+import com.example.stattrack.model.model.defaultTeamDummyData
 import com.example.stattrack.presentation.navbar.Screen
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
@@ -30,7 +31,7 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
     MyTeamsScreenContent(
         state = currentState,
         navController = navController,
-        onUpdateTeam = {teamViewModel.updateTeam()}
+        onAddTeam = {teamViewModel.insertTeam(team = it)}
     )
 }
 
@@ -38,9 +39,14 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
 fun MyTeamsScreenContent(
     state: State<TeamViewState>,
     navController: NavHostController,
-    onUpdateTeam: () -> Unit) {
+    onAddTeam: (Team) -> Unit) {
+    //var team: Team by remember { mutableStateOf(defaultTeamDummyData[1])}
+    var showAddTeamScreen by remember{ mutableStateOf(false)}
+    if(showAddTeamScreen){
+        AddTeam(navController = navController, onSubmitPressed = {onAddTeam(it)})
+        // TODO How do we set showAddTeamScreen to false again?
+    }
 
-    val currentOnUpdateTeam by rememberUpdatedState(newValue = onUpdateTeam)
     Column {
         Column(
             modifier = Modifier
@@ -53,9 +59,20 @@ fun MyTeamsScreenContent(
                     Text(text = "Hold oversigt", fontSize = 32.sp, color = PrimaryBlue)
                 }
 
+                // Add new team button and functionality
                 Box(Modifier.align(Alignment.CenterEnd)) {
                     Column(horizontalAlignment = CenterHorizontally) {
-                        NewTeamButton()
+                        OutlinedButton(onClick = { showAddTeamScreen = true },
+                            modifier= Modifier
+                                .padding(top = 5.dp)
+                                .size(40.dp),
+                            shape = CircleShape,
+                            border= BorderStroke(1.dp, PrimaryBlue),
+                            contentPadding = PaddingValues(0.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = "NewTeam Button")
+                        }
                         Text(text = "Tilføj Hold", color = PrimaryBlue)
                     }
                 }

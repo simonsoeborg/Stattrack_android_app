@@ -1,51 +1,93 @@
 package com.example.stattrack.presentation.team
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.stattrack.model.model.Team
-import com.example.stattrack.model.model.defaultTeamDummyData
+import com.example.stattrack.presentation.navbar.Screen
+
 
 @Composable
-fun AddTeam(team : Team, onSubmitPressed: (team: Team) -> Unit ) {
+fun AddTeam(navController: NavHostController, onSubmitPressed: (Team) -> Unit ) {
     var placeholderClubName = "Not updated yet"
     var placeholderTeamName = "Not updated yet"
     var placeholderCreatorName = "Not updated yet"
     var placeholderTeamUYear = "Not updated yet"
     var placeholderDivision = "Not updated yet"
 
-    val teamId : Int // create unique id in DB
-    val creatorId : String // create unique id in DB
+    // TODO : Remember to create unique ID in DB when passing event to ViewModel
 
+    Column( modifier = Modifier.fillMaxWidth()){
+        Row(modifier = Modifier.padding(all = 10.dp)) {
+            OutlinedTextField(
+                value = "Klub navn",
+                onValueChange = { placeholderClubName = it },
+                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+            )
+        }
+        Row(modifier = Modifier.padding(all = 10.dp)) {
+            OutlinedTextField(
+                value = "Hold navn",
+                onValueChange = { placeholderTeamName = it },
+                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+            )
+        }
+        Row() {
+            OutlinedTextField(
+                value = "Træner navn",
+                onValueChange = { placeholderCreatorName = it },
+                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+                )
+        }
+        Row(modifier = Modifier.padding(all = 10.dp)) {
+            OutlinedTextField(
+                value = "Årgang",
+                onValueChange = { placeholderTeamUYear = it },
+                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+                )
+        }
+        Row(modifier = Modifier.padding(all = 10.dp)) {
+             OutlinedTextField(
+                 value = "Division",
+                 onValueChange = { placeholderDivision = it },
+                 textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+             )
+         }
+        Row(modifier = Modifier.padding(all = 10.dp)) {
+            Button(onClick = { // TODO Implementér logik der validerer input (not-null, osv)
 
-    OutlinedTextField(value = "Klub navn", onValueChange = { placeholderClubName = it})
-    OutlinedTextField(value = "Hold navn", onValueChange = { placeholderTeamName = it})
-    OutlinedTextField(value = "Træner navn", onValueChange = { placeholderCreatorName = it})
-    OutlinedTextField(value = "Årgang", onValueChange = { placeholderTeamUYear = it})
-    OutlinedTextField(value = "Division", onValueChange = { placeholderDivision = it})
-    Button(onClick = { // TODO Implementér logik der validerer input (not-null, osv)
-        onSubmitPressed(
-            Team(
-                1000,
-                placeholderTeamName,
-                placeholderClubName,
-            "1000",
-                placeholderTeamUYear,
-                placeholderDivision))}
-    ) {
-        Text("Opret Hold")
+                onSubmitPressed(
+                    Team(
+                        1000,
+                        placeholderTeamName,
+                        placeholderClubName,
+                        placeholderCreatorName,
+                        placeholderTeamUYear,
+                        placeholderDivision))
+                        navController.navigate("Team")
+            }
+
+            ) { Text("Opret Hold") }
+        }
+
     }
-
 }
+
 
 
 @Preview
 @Composable
 fun AddTeamPreview(){
-    val team = defaultTeamDummyData[1]
 
-    AddTeam(team = team, onSubmitPressed ={} )
 }
