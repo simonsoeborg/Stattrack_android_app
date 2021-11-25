@@ -33,12 +33,11 @@ fun MatchScreenContent(
     onUpdateScore: (score: Int) -> Unit) {
 
     val currentOnUpdateTeam by rememberUpdatedState(newValue = onUpdateScore(0))
-    val nameTeamOne by remember { mutableStateOf("Hold 1")}
-    val scoreTeam1 by remember { mutableStateOf("25") }
-    val nameTeam2 by remember { mutableStateOf("Indtast hold 2")}
-    val scoreTeam2 by remember { mutableStateOf("0")}
+    var teamOneId = remember { mutableStateOf(100)}
+    val scoreTeam1 by remember { mutableStateOf(25) }
+    val nameTeam2 = remember { mutableStateOf("Hold 2")}
+    val scoreTeam2 by remember { mutableStateOf(0)}
     val time by remember { mutableStateOf("00:00")}
-    //Log.d("MatchContent: ${state.value.teams[0].name}","if null wrong connection to db")
 
     Column( // Main Column
         modifier = Modifier
@@ -48,10 +47,11 @@ fun MatchScreenContent(
         Row( modifier = Modifier.fillMaxWidth()) {
 
             TeamComponent(
-                hold1_name = teams.value[0].clubName,
-                hold2_name = nameTeam2,
-                hold1_sc = scoreTeam1,
-                hold2_sc = scoreTeam2
+                scoreTeam1,
+                scoreTeam2,
+                teams.value,
+                onSelectedTeam = {teamOneId.value = it},
+                onTeamTwoName = {nameTeam2.value = it }
             )
         }
         Row( modifier = Modifier.fillMaxWidth()) {
