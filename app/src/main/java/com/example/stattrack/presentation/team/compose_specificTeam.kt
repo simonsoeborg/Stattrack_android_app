@@ -1,14 +1,12 @@
 package com.example.stattrack.presentation.team
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
@@ -94,7 +92,7 @@ fun SpecificTeamScreenContent(
 
                 LazyColumn(contentPadding = PaddingValues(5.dp)) {
                     items(specificTeamPlayers) { player ->
-                        PlayerListItem(player = player)
+                        PlayerListItem(player = player, navController)
                     }
                 }
             }
@@ -105,14 +103,26 @@ fun SpecificTeamScreenContent(
 
 
 @Composable
-fun PlayerListItem(player: Player){
+fun PlayerListItem(player: Player, navController: NavHostController){
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
     ) {
-        Text(text = player.name, color = PrimaryBlue, modifier = Modifier.padding(start = 10.dp))
-        Text(text = player.position, color = PrimaryBlue, modifier = Modifier.padding(start = 10.dp))
+        Surface(modifier = Modifier.clickable {
+
+            // Pass data
+            val specificPlayer = Player(player.id,player.name,player.position,player.yob,player.teamId) // User is a parcelable data class.
+
+            navController.currentBackStackEntry?.arguments?.putParcelable("specificPlayer", specificPlayer)
+            navController.navigate(Screen.Player.route)
+
+        }) {
+            Row(){
+                Text(text = player.name, color = PrimaryBlue,  modifier = Modifier.padding(start = 10.dp))
+                Text(text = player.position, color = PrimaryBlue,fontStyle = Italic, modifier = Modifier.padding(start = 10.dp))
+            }
+        }
     }
 }
 

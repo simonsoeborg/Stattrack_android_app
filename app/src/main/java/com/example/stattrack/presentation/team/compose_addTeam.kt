@@ -19,18 +19,19 @@ import com.example.stattrack.presentation.ui.theme.Typography
 
 
 @Composable
-fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit ) {
+fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, onShowAddTeam: (Boolean) -> Unit ) {
     var placeholderClubName = TextFieldValue("Klub navn")
     var placeholderTeamName = "Not updated yet"
     var placeholderCreatorName = "Not updated yet"
     var placeholderTeamUYear = "Not updated yet"
     var placeholderDivision = "Not updated yet"
 
-    // TODO : Remember to create unique ID in DB when passing event to ViewModel
 
     Column( modifier = Modifier
         .fillMaxWidth()
-        .background(color = PrimaryWhite)
+        .padding(top=40.dp)
+        .background(color = PrimaryWhite
+        )
     ){
         Row(modifier = Modifier
             .padding(all = 10.dp)
@@ -107,6 +108,7 @@ fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit )
                         placeholderTeamUYear,
                         placeholderDivision))
                         navController?.navigate("Team")
+                    onShowAddTeam(false)
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = PrimaryBlue, contentColor = PrimaryWhite)
 
@@ -121,5 +123,5 @@ fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit )
 @Preview
 @Composable
 fun AddTeamPreview(){
-    AddTeam(navController = null, onSubmitPressed = {})
+    AddTeam(navController = null, onSubmitPressed = {}, onShowAddTeam = {})
 }

@@ -1,9 +1,7 @@
 package com.example.stattrack.presentation.team
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
 import kotlinx.coroutines.flow.*
@@ -13,50 +11,30 @@ import kotlinx.coroutines.launch
 
 /**
  * [TeamViewModel] takes as parameter a repository to request data and insert
- * into a [TeamViewState] that can be exposed to the [compose_teamList] flow in order
+ * into private variables that can be exposed as immutable states to the [compose_team] in order
  * for the view to render the relevant information
  */
 
 class TeamViewModel (private val repository: Repository) : ViewModel() {
 
-    private val teams = MutableStateFlow<List<Team>>(emptyList())
-    private val players = MutableStateFlow<List<Player>>(emptyList())
-    private val matchData = MutableStateFlow<List<MatchData>>(emptyList())
-    private val eventData = MutableStateFlow<List<EventData>>(emptyList())
-    private val playerStats = MutableStateFlow<List<PlayerStats>>(emptyList())
+    private val _teams = MutableStateFlow(defaultTeamDummyData)
+    /*
+    private val _players = MutableStateFlow(defaultDummyPlayerData)
+    private val _matchData = MutableStateFlow(defaultDummyMatchData)
+    private val _eventData = MutableStateFlow(defaultDummyEventData)
+    private val _playerStats = MutableStateFlow(defaultDummyPlayerStatsData) */
 
-
-    // Read-only for the view-layer
-    val viewState: StateFlow<TeamViewState> = combine(
-        teams,
-        players,
-        matchData,
-        eventData,
-        playerStats
-    ) { t, p, m, e, pl  ->
-        TeamViewState(t, p,  m, e, pl)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(),TeamViewState())
+    val teams:  StateFlow<List<Team>> = _teams
 
     init {
-        /* Fetch data from DB when init so it is ready for use later on
-        *  Use viewState.value in Compose */
+        /* Fetch data from DB when init so it is ready for use later on */
         loadAllTeams()
-        loadAllPlayers()
-        loadAllMatchData()
-        loadAllEventData()
-        loadAllPlayerStats()
-    }
-    fun updateTeam(){
-        val id = (10..100).random()
-        viewModelScope.launch {
-        repository.insertTeam(Team(id,"Hej fra databasen id: $id","UpdatedClubName","UpdatedCreator","2005","Top-top-proff"))
-        }
     }
 
     fun insertTeam(team: Team){
         viewModelScope.launch {
             repository.insertTeam(Team(
-                teams.value.size+1,
+                _teams.value.size+1,
                 name = team.name,
                 clubName = team.clubName,
                 creatorId = team.creatorId,
@@ -68,37 +46,56 @@ class TeamViewModel (private val repository: Repository) : ViewModel() {
     private fun loadAllTeams() {
         viewModelScope.launch() {
             repository.getAllTeams().collect{
-                teams.value = it
+                _teams.value = it
             }
         }
     }
     private fun loadAllPlayers() {
         viewModelScope.launch() {
             repository.getAllPlayers().collect {
-                players.value = it
+                //_players.value = it
             }
         }
     }
     private fun loadAllMatchData() {
         viewModelScope.launch() {
             repository.getAllMatchData().collect {
-                matchData.value = it
+                //_matchData.value = it
             }
         }
     }
     private fun loadAllEventData() {
         viewModelScope.launch() {
             repository.getAllEvents().collect {
-                eventData.value = it
+                //_eventData.value = it
             }
         }
     }
     private fun loadAllPlayerStats() {
         viewModelScope.launch() {
             repository.getAllPlayerStats().collect {
-                playerStats.value = it
+                //_playerStats.value = it
             }
         }
     }
 }
 
+/*
+*     fun updateTeam(){
+        val id = (10..100).random()
+        viewModelScope.launch {
+        repository.insertTeam(Team(id,"Hej fra databasen id: $id","UpdatedClubName","UpdatedCreator","2005","Top-top-proff"))
+        }
+    }
+
+        /* Read-only for the view-layer
+    val viewState: StateFlow<TeamViewState> = combine(
+        teams,
+        players,
+        matchData,
+        eventData,
+        playerStats
+    ) { t, p, m, e, pl  ->
+        TeamViewState(t, p,  m, e, pl)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(),TeamViewState()) */
+     */

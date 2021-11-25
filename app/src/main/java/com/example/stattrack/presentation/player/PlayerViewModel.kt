@@ -4,28 +4,24 @@ package com.example.stattrack.presentation.player
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
-import com.example.stattrack.presentation.match.MatchViewState
-import com.example.stattrack.presentation.team.TeamViewState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 /**
  * [PlayerViewModel] takes as parameter a repository to request data
- * that can be exposed by the [PlayerViewState] into [compose_match] flow in order
+ * that can be exposed into [compose_player] in order
  * for the view to render the relevant information
  */
 class PlayerViewModel(private val repository: Repository) : ViewModel() {
 
-    private val _viewState = MutableStateFlow<List<PlayerStats>>(emptyList())
+    private val _playerStats = MutableStateFlow<PlayerStats>(PlayerStats(0,"",0,0,0,0,0,0,0,0))
 
-    // Read-only for the view-layer
-    val viewState: StateFlow<PlayerViewState> = PlayerViewState(_viewState)
+    val playerStats : StateFlow<PlayerStats> = _playerStats
 
-
-    private fun loadAllPlayerStats(playerId : Int) {
+    fun loadPlayersStats(playerId: Int) {
         viewModelScope.launch() {
-            repository.getPlayerStatsById(playerId).collect {
-                _viewState.value
+            repository.getPlayerStatsById(playerId).collect{
+                _playerStats.value = it
             }
         }
     }

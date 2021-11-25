@@ -4,7 +4,6 @@ package com.example.stattrack.presentation.match
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
-import com.example.stattrack.presentation.team.TeamViewState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -16,33 +15,17 @@ import kotlinx.coroutines.launch
  */
 class MatchViewModel(private val repository: Repository) : ViewModel() {
 
-    private val teams = MutableStateFlow<List<Team>>(emptyList())
-    private val players = MutableStateFlow<List<Player>>(emptyList())
-    private val matchData = MutableStateFlow<List<MatchData>>(emptyList())
-    private val eventData = MutableStateFlow<List<EventData>>(emptyList())
-    private val playerStats = MutableStateFlow<List<PlayerStats>>(emptyList())
-
-
-    // Read-only for the view-layer
-    val viewState: StateFlow<MatchViewState> = combine(
-        teams,
-        players,
-        matchData,
-        eventData,
-        playerStats
-    ) { t, p, m, e, pl  ->
-        MatchViewState(t, p,  m, e, pl)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), MatchViewState())
+    private val _teams = MutableStateFlow<List<Team>>(defaultTeamDummyData)
+    //private val _players = MutableStateFlow<List<Player>>(emptyList())
+    //private val _matchData = MutableStateFlow<List<MatchData>>(emptyList())
+    //private val _eventData = MutableStateFlow<List<EventData>>(emptyList())
+    //private val _playerStats = MutableStateFlow<List<PlayerStats>>(emptyList())
+    val teams: StateFlow<List<Team>> = _teams
 
 
     init {
-        /* Fetch data from DB when init so it is ready for use later on
-        *  Use viewState.value in Compose */
+        /* Fetch data from DB when init so it is ready for use later on */
         loadAllTeams()
-        loadAllPlayers()
-        loadAllMatchData()
-        loadAllEventData()
-        loadAllPlayerStats()
     }
 
 
@@ -54,35 +37,35 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private fun loadAllTeams() {
         viewModelScope.launch() {
             repository.getAllTeams().collect{
-                teams.value = it
+                _teams.value = it
             }
         }
     }
     private fun loadAllPlayers() {
         viewModelScope.launch() {
             repository.getAllPlayers().collect {
-                players.value = it
+                //_players.value = it
             }
         }
     }
     private fun loadAllMatchData() {
         viewModelScope.launch() {
             repository.getAllMatchData().collect {
-                matchData.value = it
+                //_matchData.value = it
             }
         }
     }
     private fun loadAllEventData() {
         viewModelScope.launch() {
             repository.getAllEvents().collect {
-                eventData.value = it
+                //_eventData.value = it
             }
         }
     }
     private fun loadAllPlayerStats() {
         viewModelScope.launch() {
             repository.getAllPlayerStats().collect {
-                playerStats.value = it
+                //_playerStats.value = it
             }
         }
     }
@@ -112,5 +95,24 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     )
     private val _hotMatchState = MutableStateFlow(matchStateTest)
     val hotMatchState = _hotMatchState.asStateFlow()
+ --------------------------------------------------------------------------------------
+
+
+
+
+
+  /* Read-only for the view-layer
+    val viewState: StateFlow<MatchViewState> = combine(
+        teams,
+        players,
+        matchData,
+        eventData,
+        playerStats
+    ) { t, p, m, e, pl  ->
+        MatchViewState(t, p,  m, e, pl)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), MatchViewState()) */
+
+
  */
+
 
