@@ -40,11 +40,10 @@ fun MyTeamsScreenContent(
     state: State<TeamViewState>,
     navController: NavHostController,
     onAddTeam: (Team) -> Unit) {
-    //var team: Team by remember { mutableStateOf(defaultTeamDummyData[1])}
+
     var showAddTeamScreen by remember{ mutableStateOf(false)}
     if(showAddTeamScreen){
-        AddTeam(navController = navController, onSubmitPressed = {onAddTeam(it)})
-        // TODO How do we set showAddTeamScreen to false again?
+        AddTeam(navController = navController, onSubmitPressed = {onAddTeam(it)}, onShowAddTeam = { showAddTeamScreen=it })
     }
 
     Column {
@@ -95,21 +94,6 @@ fun MyTeamsScreenContent(
     }
 }
 
-// Inspired by: https://stackoverflow.com/questions/66671902/how-to-create-a-circular-outlined-button-with-jetpack-compose
-@Composable
-fun NewTeamButton(){
-    OutlinedButton(onClick = { /*TODO*/ },
-        modifier= Modifier
-            .padding(top = 5.dp)
-            .size(40.dp),
-        shape = CircleShape,
-        border= BorderStroke(1.dp, PrimaryBlue),
-        contentPadding = PaddingValues(0.dp),
-        colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
-    ) {
-        Icon(Icons.Default.Add, contentDescription = "NewTeam Button")
-    }
-}
 
 @Composable
 fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
@@ -158,3 +142,20 @@ fun HoldScreenPreview() {
     //val previewModel = TeamViewModel(ServiceLocator.repository)
    // HoldScreen(previewModel, navController)
 }
+
+
+ /*// Inspired by: https://stackoverflow.com/questions/66671902/how-to-create-a-circular-outlined-button-with-jetpack-compose
+@Composable
+fun NewTeamButton(){
+    OutlinedButton(onClick = { /*TODO*/ },
+        modifier= Modifier
+            .padding(top = 5.dp)
+            .size(40.dp),
+        shape = CircleShape,
+        border= BorderStroke(1.dp, PrimaryBlue),
+        contentPadding = PaddingValues(0.dp),
+        colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
+    ) {
+        Icon(Icons.Default.Add, contentDescription = "NewTeam Button")
+    }
+} */
