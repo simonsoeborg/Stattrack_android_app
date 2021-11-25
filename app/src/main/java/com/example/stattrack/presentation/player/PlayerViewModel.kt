@@ -8,6 +8,7 @@ import com.example.stattrack.presentation.match.MatchViewState
 import com.example.stattrack.presentation.team.TeamViewState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.Optional.empty
 
 /**
  * [PlayerViewModel] takes as parameter a repository to request data
@@ -16,16 +17,14 @@ import kotlinx.coroutines.launch
  */
 class PlayerViewModel(private val repository: Repository) : ViewModel() {
 
-    private val _viewState = MutableStateFlow<List<PlayerStats>>(emptyList())
+    private val _playerStats = MutableStateFlow<PlayerStats>(PlayerStats(0,"",0,0,0,0,0,0,0,0))
 
-    // Read-only for the view-layer
-    val viewState: StateFlow<PlayerViewState> = PlayerViewState(_viewState)
+    val playerStats : StateFlow<PlayerStats> = _playerStats
 
-
-    private fun loadAllPlayerStats(playerId : Int) {
+    fun loadAllPlayerStats(playerId: Int) {
         viewModelScope.launch() {
-            repository.getPlayerStatsById(playerId).collect {
-                _viewState.value
+            repository.getPlayerStatsById(playerId).collect{
+                _playerStats.value = it
             }
         }
     }

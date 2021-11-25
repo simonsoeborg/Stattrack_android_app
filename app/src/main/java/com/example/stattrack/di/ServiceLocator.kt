@@ -12,6 +12,7 @@ import com.example.stattrack.model.database.AppDatabase
 import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.team.TeamViewModel
 import com.example.stattrack.presentation.match.MatchViewModel
+import com.example.stattrack.presentation.player.PlayerViewModel
 import com.example.stattrack.presentation.team.SpecificTeamViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,7 +40,7 @@ object ServiceLocator {
                     MatchViewModel::class.java -> MatchViewModel(repository)
                     TeamViewModel::class.java -> TeamViewModel(repository)
                     SpecificTeamViewModel::class.java -> SpecificTeamViewModel(repository)
-
+                    PlayerViewModel::class.java -> PlayerViewModel(repository)
 
                     else -> throw IllegalArgumentException("Unsupported ViewModel $modelClass")
                 } as T
@@ -55,6 +56,13 @@ object ServiceLocator {
 
     val ViewModelStoreOwner.teamViewModel: TeamViewModel
             get() = ViewModelProvider(this, viewModelFactory).get()
+
+    val ViewModelStoreOwner.playerViewModel: PlayerViewModel
+        get() = ViewModelProvider(this, viewModelFactory).get()
+
+
+
+
 
     fun prepopulateSQLiteDB(){
         GlobalScope.launch() {

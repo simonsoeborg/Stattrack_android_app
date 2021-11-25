@@ -25,11 +25,14 @@ import com.example.stattrack.presentation.navbar.Screen
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.di.ServiceLocator.matchViewModel
+import com.example.stattrack.di.ServiceLocator.playerViewModel
 import com.example.stattrack.di.ServiceLocator.prepopulateSQLiteDB
 import com.example.stattrack.di.ServiceLocator.specificTeamViewModel
 import com.example.stattrack.di.ServiceLocator.teamViewModel
+import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.presentation.player.PlayerClass
+import com.example.stattrack.presentation.player.PlayerViewModel
 import com.example.stattrack.presentation.team.SpecificTeamViewModel
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
@@ -39,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         val matchVM: MatchViewModel by lazy { matchViewModel }
         val teamVM: TeamViewModel by lazy { teamViewModel }
         val sTeamVM: SpecificTeamViewModel by lazy {specificTeamViewModel}
-
+        val playerVM: PlayerViewModel by lazy {playerViewModel}
 
         supportActionBar?.hide() // Hide the title bar so the app shows in fullscreen
 
@@ -68,14 +71,13 @@ class MainActivity : AppCompatActivity() {
                             if (teamObject != null) {
                                 SpecificTeamScreen(navController = navController,team = teamObject, teamViewModel = sTeamVM)
                             }
-
-                            if(teamObject == null){
-                                println("TeamObject er null")
-                            }
                         }
                         composable(Screen.Player.route) {
-                            PlayerClass()
 
+                            val playerObject = navController.previousBackStackEntry?.arguments?.getParcelable<Player>("specificPlayer")
+                            if (playerObject != null) {
+                                PlayerClass(navController = navController, playerViewModel = playerVM, player = playerObject)
+                            }
                         }
                     }
                 }
@@ -92,7 +94,7 @@ fun BottomNavigationBar(navController: NavHostController) {
     val screens = listOf(
         Screen.Match,
         Screen.Team,
-        Screen.Player
+        //Screen.Player
     )
     BottomNavigation(
         backgroundColor = PrimaryWhite,

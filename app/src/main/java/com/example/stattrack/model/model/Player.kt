@@ -1,12 +1,16 @@
 package com.example.stattrack.model.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Player(
     val id : Int,
     val name : String,
     val position : String,
     val yob : Int,
     val teamId : Int
-    )
+     ): Parcelable
 
 val defaultDummyPlayerData = listOf(
     Player(1,"Albert Antonsen","Målvogter",1993,1),
