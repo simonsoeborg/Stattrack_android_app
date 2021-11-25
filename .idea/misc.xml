@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Fridolf/StudioProjects/Stattrack_android_app/app/src/main/res/layout/fragment_hold.xml" value="0.1" />
+        <entry key="..\:/Users/Fridolf/StudioProjects/Stattrack_android_app/app/src/main/res/layout/fragment_kamp.xml" value="0.18885869565217392" />
+        <entry key="..\:/Users/Fridolf/StudioProjects/Stattrack_android_app/app/src/main/res/layout/fragment_spiller.xml" value="0.17046605876393112" />
+        <entry key="..\:/Users/Fridolf/StudioProjects/Stattrack_android_app/app/src/main/res/layout/fragment_spiller_data_alle.xml" value="0.18885869565217392" />
+        <entry key="..\:/Users/Fridolf/StudioProjects/Stattrack_android_app/app/src/main/res/layout/fragment_spiller_data_denne.xml" value="0.18885869565217392" />
         <entry key="..\:/Users/kaspe/IdeaProjects/Stattrack_android_app/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kaspe/IdeaProjects/Stattrack_android_app/app/src/main/res/drawable/StatTrackIcon_foreground.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/kaspe/IdeaProjects/Stattrack_android_app/app/src/main/res/drawable/addbutton.xml" value="0.3333333333333333" />
