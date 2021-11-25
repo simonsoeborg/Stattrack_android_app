@@ -17,15 +17,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.PlayerStats
-import com.example.stattrack.model.model.Team
-import com.example.stattrack.presentation.team.SpecificTeamViewModel
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
 @Composable
 fun PlayerClass(navController: NavHostController, playerViewModel: PlayerViewModel, player : Player){
 
-    playerViewModel.loadAllPlayerStats(player.id)
+    playerViewModel.loadPlayersStats(player.id)
     val playerStats : State<PlayerStats> = playerViewModel.playerStats.collectAsState()
 
     PlayerClassContent(playerStats, player)
@@ -72,14 +70,14 @@ fun PlayerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int)
                 Modifier
                     .weight(1f)
             ) {
-                SpillerInfoText(padding)
+                PlayerInfoText(padding)
             }
 
             Column(
                 Modifier
                     .weight(1f)
             ) {
-                SpillerInfoDenne(
+                PlayerInfoThis(
                     padding = padding,
                     antalMaal = antalMaal,
                     antalKamp = antalKamp,
@@ -95,7 +93,7 @@ fun PlayerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int)
 
 
 @Composable
-fun SpillerInfoText (padding: Dp) {
+fun PlayerInfoText (padding: Dp) {
 
     Text(text = "Antal kampe spillede:", Modifier.padding(padding))
 
@@ -107,7 +105,7 @@ fun SpillerInfoText (padding: Dp) {
 }
 
 @Composable
-fun SpillerInfoDenne(padding: Dp, antalMaal: Int, antalKamp: Int, antalAssist: Int, antalSkud: Int) {
+fun PlayerInfoThis(padding: Dp, antalMaal: Int, antalKamp: Int, antalAssist: Int, antalSkud: Int) {
     Text( text = "   $antalKamp   ",
         style = TextStyle(textDecoration = TextDecoration.Underline),
         modifier = Modifier.padding(padding))

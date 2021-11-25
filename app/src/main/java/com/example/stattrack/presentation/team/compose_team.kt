@@ -19,6 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.stattrack.model.model.MatchData
+import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.model.model.defaultTeamDummyData
 import com.example.stattrack.presentation.navbar.Screen
@@ -26,10 +28,10 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 @Composable
 fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController) {
-    val currentState: State<TeamViewState> = teamViewModel.viewState.collectAsState()
+    val teams: State<List<Team>> = teamViewModel.teams.collectAsState()
 
     MyTeamsScreenContent(
-        state = currentState,
+        teams = teams,
         navController = navController,
         onAddTeam = {teamViewModel.insertTeam(team = it)}
     )
@@ -37,7 +39,7 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
 
 @Composable
 fun MyTeamsScreenContent(
-    state: State<TeamViewState>,
+    teams: State<List<Team>>,
     navController: NavHostController,
     onAddTeam: (Team) -> Unit) {
 
@@ -78,7 +80,7 @@ fun MyTeamsScreenContent(
             }
 
             Column(modifier = Modifier.padding(start = 10.dp)) {
-                TeamList(state, navController)
+                TeamList(teams, navController)
             }
         }
         Column(
@@ -88,7 +90,7 @@ fun MyTeamsScreenContent(
         ) {
             Text(text = "Kamp oversigt", fontSize = 32.sp, color = PrimaryBlue)
             Column(modifier = Modifier.padding(10.dp)) {
-                dummydata2()
+                //MatchList()
             }
         }
     }
@@ -96,10 +98,10 @@ fun MyTeamsScreenContent(
 
 
 @Composable
-fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
+fun TeamList(teams: State<List<Team>>, navController: NavHostController) {
     LazyColumn() {
         items(
-            items = state.value.teams,
+            items = teams.value,
             key = { team ->
                 // Return a stable + unique key for the item
                 team.teamId
@@ -116,7 +118,6 @@ fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
                 navController.currentBackStackEntry?.arguments?.putParcelable("specificTeam", specificTeam)
                 navController.navigate(Screen.SpecificTeam.route)
 
-               // println(team.name+team.teamId)
             }){
                 Text(team.name,modifier = Modifier.padding(2.dp), color = PrimaryBlue)
             }
@@ -128,26 +129,17 @@ fun TeamList(state: State<TeamViewState>, navController: NavHostController) {
 
 
 @Composable
-fun dummydata2() {
-    val items = listOf("HØJ U19 mod FIF U19", "HØJ Elite mod BSV", "HØJ 2 mod Randers", "HØJ 3 mod Rudersdal")
-
-    items.forEach { item ->
-        Text(text = "$item", modifier = Modifier.padding(2.dp), color = PrimaryBlue)
-    }
+fun MatchList(matches: State<List<MatchData>>, navController: NavHostController) {
+    LazyColumn() {
+        }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HoldScreenPreview() {
-    //val previewModel = TeamViewModel(ServiceLocator.repository)
-   // HoldScreen(previewModel, navController)
-}
 
 
  /*// Inspired by: https://stackoverflow.com/questions/66671902/how-to-create-a-circular-outlined-button-with-jetpack-compose
 @Composable
 fun NewTeamButton(){
-    OutlinedButton(onClick = { /*TODO*/ },
+    OutlinedButton(onClick = { },
         modifier= Modifier
             .padding(top = 5.dp)
             .size(40.dp),
