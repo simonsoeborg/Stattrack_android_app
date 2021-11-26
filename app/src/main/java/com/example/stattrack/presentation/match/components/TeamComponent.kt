@@ -29,7 +29,8 @@ fun TeamComponent(
     teamTwoScore: Int,
     teams:List<Team>,
     onSelectedTeam: (teamId: Int) -> Unit,
-    onTeamTwoName: (String)-> Unit){
+    onTeamTwoName: (String) -> Unit,
+    onTeamTwoScore: (Int) -> Unit){
 
     val teamTwoName = remember { mutableStateOf("Hold 2")}
 
@@ -105,6 +106,7 @@ fun TeamComponent(
                     .weight(1f)
                     .padding(1.dp)
                 ) {
+                    // TODO - Make a button so we can increment score on team 2 and use callback function onTeamTwoScore(Int) to call value upwards in compose-tree
                     Text(
                         text = teamTwoScore.toString(),
                         color = PrimaryBlue,
@@ -165,6 +167,8 @@ fun TeamComponentPreview(){
         0,
         teams = defaultTeamDummyData,
         onSelectedTeam = { },
-        onTeamTwoName = { }
+        onTeamTwoName = { },
+        onTeamTwoScore = { }
+
     )
 }

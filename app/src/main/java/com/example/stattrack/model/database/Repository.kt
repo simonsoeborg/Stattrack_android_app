@@ -73,10 +73,11 @@ class Repository (
             .mapIterable { eventEntity ->
                 eventEntity.toModel()   }
 
-    fun getEventDataByMatchId(matchId: Int): Flow<EventData> =
+    fun getEventDataByMatchId(matchId: Int): Flow<List<EventData>> =
         database.EventDataDao()
-            .loadByMatchId(matchId = matchId)
-            .map { it?.toModel() ?: EventData(0," ", 0," ",0) }
+            .loadByMatchId(matchId)
+            .mapIterable { eventEntity ->
+                eventEntity.toModel()   }
 
     fun getAllEvents(): Flow<List<EventData>> =
         database.EventDataDao()

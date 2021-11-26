@@ -16,11 +16,16 @@ import kotlinx.coroutines.launch
 class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     private val _teams = MutableStateFlow<List<Team>>(defaultTeamDummyData)
-    //private val _players = MutableStateFlow<List<Player>>(emptyList())
-    //private val _matchData = MutableStateFlow<List<MatchData>>(emptyList())
-    //private val _eventData = MutableStateFlow<List<EventData>>(emptyList())
+    private val _matchData = MutableStateFlow(defaultDummyMatchData[0])
+    private val _eventData = MutableStateFlow(defaultDummyEventData[0])
+    private val _players = MutableStateFlow(defaultDummyPlayerData)
+    private val _events = MutableStateFlow(defaultDummyEventData)
     //private val _playerStats = MutableStateFlow<List<PlayerStats>>(emptyList())
     val teams: StateFlow<List<Team>> = _teams
+    val matchData: StateFlow<MatchData> = _matchData
+    val eventData: StateFlow<EventData> = _eventData
+    val players: StateFlow<List<Player>> = _players
+    val events: StateFlow<List<EventData>> = _events
 
 
     init {
@@ -28,6 +33,23 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         loadAllTeams()
     }
 
+    fun getPlayersFromTeam(teamId: Int){
+        viewModelScope.launch {
+            repository.getAllPlayersFromTeam(teamId = teamId)
+                .collect {
+                    _players.value = it
+                }
+        }
+    }
+
+    fun getEventsFromMatchId(matchId: Int){
+        viewModelScope.launch {
+            repository.getEventDataByMatchId(matchId)
+                .collect {
+                    _events.value = it
+                }
+        }
+    }
 
     fun updateTeam(){
         viewModelScope.launch {
