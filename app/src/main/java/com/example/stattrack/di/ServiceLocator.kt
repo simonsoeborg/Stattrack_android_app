@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 object ServiceLocator {
 
 
-    private lateinit var application: Application
+    lateinit var application: Application
 
     var id : Int = 0
 

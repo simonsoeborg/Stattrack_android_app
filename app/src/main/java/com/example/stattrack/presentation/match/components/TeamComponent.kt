@@ -17,7 +17,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.stattrack.model.model.MatchData
 import com.example.stattrack.model.model.Team
+import com.example.stattrack.model.model.defaultDummyMatchData
 import com.example.stattrack.model.model.defaultTeamDummyData
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
@@ -25,10 +27,9 @@ import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 
 @Composable
 fun TeamComponent(
-    teamOneScore: Int,
-    teamTwoScore: Int,
+    matchData: MatchData,
     teams:List<Team>,
-    onSelectedTeam: (teamId: Int) -> Unit,
+    onSelectedTeamOne: (teamId: Int) -> Unit,
     onTeamTwoName: (String) -> Unit,
     onTeamTwoScore: (Int) -> Unit){
 
@@ -56,7 +57,7 @@ fun TeamComponent(
                 ) {
                     DropdownTeamsList(
                         teams = teams,
-                        onSelectedTeam = { onSelectedTeam(it) }
+                        onSelectedTeam = { onSelectedTeamOne(it) }
                     )
                 }
                 Column( modifier = Modifier
@@ -64,7 +65,7 @@ fun TeamComponent(
                     .padding(1.dp)
                 ) {
                     Text(
-                        text = teamOneScore.toString(),
+                        text = matchData.creatorTeamGoals.toString(),
                         color = PrimaryBlue,
                         fontSize = 24.sp,
                     )
@@ -86,8 +87,8 @@ fun TeamComponent(
                         value = teamTwoName.value,
                         onValueChange = {
                             teamTwoName.value = it
-                            onTeamTwoName(teamTwoName.value)
-                        },cursorBrush = SolidColor(Transparent),
+                            onTeamTwoName(it)
+                        },//cursorBrush = SolidColor(Transparent),
                         textStyle = TextStyle(color = PrimaryBlue, background = PrimaryWhite, fontSize = 24.sp),
                         singleLine = true
                         /*colors = textFieldColors(
@@ -108,7 +109,7 @@ fun TeamComponent(
                 ) {
                     // TODO - Make a button so we can increment score on team 2 and use callback function onTeamTwoScore(Int) to call value upwards in compose-tree
                     Text(
-                        text = teamTwoScore.toString(),
+                        text = matchData.opponentGoals.toString(),
                         color = PrimaryBlue,
                         fontSize = 24.sp,
 
@@ -163,10 +164,9 @@ fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit) 
 @Composable
 fun TeamComponentPreview(){
     TeamComponent(
-        25,
-        0,
+        defaultDummyMatchData[0],
         teams = defaultTeamDummyData,
-        onSelectedTeam = { },
+        onSelectedTeamOne = { },
         onTeamTwoName = { },
         onTeamTwoScore = { }
 

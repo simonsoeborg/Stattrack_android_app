@@ -11,6 +11,7 @@ data class MatchData(
     )
 
 val defaultDummyMatchData = listOf(
+    MatchData(0,"Træner",0,"Hold 2","null",0,0),
     MatchData(1,"Kasper",1,"Grindsted GIF Håndbold","18-11-2021",4,16),
     MatchData(2,"Dennis",2,"Nørrebronx Driblers","18-11-2021",23,19),
     MatchData(3,"Hørsholm",3,"Modstander hold","18-11-2021",41,25),

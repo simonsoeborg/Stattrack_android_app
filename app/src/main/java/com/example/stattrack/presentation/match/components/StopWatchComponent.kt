@@ -20,7 +20,11 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 
 @Composable
-fun StopWatchComponent(timeValue: String) {
+fun StopWatchComponent(
+    timeValue: String,
+    onPlayPressed: () -> Unit,
+    onPausePressed: () -> Unit
+    ) {
     var time by remember { mutableStateOf( timeValue ) }
     Column( modifier = Modifier
         .fillMaxWidth()
@@ -39,10 +43,10 @@ fun StopWatchComponent(timeValue: String) {
                 .align(Alignment.CenterHorizontally)
                 .padding(5.dp)
         ) {
-            OutlinedButton(onClick = { /*TODO*/ }) {
+            OutlinedButton(onClick = { onPlayPressed() }) {
                 Icon(Icons.Default.PlayCircle, contentDescription = "Play", tint = PrimaryBlue)
             }
-            OutlinedButton(onClick = { /*TODO*/ }) {
+            OutlinedButton(onClick = { onPausePressed }) {
                 Icon(Icons.Default.StopCircle, contentDescription = "Stop", tint = PrimaryBlue)
             }
         }

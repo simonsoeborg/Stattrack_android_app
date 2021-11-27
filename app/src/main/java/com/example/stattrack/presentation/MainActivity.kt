@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
@@ -26,9 +24,9 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.di.ServiceLocator.matchViewModel
 import com.example.stattrack.di.ServiceLocator.playerViewModel
-import com.example.stattrack.di.ServiceLocator.prepopulateSQLiteDB
 import com.example.stattrack.di.ServiceLocator.specificTeamViewModel
 import com.example.stattrack.di.ServiceLocator.teamViewModel
+import com.example.stattrack.di.ServiceLocator.prepopulateSQLiteDB
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.presentation.player.PlayerClass
@@ -37,6 +35,7 @@ import com.example.stattrack.presentation.team.SpecificTeamViewModel
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val matchVM: MatchViewModel by lazy { matchViewModel }

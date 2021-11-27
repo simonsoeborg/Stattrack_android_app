@@ -1,36 +1,121 @@
 package com.example.stattrack.presentation.match
 
 
+
+import android.annotation.SuppressLint
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.*
 
 
 /**
  * [MatchViewModel] takes as parameter a repository to request data
- * into a [MatchViewState] that can be exposed to the [compose_match] flow in order
+ * that can be exposed to the [compose_match] flow in order
  * for the view to render the relevant information
  */
 class MatchViewModel(private val repository: Repository) : ViewModel() {
 
-    private val _teams = MutableStateFlow<List<Team>>(defaultTeamDummyData)
-    private val _matchData = MutableStateFlow(defaultDummyMatchData[0])
+    /* Time component variables
+    private val maxTime = 60*30
+    private val _currentTime = MutableStateFlow(0)
+    private val pausedTime = MutableLiveData(true)
+    val paused: LiveData<Boolean> = pausedTime
+    private val timer = Timer()
+
+    */
+
+    private val _teams = MutableStateFlow(defaultTeamDummyData)
+    private val _currentMatch = MutableStateFlow(defaultDummyMatchData[0])
+    private val _allMatches = MutableStateFlow(defaultDummyMatchData)
     private val _eventData = MutableStateFlow(defaultDummyEventData[0])
     private val _players = MutableStateFlow(defaultDummyPlayerData)
     private val _events = MutableStateFlow(defaultDummyEventData)
-    //private val _playerStats = MutableStateFlow<List<PlayerStats>>(emptyList())
+    private val _startMatch = MutableStateFlow(false)
+    private val _isMatchPaused = MutableStateFlow(false)
+
     val teams: StateFlow<List<Team>> = _teams
-    val matchData: StateFlow<MatchData> = _matchData
+    val matchData: StateFlow<MatchData> = _currentMatch
     val eventData: StateFlow<EventData> = _eventData
     val players: StateFlow<List<Player>> = _players
     val events: StateFlow<List<EventData>> = _events
-
+    val isMatchPaused: StateFlow<Boolean> = _isMatchPaused
+    //val currentTime: StateFlow<Int> = _currentTime
 
     init {
         /* Fetch data from DB when init so it is ready for use later on */
         loadAllTeams()
+        loadAllMatchData()
+
+    }
+    // To be called when a new match is started
+    @SuppressLint("NewApi")
+    private fun initMatchDateAndId(){
+
+        _currentMatch.value =
+            _currentMatch.value.copy(
+                id = _allMatches.value.size + 1,
+                matchDate = LocalDate.now().toString()
+            )
+        viewModelScope.launch {
+            repository.insertMatchData(_currentMatch.value)
+        }
+        _startMatch.value = true
+    }
+
+    fun onPlayPressed(){
+        if (!_startMatch.value){
+            /* Set matchId and matchDate */
+            initMatchDateAndId()
+        }
+        if (_startMatch.value){
+            /* Activate timer */
+        }
+    }
+
+    fun onPausePressed(){
+        /* Pause timer */
+    }
+
+    fun setTeamOneName(teamId: Int){
+        // Update values in model - will trigger recompose
+        _currentMatch.value = _currentMatch.value.copy(
+            creatorId = teams.value[teamId-1].clubName,
+            creatorTeamId = teamId
+        )
+
+           /* Testing purposes */
+        // Log.d("setTeamOneName: ", _currentMatch.value.creatorId+_currentMatch.value.creatorTeamId)
+
+        // Update values in repository - will not trigger recompose unless paired with a "refresh"
+        /* TODO:: Can not be called before we give the _matchData an ID - will probably make sense to give it an ID when pressing PLAY on StopWatchComponent
+        viewModelScope.launch {
+            repository.insertMatchData(
+                _currentMatch.value.copy(
+                    creatorId = teams.value[teamId-1].clubName,
+                    creatorTeamId = teamId
+                )
+            )
+
+        }
+         */
+    }
+
+    fun setTeamTwoName(name: String){
+        // Update values in model - will trigger recompose
+        _currentMatch.value = _currentMatch.value.copy(
+            opponent = name
+        )
+    }
+
+    fun startMatch(){
+        _startMatch.value = true
+        initMatchDateAndId()
     }
 
     fun getPlayersFromTeam(teamId: Int){
@@ -42,6 +127,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+
     fun getEventsFromMatchId(matchId: Int){
         viewModelScope.launch {
             repository.getEventDataByMatchId(matchId)
@@ -51,11 +137,6 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun updateTeam(){
-        viewModelScope.launch {
-            repository.insertTeam(Team(1,"Hej fra databasen id: 1","UpdatedClubName","UpdatedCreator","2005","Top-top-proff"))
-        }
-    }
     private fun loadAllTeams() {
         viewModelScope.launch() {
             repository.getAllTeams().collect{
@@ -63,31 +144,11 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
             }
         }
     }
-    private fun loadAllPlayers() {
-        viewModelScope.launch() {
-            repository.getAllPlayers().collect {
-                //_players.value = it
-            }
-        }
-    }
+
     private fun loadAllMatchData() {
         viewModelScope.launch() {
             repository.getAllMatchData().collect {
-                //_matchData.value = it
-            }
-        }
-    }
-    private fun loadAllEventData() {
-        viewModelScope.launch() {
-            repository.getAllEvents().collect {
-                //_eventData.value = it
-            }
-        }
-    }
-    private fun loadAllPlayerStats() {
-        viewModelScope.launch() {
-            repository.getAllPlayerStats().collect {
-                //_playerStats.value = it
+                _allMatches.value = it
             }
         }
     }
@@ -138,3 +199,38 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
  */
 
 
+/*
+  fun updateTeam(){
+        viewModelScope.launch {
+            repository.insertTeam(Team(1,"Hej fra databasen id: 1","UpdatedClubName","UpdatedCreator","2005","Top-top-proff"))
+        }
+    }
+
+private fun loadAllPlayers() {
+        viewModelScope.launch() {
+            repository.getAllPlayers().collect {
+                //_players.value = it
+            }
+        }
+    }
+    private fun loadAllMatchData() {
+        viewModelScope.launch() {
+            repository.getAllMatchData().collect {
+                //_matchData.value = it
+            }
+        }
+    }
+    private fun loadAllEventData() {
+        viewModelScope.launch() {
+            repository.getAllEvents().collect {
+                //_eventData.value = it
+            }
+        }
+    }
+    private fun loadAllPlayerStats() {
+        viewModelScope.launch() {
+            repository.getAllPlayerStats().collect {
+                //_playerStats.value = it
+            }
+        }
+    }*/
