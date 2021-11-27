@@ -21,10 +21,7 @@ import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 @Composable
 fun EventComponent(
     players: List<Player>,
-    onEventUpdate: (event: EventItems) -> Unit,
-    onEventUpdatePlayerId: (playerId: Int) -> Unit,
-    insertEvent: () -> Unit,
-    updateEventList: () -> Unit
+    newEvent: (event: EventItems) -> Unit
 ) {
     var expandedEvents by remember { mutableStateOf(false) }
     var selectedIndexEvents by remember { mutableStateOf(0) }
@@ -96,10 +93,10 @@ fun EventComponent(
                             selectedIndexEvents = index
                             expandedEvents = false
                             // Callback function to send event and playerId upwards in compose (return)
-                            onEventUpdate(eventItems[selectedIndexEvents])
-                            onEventUpdatePlayerId(players[selectedIndexPlayers].id)
-                            insertEvent() // Just works as a trigger functions to call up
-                            updateEventList()
+                            if(selectedIndexEvents!=0) {
+                                eventItems[selectedIndexEvents].playerId = players[selectedIndexPlayers].id
+                                newEvent(eventItems[selectedIndexEvents])
+                            }
                         },
                         onDismissRequest = {
                             expandedEvents = false
@@ -138,5 +135,5 @@ fun EventComponent(
 @Composable
 fun EventComponentPreview() {
 
-    EventComponent(defaultDummyPlayerData, onEventUpdate = {EventItems.Default }, onEventUpdatePlayerId = {0}, insertEvent = { }, updateEventList = { })
+    EventComponent(defaultDummyPlayerData, newEvent = { })
 }

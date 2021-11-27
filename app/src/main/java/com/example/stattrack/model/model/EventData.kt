@@ -8,6 +8,19 @@ data class EventData (
     val matchId : Int
     )
 
+enum class EventType {
+
+    MÅL,
+    SKUD,
+    REDNING,
+    ASSIST,
+    UDVISNING,
+    GULT,
+    RØDT
+
+
+}
+
 val defaultDummyEventData = listOf(
     EventData(1,"Træningskamp",1,"23:50",1),
     EventData(2,"Landskamp",1,"23:50",2),

@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
+import com.example.stattrack.presentation.match.data.EventItems
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -33,7 +34,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private val _teams = MutableStateFlow(defaultTeamDummyData)
     private val _currentMatch = MutableStateFlow(defaultDummyMatchData[0])
     private val _allMatches = MutableStateFlow(defaultDummyMatchData)
-    private val _eventData = MutableStateFlow(defaultDummyEventData[0])
+    //private val _eventData = MutableStateFlow(defaultDummyEventData[0])
     private val _players = MutableStateFlow(defaultDummyPlayerData)
     private val _events = MutableStateFlow(defaultDummyEventData)
     private val _startMatch = MutableStateFlow(false)
@@ -41,7 +42,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     val teams: StateFlow<List<Team>> = _teams
     val matchData: StateFlow<MatchData> = _currentMatch
-    val eventData: StateFlow<EventData> = _eventData
+    //val eventData: StateFlow<EventData> = _eventData
     val players: StateFlow<List<Player>> = _players
     val events: StateFlow<List<EventData>> = _events
     val isMatchPaused: StateFlow<Boolean> = _isMatchPaused
@@ -88,6 +89,8 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
             creatorId = teams.value[teamId-1].clubName,
             creatorTeamId = teamId
         )
+        // Update list of players for use in EventComponent later
+        getPlayersFromTeam(teamId)
 
            /* Testing purposes */
         // Log.d("setTeamOneName: ", _currentMatch.value.creatorId+_currentMatch.value.creatorTeamId)
@@ -104,6 +107,21 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
 
         }
          */
+    }
+    fun insertEvent(event: EventItems){
+        viewModelScope.launch {
+            repository.insertEventData(
+                EventData(
+                    id = events.value.size+1,
+                    eventType = event.title,
+                    playerId = event.playerId,
+                    time = "03:45",
+                    matchId = _currentMatch.value.id
+                )
+            )
+        }
+        getEventsFromMatchId(_currentMatch.value.id)
+
     }
 
     fun setTeamTwoName(name: String){

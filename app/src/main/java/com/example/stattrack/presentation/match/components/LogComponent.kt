@@ -3,6 +3,8 @@ package com.example.stattrack.presentation.match
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,8 +28,8 @@ fun LogComponent(
         .height(200.dp)
         .border(BorderStroke(1.dp, PrimaryBlue))) {
         Row(modifier = Modifier.padding(5.dp)) {
-            Column() {
-                events.forEach{event ->
+            LazyColumn() {
+                items(events){event ->
                     Text(
                         "${event.time} | ${players[event.playerId-1].name} | ${event.eventType}",
                         textAlign = TextAlign.Center,

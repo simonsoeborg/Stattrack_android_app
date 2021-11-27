@@ -13,6 +13,7 @@ import com.example.stattrack.model.model.MatchData
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.presentation.match.components.TeamComponent
+import com.example.stattrack.presentation.match.data.EventItems
 
 
 @Composable
@@ -29,9 +30,7 @@ fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController
         events,
         navController = navController,
         onUpdateScore = { /* Update score in MatchData/EventData here */ },
-        onUpdateMatch = { /* Call viewmodel to update matchData in db here */},
-        insertEvent = { /* Insert event into database */ },
-        updateEventList = { matchViewModel.getEventsFromMatchId(it) },
+        newEvent = { matchViewModel.insertEvent((it)) },
         setTeamOneName = { matchViewModel.setTeamOneName(it) },
         setTeamTwoName = { matchViewModel.setTeamTwoName(it) },
         onPlayPressed = { matchViewModel.onPlayPressed() },
@@ -47,9 +46,7 @@ fun MatchScreenContent(
     events: State<List<EventData>>,
     navController: NavHostController,
     onUpdateScore: (score: Int) -> Unit,
-    onUpdateMatch: (match: MatchData) -> Unit,
-    insertEvent: (event: EventData) -> Unit,
-    updateEventList: (matchId: Int) -> Unit,
+    newEvent: (event: EventItems) -> Unit,
     setTeamOneName: (teamId: Int) -> Unit,
     setTeamTwoName: (teamTwoName: String) -> Unit,
     onPlayPressed: () -> Unit,
@@ -67,7 +64,7 @@ fun MatchScreenContent(
             TeamComponent(
                 matchData = currentMatchData.value,
                 teams = teams.value,
-                onSelectedTeamOne = {setTeamOneName(it) },
+                onSelectedTeamOne = { setTeamOneName(it) },
                 onTeamTwoName = { setTeamTwoName(it) },
                 onTeamTwoScore = { }
 
@@ -83,10 +80,7 @@ fun MatchScreenContent(
         Row( modifier = Modifier.fillMaxWidth()) {
             EventComponent(
                 players.value,
-                onEventUpdatePlayerId = { /*currentEventPlayerId.value = it*/ },
-                onEventUpdate = { /*currentEvent.value = it.title */},
-                insertEvent = { /*insertEvent(EventData) */},
-                updateEventList = { /*updateEventList(currentMatch.id)*/}
+                newEvent = { newEvent(it) }
             )
         }
         Row( modifier = Modifier.fillMaxWidth()) {
