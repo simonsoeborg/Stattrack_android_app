@@ -1,35 +1,64 @@
-package com.example.stattrack.presentation.spiller
+package com.example.stattrack.presentation.player
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.stattrack.model.model.Player
+import com.example.stattrack.model.model.PlayerStats
+import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
 
-/*class compose_frag_spiller_data : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            StattrackTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    FragmentSpillerData(9,5,20,7)
-                }
-            }
-        }
-    }
-}*/
+@Composable
+fun PlayerClass(navController: NavHostController, playerViewModel: PlayerViewModel, player : Player){
+
+    playerViewModel.loadPlayersStats(player.id)
+    val playerStats : State<PlayerStats> = playerViewModel.playerStats.collectAsState()
+
+    PlayerClassContent(playerStats, player)
+}
 
 @Composable
-fun FragmentSpillerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int) {
+fun PlayerClassContent(stats : State<PlayerStats> , player : Player){
+    Column(modifier = Modifier.padding(10.dp), )
+    {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Row(Modifier.align(Alignment.CenterEnd), verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = player.name,
+                    modifier = Modifier.padding(end = 20.dp),
+                    fontSize = 26.sp,
+                    color = PrimaryBlue)
+
+                Text(
+                    text = player.position,
+                    modifier = Modifier.padding(end = 10.dp),
+                    fontSize = 20.sp,
+                    color = PrimaryBlue,
+                    fontStyle = FontStyle.Italic)
+            }
+        }
+
+        // Todo - Burde playerStats bestå af et element for hver kamp - for hver spiller.. ellers forstår jeg ikke hvad matchID bruges til nemlig?
+
+        PlayerData(5, stats.value.goals,stats.value.attempts,stats.value.assists)
+    }
+}
+
+
+@Composable
+fun PlayerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int) {
 
     val padding = 10.dp
 
@@ -41,14 +70,14 @@ fun FragmentSpillerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAss
                 Modifier
                     .weight(1f)
             ) {
-                SpillerInfoText(padding)
+                PlayerInfoText(padding)
             }
 
             Column(
                 Modifier
                     .weight(1f)
             ) {
-                SpillerInfoDenne(
+                PlayerInfoThis(
                     padding = padding,
                     antalMaal = antalMaal,
                     antalKamp = antalKamp,
@@ -64,7 +93,8 @@ fun FragmentSpillerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAss
 
 
 @Composable
-fun SpillerInfoText (padding: Dp) {
+fun PlayerInfoText (padding: Dp) {
+
     Text(text = "Antal kampe spillede:", Modifier.padding(padding))
 
     Text(text = "Antal mål:", Modifier.padding(padding))
@@ -75,7 +105,7 @@ fun SpillerInfoText (padding: Dp) {
 }
 
 @Composable
-fun SpillerInfoDenne(padding: Dp, antalMaal: Int, antalKamp: Int, antalAssist: Int, antalSkud: Int) {
+fun PlayerInfoThis(padding: Dp, antalMaal: Int, antalKamp: Int, antalAssist: Int, antalSkud: Int) {
     Text( text = "   $antalKamp   ",
         style = TextStyle(textDecoration = TextDecoration.Underline),
         modifier = Modifier.padding(padding))
@@ -104,6 +134,7 @@ fun BarChartView() {
 @Composable
 fun DefaultPreview() {
     StattrackTheme {
-        FragmentSpillerData(9,5,20,7)
+        // PlayerClassContent()
+
     }
 }

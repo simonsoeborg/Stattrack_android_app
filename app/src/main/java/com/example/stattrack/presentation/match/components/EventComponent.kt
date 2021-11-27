@@ -11,14 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.stattrack.model.model.Player
+import com.example.stattrack.model.model.defaultDummyPlayerData
 import com.example.stattrack.presentation.match.data.EventItems
-import com.example.stattrack.presentation.match.data.PlayerItems
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 
 
 @Composable
-fun EventComponent() {
+fun EventComponent(
+    players: List<Player>,
+    onEventUpdate: (event: EventItems) -> Unit,
+    onEventUpdatePlayerId: (playerId: Int) -> Unit,
+    insertEvent: () -> Unit,
+    updateEventList: () -> Unit
+) {
     var expandedEvents by remember { mutableStateOf(false) }
     var selectedIndexEvents by remember { mutableStateOf(0) }
     var expandedPlayers by remember { mutableStateOf(false) }
@@ -35,33 +42,15 @@ fun EventComponent() {
         EventItems.EventRed
     )
 
-    val dummyDataPlayerItems = listOf(
-        PlayerItems.DefaultPlayer,
-        PlayerItems.DefaultPlayer1,
-        PlayerItems.DefaultPlayer2,
-        PlayerItems.DefaultPlayer3,
-        PlayerItems.DefaultPlayer4,
-        PlayerItems.DefaultPlayer5,
-        PlayerItems.DefaultPlayer6,
-        PlayerItems.DefaultPlayer7,
-        PlayerItems.DefaultPlayer8,
-        PlayerItems.DefaultPlayer9,
-        PlayerItems.DefaultPlayer10,
-        PlayerItems.DefaultPlayer11,
-        PlayerItems.DefaultPlayer12
-    )
-
-    // DUMMY DATA FOR PLAYERS
-
     val buttonTitleEvents = eventItems[selectedIndexEvents].title
-    val buttonTitlePlayers = dummyDataPlayerItems[selectedIndexPlayers].name
+    val buttonTitlePlayers = players[selectedIndexPlayers].name
 
 
     Column( modifier = Modifier
         .fillMaxWidth()
         .padding(10.dp)) {
-        Row() {
-            Column() {
+        Row {
+            Column {
                 Row( modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 4.dp)
                     .align(Alignment.CenterHorizontally)) {
@@ -70,7 +59,7 @@ fun EventComponent() {
                         expanded = expandedPlayers,
                         selectedIndex = selectedIndexPlayers,
                         eventItems = null,
-                        playerItems = dummyDataPlayerItems,
+                        playerItems = players,
                         onSelect = { index ->
                             selectedIndexPlayers = index
                             expandedPlayers = false
@@ -106,6 +95,11 @@ fun EventComponent() {
                         onSelect = { index ->
                             selectedIndexEvents = index
                             expandedEvents = false
+                            // Callback function to send event and playerId upwards in compose (return)
+                            onEventUpdate(eventItems[selectedIndexEvents])
+                            onEventUpdatePlayerId(players[selectedIndexPlayers].id)
+                            insertEvent() // Just works as a trigger functions to call up
+                            updateEventList()
                         },
                         onDismissRequest = {
                             expandedEvents = false
@@ -143,5 +137,6 @@ fun EventComponent() {
 @Preview(showBackground = true)
 @Composable
 fun EventComponentPreview() {
-    EventComponent()
+
+    EventComponent(defaultDummyPlayerData, onEventUpdate = {EventItems.Default }, onEventUpdatePlayerId = {0}, insertEvent = { }, updateEventList = { })
 }

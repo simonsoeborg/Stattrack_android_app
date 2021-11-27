@@ -1,7 +1,7 @@
 package com.example.stattrack
 
 import android.app.Application
-import com.example.stattrack.services.ServiceLocator
+import com.example.stattrack.di.ServiceLocator
 
 
 class App : Application() {

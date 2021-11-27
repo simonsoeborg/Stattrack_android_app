@@ -1,5 +1,6 @@
 package com.example.stattrack.model.database
 
+import com.example.stattrack.ext.mapIterable
 import com.example.stattrack.model.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -7,23 +8,6 @@ import kotlinx.coroutines.flow.map
 class Repository (
     private val database: AppDatabase
 ) {
-    /* For now we have outcommented this State config due to update @Shortcut demo project
-       See below:
-
-    // Repositories are usually singletons within a project. Offering progress state through a
-    // separate hot stream may result in ambiguous outcome as one's progress may be observed by
-    // another.
-    data class State(
-        val isInProgress: Boolean,
-        val error: String? = null
-    )
-
-    /* val states can be used in ViewModel to see if Repository is busy or ready
-    *  it can only be read from outside of Repository and only set from inside
-    *   */
-    private val _states = MutableStateFlow(State(isInProgress = false))
-    val states = _states.asStateFlow() */
-
     /* ------------------------------------------------------------------ */
     /* Create and update methods  */
     suspend fun insertEventData(eventData: EventData) {
@@ -31,7 +15,7 @@ class Repository (
         try {
             database.EventDataDao().insert(dbEventData)
         } catch (ex: Exception) {
-            print("Exception @ Repository" + ex.message)
+            print("Exception @ Repository method insertEventData: " + ex.message)
         }
     }
 
@@ -40,7 +24,7 @@ class Repository (
         try {
             database.MatchDataDao().insert(dbMatchData)
         } catch (ex: Exception) {
-            print("Exception @ Repository" + ex.message)
+            print("Exception @ Repository method insertMatchData: " + ex.message)
         }
     }
 
@@ -49,7 +33,7 @@ class Repository (
         try {
             database.PlayerDao().insert(dbPlayerEntity)
         } catch (ex: Exception) {
-            print("Exception @ Repository" + ex.message)
+            print("Exception @ Repository method insertPlayer: " + ex.message)
         }
     }
 
@@ -58,7 +42,7 @@ class Repository (
         try {
             database.PlayerStatsDao().insert(dbPlayerStats)
         } catch (ex: Exception) {
-            print("Exception @ Repository" + ex.message)
+            print("Exception @ Repository method insertPlayerStats: " + ex.message)
         }
     }
 
@@ -67,7 +51,7 @@ class Repository (
         try {
             database.TeamDao().insert(dbTeam)
         } catch (ex: Exception) {
-            print("Exception @ Repository" + ex.message)
+            print("Exception @ Repository method insertTeam: " + ex.message)
         }
     }
 
@@ -83,50 +67,103 @@ class Repository (
             .loadById(eventDataId)
             .map { it?.toModel() ?: EventData(0, " ", 0, " ", 0) }
 
-    /* TODO: Implement me
-    fun getEventDataByPlayerId(playerid: Int): Flow<EventData> =
+    fun getEventDataByPlayerId(playerId: Int): Flow<List<EventData>> =
         database.EventDataDao()
-            .loadByPlayerId(playerId = playerid)
-            .map { it?.toModel() ?: EventData(0, " ", 0, " ", 0) }
+            .loadByPlayerId(playerId = playerId)
+            .mapIterable { eventEntity ->
+                eventEntity.toModel()   }
 
-     */
-
-    fun getEventDataByMatchId(matchId: Int): Flow<EventData> =
+    fun getEventDataByMatchId(matchId: Int): Flow<List<EventData>> =
         database.EventDataDao()
-            .loadByMatchId(matchId = matchId)
-            .map { it?.toModel() ?: EventData(0," ", 0," ",0) }
+            .loadByMatchId(matchId)
+            .mapIterable { eventEntity ->
+                eventEntity.toModel()   }
 
-    /* TODO: Implement me
-    fun getAllEvents(): Flow<List<EventData>> {
+    fun getAllEvents(): Flow<List<EventData>> =
         database.EventDataDao()
             .loadAll()
-            . what ever u want to make it work
-    }
-     */
+            .mapIterable { eventEntity ->
+                eventEntity.toModel() }
+
+    // MatchData
+    fun getMatchDataById(matchId: Int): Flow<MatchData> =
+        database.MatchDataDao()
+            .loadById(matchId)
+            .map { it?.toModel() ?: MatchData(0,"null",0,"null","null",0,0) }
+
+    fun getMatchDataByCreatorId(creatorId: String): Flow<List<MatchData>> =
+        database.MatchDataDao()
+            .loadByCreatorId(creatorId)
+            .mapIterable { matchDataEntity ->
+                matchDataEntity.toModel() }
+
+    fun getMatchDataByDate(date: String): Flow<List<MatchData>> =
+        database.MatchDataDao()
+            .loadByMatchDate(date)
+            .mapIterable { matchDataEntity ->
+                matchDataEntity.toModel() }
+
+    fun getAllMatchData(): Flow<List<MatchData>> =
+        database.MatchDataDao()
+            .loadAll()
+            .mapIterable { matchDataEntity ->
+                matchDataEntity.toModel() }
+
+    // Player
+    fun getPlayerById(id: Int): Flow<Player> =
+        database.PlayerDao()
+            .loadById(id)
+            .map { it?.toModel() ?: Player(0,"null","null",0,0) }
 
     fun getPlayerByName(name: String): Flow<Player> =
         database.PlayerDao()
             .loadByName(name)
-            .map { it?.toModel() ?: Player(0, "null", "null", 0, 0) }
+            .map { it?.toModel() ?: Player(0,"null","null",0,0) }
 
-    fun getAllPlayers(): List<Player> {
-        return defaultDummyPlayerData
-    }
+    fun getAllPlayersFromTeam(teamId: Int): Flow<List<Player>> =
+        database.PlayerDao()
+            .loadByTeamId(teamId)
+            .mapIterable { playerEntity ->
+                playerEntity.toModel() }
+
+    fun getAllPlayers(): Flow<List<Player>> =
+        database.PlayerDao()
+            .loadAll()
+            .mapIterable { playerEntity ->
+                playerEntity.toModel() }
+
+    // PlayerStats
+    fun getPlayerStatsById(playerId: Int): Flow<PlayerStats> =
+        database.PlayerStatsDao()
+            .loadById(playerId)
+            .map { it?.toModel() ?: PlayerStats(0,"null",0,0,0,0,0,0,0,0) }
+
+    fun getAllPlayerStats(): Flow<List<PlayerStats>> =
+        database.PlayerStatsDao()
+            .loadAll()
+            .mapIterable { playerStatsEntity ->
+                playerStatsEntity.toModel() }
+
+    // Team
+    fun getTeamById(teamId: Int): Flow<Team> =
+        database.TeamDao()
+            .loadById(teamId)
+            .map { it?.toModel() ?: Team(0, "null", "null", "null", "null", "null") }
 
     fun getTeamByName(name: String): Flow<Team> =
         database.TeamDao()
             .loadByName(name)
             .map { it?.toModel() ?: Team(0, "null", "null", "null", "null", "null") }
 
-    /*
-
-     Todo: Implement me
-    fun getAllTeams(): Flow<List<Team>> {
-
-    }
-    */
+    fun getAllTeams(): Flow<List<Team>> =
+        database.TeamDao()
+            .loadAll()
+            .mapIterable { teamEntity ->
+                teamEntity.toModel() }
 
     /* ------------------------------------------------------------------ */
+
+
 
 
     /* ------------------------------------------------------------------ */
@@ -134,16 +171,4 @@ class Repository (
     /* TODO:: Currently we dont have any delete methods                   */
     /* ------------------------------------------------------------------ */
 
-
-    /* ------------------------------------------------------------------ */
-    /* Dummy functions used for @Preview in Compose */
-    fun getDummyTeams(): List<Team> {
-        return defaultTeamDummyData
-    }
-
-    fun getDummyPlayers(): List<Player> {
-        return defaultDummyPlayerData
-    }
-
-    /* ------------------------------------------------------------------ */
 }

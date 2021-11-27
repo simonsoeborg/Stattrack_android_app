@@ -1,175 +1,174 @@
 package com.example.stattrack.presentation.match.components
 
-import androidx.compose.foundation.BorderStroke
+
+import android.graphics.Color
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.*
+import androidx.compose.material.TextFieldDefaults.textFieldColors
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.stattrack.model.model.Team
+import com.example.stattrack.model.model.defaultTeamDummyData
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 
 
 @Composable
-fun TeamComponent(hold1_name: String, hold2_name: String, hold1_sc: String, hold2_sc: String, landscape: Boolean) {
-    var hold1_navn by remember { mutableStateOf(hold1_name) }
-    var hold1_score by remember { mutableStateOf(hold1_sc) }
-    var hold2_navn by remember { mutableStateOf( hold2_name) }
-    var hold2_score by remember { mutableStateOf(hold2_sc) }
+fun TeamComponent(
+    teamOneScore: Int,
+    teamTwoScore: Int,
+    teams:List<Team>,
+    onSelectedTeam: (teamId: Int) -> Unit,
+    onTeamTwoName: (String) -> Unit,
+    onTeamTwoScore: (Int) -> Unit){
 
-    if (landscape) {
-        TeamComponentLandscape(hold1_navn_ = "", hold2_navn_ = "", hold1_score_ = "", hold2_score_ = "")
-    } else {
-        TeamComponentPortrait(
-            hold1_navn_ = hold1_navn,
-            hold2_navn_ = hold1_score,
-            hold1_score_ = hold2_navn,
-            hold2_score_ = hold2_score
-        )
-    }
-}
+    val teamTwoName = remember { mutableStateOf("Hold 2")}
 
-@Composable
-fun TeamComponentLandscape(hold1_navn_: String, hold2_navn_: String, hold1_score_: String, hold2_score_: String) {
-    var hold1_navn by remember { mutableStateOf(hold1_navn_) }
-    var hold1_score by remember { mutableStateOf(hold1_score_) }
-    var hold2_navn by remember { mutableStateOf(hold2_navn_) }
-    var hold2_score by remember { mutableStateOf(hold2_score_) }
-
-    Column( modifier = Modifier.fillMaxWidth()) {
-        // Teams and Scores
-        Row(modifier = Modifier
-            .align(Alignment.CenterHorizontally)){
-            Column(modifier = Modifier.weight(0.7F)) {
-                TextField(
-                    value = hold1_navn,
-                    onValueChange = { hold1_navn = it },
-                    label = { Text("Hold 1") },
-                    modifier = Modifier
-                        .border(BorderStroke(1.dp, PrimaryBlue))
-                        .background(
-                            PrimaryWhite
-                        )
-                )
-            }
-            Divider(modifier = Modifier.width(5.dp))
-            Column(modifier = Modifier.weight(0.3F)) {
-                TextField(value = hold1_score,
-                    onValueChange = { hold1_score = it},
-                    textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-                    modifier = Modifier
-                        .border(BorderStroke(1.dp, PrimaryBlue))
-                        .background(
-                            PrimaryWhite
-                        )
-                )
-            }
-            Divider(modifier = Modifier.width(30.dp))
-            Column(modifier = Modifier.weight(0.3F)) {
-                TextField(value = hold2_score,
-                    onValueChange = { hold2_score = it},
-                    textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-                    modifier = Modifier
-                        .border(BorderStroke(1.dp, PrimaryBlue))
-                        .background(
-                            PrimaryWhite
-                        )
-                )
-            }
-            Divider(modifier = Modifier.width(5.dp))
-            Column(modifier = Modifier.weight(0.7F)) {
-                TextField(
-                    value = hold2_navn,
-                    onValueChange = { hold2_navn = it },
-                    label = { Text("Hold 2") },
-                    modifier = Modifier
-                        .border(BorderStroke(1.dp, PrimaryBlue))
-                        .background(
-                            PrimaryWhite
-                        )
-                )
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TeamComponentLandscapePreview() {
-    TeamComponentLandscape("", "", "", "")
-}
-
-@Composable
-fun TeamComponentPortrait(hold1_navn_: String, hold2_navn_: String, hold1_score_: String, hold2_score_: String) {
-    var hold1_navn by remember { mutableStateOf(hold1_navn_) }
-    var hold1_score by remember { mutableStateOf(hold1_score_) }
-    var hold2_navn by remember { mutableStateOf( hold2_navn_) }
-    var hold2_score by remember { mutableStateOf(hold2_score_) }
     Row( // Teams Row
         modifier = Modifier
             .fillMaxWidth()
     ) {
+
         Column( // Main Column
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(17.dp)
         ) {
+
+            // Team 1 row
             Row( modifier = Modifier
                 .padding(2.dp)
-            ) // Team 1 row
+            )
             {
                 Column( modifier = Modifier
                     .weight(3f)
                     .padding(1.dp)
                 ) {
-                    TextField(
-                        value = hold1_navn,
-                        onValueChange = { hold1_navn = it },
-                        label = { Text("Hold 1") }
+                    DropdownTeamsList(
+                        teams = teams,
+                        onSelectedTeam = { onSelectedTeam(it) }
                     )
                 }
                 Column( modifier = Modifier
                     .weight(1f)
                     .padding(1.dp)
                 ) {
-                    TextField(value = hold1_score,
-                        onValueChange = { hold1_score = it},
-                        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+                    Text(
+                        text = teamOneScore.toString(),
+                        color = PrimaryBlue,
+                        fontSize = 24.sp,
                     )
                 }
             }
+
+            // Team 2 row
             Row( modifier = Modifier
-                .padding(2.dp)
-            ) // Team 2 Row
+                .padding(2.dp).background(color = PrimaryWhite)
+            )
             {
                 Column( modifier = Modifier
                     .weight(3f)
                     .padding(1.dp)
+                    .background(color = PrimaryWhite)
+                    //.border(2.dp, color = PrimaryBlue) <- doesnt look good find another style
                 ) {
-                    TextField(
-                        value = hold2_navn,
-                        onValueChange = { hold2_navn = it },
-                        label = { Text("Hold 2") }
-                    )
+                    BasicTextField(
+                        value = teamTwoName.value,
+                        onValueChange = {
+                            teamTwoName.value = it
+                            onTeamTwoName(teamTwoName.value)
+                        },cursorBrush = SolidColor(Transparent),
+                        textStyle = TextStyle(color = PrimaryBlue, background = PrimaryWhite, fontSize = 24.sp),
+                        singleLine = true
+                        /*colors = textFieldColors(
+                            focusedIndicatorColor = Transparent,
+                            disabledIndicatorColor = Transparent,
+                            unfocusedIndicatorColor = Transparent
+                        ) */
+
+                        )
+                        /*
+                        colors =  textFieldColors(backgroundColor = PrimaryWhite) */
+
+
                 }
                 Column( modifier = Modifier
                     .weight(1f)
                     .padding(1.dp)
                 ) {
-                    TextField(value = hold2_score,
-                        onValueChange = { hold2_score = it},
-                        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+                    // TODO - Make a button so we can increment score on team 2 and use callback function onTeamTwoScore(Int) to call value upwards in compose-tree
+                    Text(
+                        text = teamTwoScore.toString(),
+                        color = PrimaryBlue,
+                        fontSize = 24.sp,
+
                     )
                 }
             }
         }
     }
+}
+
+
+@Composable
+fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedId by remember { mutableStateOf(0) }
+
+    Row(modifier = Modifier
+        .clickable(onClick = { expanded = true })
+        .background(
+            PrimaryWhite
+        )
+    ) {
+        Text(
+            teams[selectedId].clubName,
+            color = PrimaryBlue,
+            fontSize = 24.sp
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = PrimaryWhite
+                ),
+
+        ) {
+            teams.forEach { team ->
+                DropdownMenuItem(onClick = {
+                    selectedId = team.teamId-1
+                    onSelectedTeam(team.teamId)
+                    expanded = false
+                }) {
+                    Text(team.clubName, color = PrimaryBlue, fontSize = 24.sp)
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun TeamComponentPreview(){
+    TeamComponent(
+        25,
+        0,
+        teams = defaultTeamDummyData,
+        onSelectedTeam = { },
+        onTeamTwoName = { },
+        onTeamTwoScore = { }
+
+    )
 }
