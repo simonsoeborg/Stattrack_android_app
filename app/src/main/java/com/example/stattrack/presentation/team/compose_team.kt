@@ -29,9 +29,11 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 @Composable
 fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController) {
     val teams: State<List<Team>> = teamViewModel.teams.collectAsState()
+    val matches: State<List<MatchData>> = teamViewModel.matchData.collectAsState()
 
     MyTeamsScreenContent(
         teams = teams,
+        matches = matches,
         navController = navController
     )
 }
@@ -39,11 +41,9 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
 @Composable
 fun MyTeamsScreenContent(
     teams: State<List<Team>>,
+    matches: State<List<MatchData>>,
     navController: NavHostController)
 {
-
-
-
 
         Column {
             Column(
@@ -88,7 +88,7 @@ fun MyTeamsScreenContent(
             ) {
                 Text(text = "Kamp oversigt", fontSize = 32.sp, color = PrimaryBlue)
                 Column(modifier = Modifier.padding(10.dp)) {
-                    //MatchList()
+                    MatchList(matches = matches, navController = navController)
                 }
             }
         }
@@ -130,7 +130,20 @@ fun TeamList(teams: State<List<Team>>, navController: NavHostController) {
 @Composable
 fun MatchList(matches: State<List<MatchData>>, navController: NavHostController) {
     LazyColumn() {
+        items(
+            items = matches.value
+            ) {
+                match ->
+            // Clickable sender kun test-data pt.
+            Surface(modifier = Modifier.clickable {
+
+               // TODO: Skal vi have en skærm til at vise MatchData?
+
+            }){
+                Text("${match.matchDate} | ${match.creatorId} mod ${match.opponent} | ${match.creatorTeamGoals} : ${match.opponentGoals}",modifier = Modifier.padding(2.dp), color = PrimaryBlue)
+            }
         }
+    }
 }
 
 
