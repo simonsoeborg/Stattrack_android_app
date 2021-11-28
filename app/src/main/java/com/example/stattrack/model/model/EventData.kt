@@ -22,11 +22,16 @@ enum class EventType {
 }
 
 val defaultDummyEventData = listOf(
-    EventData(1,"Træningskamp",1,"23:50",1),
-    EventData(2,"Landskamp",1,"23:50",2),
-    EventData(3,"Landskamp",1,"23:50",3),
-    EventData(4,"Landskamp",1,"23:50",4),
-    EventData(5,"Landskamp",1,"23:50",5),
-    EventData(6,"Landskamp",1,"23:50",6),
-    EventData(7,"Landskamp",1,"23:50",7)
+    EventData(1,"Mål",1,"02:50",1),
+    EventData(2,"Assist",1,"05:23",1),
+    EventData(3,"Rødt kort",1,"09:25",1),
+    EventData(4,"Gult kort",1,"11:34",1),
+    EventData(5,"Redning",1,"14:38",1),
+    EventData(6,"Udvisning",1,"25:59",1),
+    EventData(7,"Skud",1,"28:12",2),
+    EventData(8,"Skud",1,"28:12",3),
+    EventData(9,"Skud",1,"28:12",4),
+    EventData(10,"Skud",1,"28:12",5),
+    EventData(11,"Skud",1,"28:12",6),
+    EventData(12,"Skud",1,"28:12",7)
 )

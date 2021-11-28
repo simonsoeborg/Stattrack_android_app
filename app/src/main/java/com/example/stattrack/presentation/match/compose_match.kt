@@ -17,7 +17,7 @@ import com.example.stattrack.presentation.match.data.EventItems
 
 
 @Composable
-fun MatchScreen(matchViewModel: MatchViewModel, navController: NavHostController) {
+fun MatchScreen(matchViewModel: MatchViewModel) {
     val teams: State<List<Team>> = matchViewModel.teams.collectAsState()
     val players: State<List<Player>> = matchViewModel.players.collectAsState()
     val events: State<List<EventData>> = matchViewModel.events.collectAsState()
@@ -69,8 +69,8 @@ fun MatchScreenContent(
         Row( modifier = Modifier.fillMaxWidth()) {
             StopWatchComponent(
                 "00:30",
-                onPlayPressed = {onPlayPressed()},
-                onPausePressed = { onPausePressed()}
+                onPlayPressed = { onPlayPressed() },
+                onPausePressed = { onPausePressed() }
                 )
         }
         Row( modifier = Modifier.fillMaxWidth()) {

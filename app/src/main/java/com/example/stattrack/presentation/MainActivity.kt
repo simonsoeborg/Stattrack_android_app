@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                             MyTeamsScreen(teamViewModel = teamVM, navController)
                         }
                         composable(Screen.Match.route,) {
-                            MatchScreen(matchViewModel = matchVM, navController)
+                            MatchScreen(matchViewModel = matchVM)
                         }
                         composable(Screen.SpecificTeam.route){
 

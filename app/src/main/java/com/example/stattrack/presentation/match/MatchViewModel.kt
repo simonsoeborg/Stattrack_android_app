@@ -3,12 +3,13 @@ package com.example.stattrack.presentation.match
 
 
 import android.annotation.SuppressLint
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.match.data.EventItems
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -22,14 +23,33 @@ import java.util.*
  */
 class MatchViewModel(private val repository: Repository) : ViewModel() {
 
-    /* Time component variables
+    /* Time component variables */
     private val maxTime = 60*30
     private val _currentTime = MutableStateFlow(0)
-    private val pausedTime = MutableLiveData(true)
-    val paused: LiveData<Boolean> = pausedTime
+    private val pauseMatch = MutableLiveData(false)
+    val paused: LiveData<Boolean> = pauseMatch
+    private val _matchIsActive = MutableStateFlow(false)
+    val matchIsActive: StateFlow<Boolean> = _matchIsActive
     private val timer = Timer()
+    private var job: Job? = null
+    private val mutableTicker = MutableStateFlow("")
+    val ticker: StateFlow<String> = mutableTicker
 
-    */
+    fun startClock() {
+        if (job == null) startJob()
+
+    }
+
+    private fun startJob() {
+        GlobalScope.launch {
+            while (matchIsActive.value){
+                //mutableTicker.value
+
+            }
+        }
+    }
+
+
 
     private val _teams = MutableStateFlow(defaultTeamDummyData)
     private val _currentMatch = MutableStateFlow(defaultDummyMatchData[0])
