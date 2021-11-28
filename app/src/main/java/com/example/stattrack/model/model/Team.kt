@@ -14,6 +14,21 @@ data class Team(
     val division : String
 ) : Parcelable
 
+val divisions = listOf(
+    "Håndboldligaen",
+    "1. Div",
+    "2. Div",
+    "3. Div",
+    "Kvalifikationsrækken",
+    "Jyllandsserien",
+    "Fynsserien",
+    "Serie 1",
+    "Serie 2",
+    "Serie 3",
+    "Serie 4",
+    "Niveaustævne",
+    "Turnering"
+)
 
 val defaultTeamDummyData = listOf(
     Team(1,"HC Midtjylland","HC Midtjylland","Kasper","1978","1. Division"),
