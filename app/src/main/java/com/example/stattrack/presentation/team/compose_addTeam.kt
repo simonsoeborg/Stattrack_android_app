@@ -35,8 +35,6 @@ fun AddTeam(
     navController: NavHostController?
 ) {
 
-
-
     var clubname by remember { mutableStateOf("")}
     var teamName by remember { mutableStateOf("") }
     var creatorName by remember { mutableStateOf("") }

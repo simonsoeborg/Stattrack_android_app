@@ -133,10 +133,11 @@ class Repository (
                 playerEntity.toModel() }
 
     // PlayerStats
-    fun getPlayerStatsById(playerId: Int): Flow<PlayerStats> =
+    fun getPlayerStatsById(playerId: Int): Flow<List<PlayerStats>> =
         database.PlayerStatsDao()
             .loadById(playerId)
-            .map { it?.toModel() ?: PlayerStats(0,"null",0,0,0,0,0,0,0,0) }
+            .mapIterable { playerStatsEntity ->
+                playerStatsEntity.toModel() }
 
     fun getAllPlayerStats(): Flow<List<PlayerStats>> =
         database.PlayerStatsDao()
