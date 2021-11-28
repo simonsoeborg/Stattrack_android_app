@@ -14,6 +14,7 @@ data class Team(
     val division : String
 ) : Parcelable
 
+
 val defaultTeamDummyData = listOf(
     Team(1,"HC Midtjylland","HC Midtjylland","Kasper","1978","1. Division"),
     Team(2,"Ajax København","Ajax Håndbold","Dennis","1956","Top-top-proffer"),

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
@@ -20,17 +21,22 @@ import com.example.stattrack.presentation.ui.theme.Typography
 
 @Composable
 fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, onShowAddTeam: (Boolean) -> Unit ) {
-    var placeholderClubName = TextFieldValue("Klub navn")
-    var placeholderTeamName = "Not updated yet"
-    var placeholderCreatorName = "Not updated yet"
-    var placeholderTeamUYear = "Not updated yet"
-    var placeholderDivision = "Not updated yet"
+  
+  
+  
+  
+    var placeholderClubName by remember { mutableStateOf("")}
+    var placeholderTeamName by remember { mutableStateOf("") }
+    var placeholderCreatorName by remember { mutableStateOf("") }
+    var placeholderTeamUYear by remember { mutableStateOf("") }
+    var placeholderDivision by remember { mutableStateOf("") }
 
 
     Column( modifier = Modifier
         .fillMaxWidth()
-        .padding(top=40.dp)
-        .background(color = PrimaryWhite
+        .padding(top = 40.dp)
+        .background(
+            color = PrimaryWhite
         )
     ){
         Row(modifier = Modifier
@@ -40,18 +46,7 @@ fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, 
             OutlinedTextField(
                 value = placeholderClubName,
                 onValueChange = { placeholderClubName = it },
-                textStyle = Typography.body1.copy(
-                textAlign = TextAlign.Center,
-                color = PrimaryBlue)
-            )
-        }
-        Row(modifier = Modifier
-            .padding(all = 10.dp)
-            .align(Alignment.CenterHorizontally)
-        ) {
-            OutlinedTextField(
-                value = "Hold navn",
-                onValueChange = { placeholderTeamName = it },
+                label = { Text("Klub navn") },
                 textStyle = Typography.body1.copy(
                     textAlign = TextAlign.Center,
                     color = PrimaryBlue)
@@ -62,8 +57,22 @@ fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, 
             .align(Alignment.CenterHorizontally)
         ) {
             OutlinedTextField(
-                value = "Træner navn",
+                value = placeholderTeamName,
+                onValueChange = { placeholderTeamName = it },
+                label = { Text("Hold navn") },
+                textStyle = Typography.body1.copy(
+                    textAlign = TextAlign.Center,
+                    color = PrimaryBlue)
+            )
+        }
+        Row(modifier = Modifier
+            .padding(all = 10.dp)
+            .align(Alignment.CenterHorizontally)
+        ) {
+            OutlinedTextField(
+                value = placeholderCreatorName,
                 onValueChange = { placeholderCreatorName = it },
+                label = { Text("Træner navn") },
                 textStyle = Typography.body1.copy(
                     textAlign = TextAlign.Center,
                     color = PrimaryBlue)
@@ -74,8 +83,9 @@ fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, 
             .align(Alignment.CenterHorizontally)
         ) {
             OutlinedTextField(
-                value = "Årgang",
+                value = placeholderTeamUYear,
                 onValueChange = { placeholderTeamUYear = it },
+                label = { Text("Årgang") },
                 textStyle = Typography.body1.copy(
                     textAlign = TextAlign.Center,
                     color = PrimaryBlue)
@@ -86,8 +96,9 @@ fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, 
             .align(Alignment.CenterHorizontally)
         ) {
              OutlinedTextField(
-                 value = "Division",
+                 value = placeholderDivision,
                  onValueChange = { placeholderDivision = it },
+                 label = { Text("Division") },
                  textStyle = Typography.body1.copy(
                      textAlign = TextAlign.Center,
                      color = PrimaryBlue)
@@ -103,7 +114,7 @@ fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, 
                     Team(
                         1000,
                         placeholderTeamName,
-                        placeholderClubName.text,
+                        placeholderClubName,
                         placeholderCreatorName,
                         placeholderTeamUYear,
                         placeholderDivision))

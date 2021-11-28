@@ -43,54 +43,61 @@ fun MyTeamsScreenContent(
     navController: NavHostController,
     onAddTeam: (Team) -> Unit) {
 
-    var showAddTeamScreen by remember{ mutableStateOf(false)}
-    if(showAddTeamScreen){
-        AddTeam(navController = navController, onSubmitPressed = {onAddTeam(it)}, onShowAddTeam = { showAddTeamScreen=it })
+
+    var showAddTeamScreen by remember { mutableStateOf(false) }
+    if (showAddTeamScreen) {
+        AddTeam(
+            navController = navController,
+            onSubmitPressed = { onAddTeam(it) },
+            onShowAddTeam = { showAddTeamScreen = it })
     }
 
-    Column {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
+    else {
+        Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
 
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Box(Modifier.align(Alignment.CenterStart)) {
-                    Text(text = "Hold oversigt", fontSize = 32.sp, color = PrimaryBlue)
-                }
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(Modifier.align(Alignment.CenterStart)) {
+                        Text(text = "Hold oversigt", fontSize = 32.sp, color = PrimaryBlue)
+                    }
 
-                // Add new team button and functionality
-                Box(Modifier.align(Alignment.CenterEnd)) {
-                    Column(horizontalAlignment = CenterHorizontally) {
-                        OutlinedButton(onClick = { showAddTeamScreen = true },
-                            modifier= Modifier
-                                .padding(top = 5.dp)
-                                .size(40.dp),
-                            shape = CircleShape,
-                            border= BorderStroke(1.dp, PrimaryBlue),
-                            contentPadding = PaddingValues(0.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
-                        ) {
-                            Icon(Icons.Default.Add, contentDescription = "NewTeam Button")
+                    // Add new team button and functionality
+                    Box(Modifier.align(Alignment.CenterEnd)) {
+                        Column(horizontalAlignment = CenterHorizontally) {
+                            OutlinedButton(
+                                onClick = { showAddTeamScreen = true },
+                                modifier = Modifier
+                                    .padding(top = 5.dp)
+                                    .size(40.dp),
+                                shape = CircleShape,
+                                border = BorderStroke(1.dp, PrimaryBlue),
+                                contentPadding = PaddingValues(0.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = PrimaryBlue)
+                            ) {
+                                Icon(Icons.Default.Add, contentDescription = "NewTeam Button")
+                            }
+                            Text(text = "Tilføj Hold", color = PrimaryBlue)
                         }
-                        Text(text = "Tilføj Hold", color = PrimaryBlue)
                     }
                 }
-            }
 
-            Column(modifier = Modifier.padding(start = 10.dp)) {
-                TeamList(teams, navController)
+                Column(modifier = Modifier.padding(start = 10.dp)) {
+                    TeamList(teams, navController)
+                }
             }
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            Text(text = "Kamp oversigt", fontSize = 32.sp, color = PrimaryBlue)
-            Column(modifier = Modifier.padding(10.dp)) {
-                //MatchList()
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
+                Text(text = "Kamp oversigt", fontSize = 32.sp, color = PrimaryBlue)
+                Column(modifier = Modifier.padding(10.dp)) {
+                    //MatchList()
+                }
             }
         }
     }
