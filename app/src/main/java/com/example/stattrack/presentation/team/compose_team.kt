@@ -32,27 +32,19 @@ fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController
 
     MyTeamsScreenContent(
         teams = teams,
-        navController = navController,
-        onAddTeam = {teamViewModel.insertTeam(team = it)}
+        navController = navController
     )
 }
 
 @Composable
 fun MyTeamsScreenContent(
     teams: State<List<Team>>,
-    navController: NavHostController,
-    onAddTeam: (Team) -> Unit) {
+    navController: NavHostController)
+{
 
 
-    var showAddTeamScreen by remember { mutableStateOf(false) }
-    if (showAddTeamScreen) {
-        AddTeam(
-            navController = navController,
-            onSubmitPressed = { onAddTeam(it) },
-            onShowAddTeam = { showAddTeamScreen = it })
-    }
 
-    else {
+
         Column {
             Column(
                 modifier = Modifier
@@ -69,7 +61,7 @@ fun MyTeamsScreenContent(
                     Box(Modifier.align(Alignment.CenterEnd)) {
                         Column(horizontalAlignment = CenterHorizontally) {
                             OutlinedButton(
-                                onClick = { showAddTeamScreen = true },
+                                onClick = { navController.navigate(Screen.CreateTeam.route) },
                                 modifier = Modifier
                                     .padding(top = 5.dp)
                                     .size(40.dp),
@@ -101,7 +93,7 @@ fun MyTeamsScreenContent(
             }
         }
     }
-}
+
 
 
 @Composable

@@ -30,7 +30,10 @@ import com.example.stattrack.presentation.ui.theme.Typography
 
 
 @Composable
-fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, onShowAddTeam: (Boolean) -> Unit ) {
+fun AddTeam(
+    teamViewModel: TeamViewModel,
+    navController: NavHostController?
+) {
 
 
 
@@ -158,7 +161,7 @@ fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, 
                     }
 
                     else {
-                        onSubmitPressed(
+                        teamViewModel.insertTeam(
                             Team(
                                 1000,
                                 teamName,
@@ -169,7 +172,6 @@ fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, 
                             )
                         )
                         navController?.navigate("Team")
-                        onShowAddTeam(false)
                     }
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = PrimaryBlue, contentColor = PrimaryWhite)
@@ -186,5 +188,5 @@ fun AddTeam(navController: NavHostController?, onSubmitPressed: (Team) -> Unit, 
 @Preview
 @Composable
 fun AddTeamPreview(){
-    AddTeam(navController = null, onSubmitPressed = {}, onShowAddTeam = {})
+    //ddTeam(navController = null)
 }

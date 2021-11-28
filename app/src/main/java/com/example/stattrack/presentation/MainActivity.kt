@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                         }
                         composable(Screen.CreateTeam.route){
 
-                           // AddTeam(navController = navController, onSubmitPressed = {onAddTeam(it)}, onShowAddTeam = { showAddTeamScreen=it })
+                           AddTeam(teamVM,navController = navController)
                         }
 
                     }
