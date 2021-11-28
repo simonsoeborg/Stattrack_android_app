@@ -31,3 +31,11 @@ val defaultDummyPlayerData = listOf(
     Player(12,"Lars Larsen","Fløjspiller",1993,5),
     Player(12,"Lars Larsen","Fløjspiller",1993,6)
 )
+
+val positions = listOf(
+    "Fløjspiller",
+    "Bagspiller",
+    "Målvogter",
+    "Stregspiller",
+    "Playmaker"
+)

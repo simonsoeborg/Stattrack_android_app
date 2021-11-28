@@ -2,10 +2,8 @@ package com.example.stattrack.presentation.team
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -19,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
-import com.example.stattrack.presentation.navbar.Screen
+import com.example.stattrack.model.model.positions
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.presentation.ui.theme.Typography
@@ -33,10 +31,10 @@ fun AddPlayer(
 
     var name by remember { mutableStateOf("") }
     var yob by remember { mutableStateOf("1985") }
-    var position by remember { mutableStateOf("")}
 
+    val positionList : List<String> by remember { mutableStateOf(positions) }
     var expanded by remember { mutableStateOf(false) }
-    var selectedDivision by remember { mutableStateOf("") }
+    var selectedPosition by remember { mutableStateOf("") }
 
     val context = LocalContext.current
 
@@ -73,7 +71,7 @@ fun AddPlayer(
             .align(Alignment.CenterHorizontally)
         ) {
             OutlinedTextField(
-                value = yob.toString(),
+                value = yob,
                 onValueChange = { yob = it  },
                 label = { Text("Fødselsår") },
                 textStyle = Typography.body1.copy(
@@ -82,19 +80,43 @@ fun AddPlayer(
                 )
             )
         }
+
         Row(modifier = Modifier
             .padding(all = 10.dp)
             .align(Alignment.CenterHorizontally)
         ) {
             OutlinedTextField(
-                value = position,
-                onValueChange = { position = it },
+                value = selectedPosition,
+                onValueChange = { selectedPosition = it },
                 label = { Text("Position") },
                 textStyle = Typography.body1.copy(
                     textAlign = TextAlign.Center,
-                    color = PrimaryBlue
-                )
+                    color = PrimaryBlue),
+                trailingIcon = {
+                    Icon(icon, "" , Modifier.clickable{expanded = !expanded})
+                },
+                enabled = false
             )
+        }
+        Row(modifier = Modifier
+            .padding(all = 10.dp)
+            .align(Alignment.CenterHorizontally)
+        ) {
+
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false}) {
+            positionList.forEach{
+                    position ->
+                DropdownMenuItem(onClick = {
+                    selectedPosition = position
+                    expanded = false
+                }) {
+                    Text(position, textAlign = TextAlign.Center)
+                }
+            }
+        }
         }
 
 
@@ -105,7 +127,7 @@ fun AddPlayer(
             TextButton(
                 onClick = {
 
-                    if (name=="" || yob=="" || position==""){
+                    if (name=="" || yob=="" || selectedPosition==""){
                         Toast.makeText(context, "Alle felter skal udfyldes", Toast.LENGTH_LONG).show()
                     }
 
@@ -114,18 +136,12 @@ fun AddPlayer(
                             Player(
                                 1000,
                                 name,
-                                position,
+                                selectedPosition,
                                 yob.toInt(),
                                 team.teamId
                             )
                         )
-                        // Pass data
-                        val team = Team(team.teamId,team.name,team.clubName,team.creatorId,team.teamUYear,team.division) // User is a parcelable data class.
-
-                        navController.currentBackStackEntry?.arguments?.putParcelable("specificTeam", team)
-                        navController.navigate(Screen.SpecificTeam.route){
-                            navController.popBackStack(Screen.AddPlayer.route, false, false)
-                        }
+                       navController.navigateUp()
                     }
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = PrimaryBlue, contentColor = PrimaryWhite)
