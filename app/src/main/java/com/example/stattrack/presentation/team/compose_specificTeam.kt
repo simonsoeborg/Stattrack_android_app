@@ -129,7 +129,13 @@ fun PlayerListItem(player: Player, navController: NavHostController){
 // Inspired by: https://stackoverflow.com/questions/66671902/how-to-create-a-circular-outlined-button-with-jetpack-compose
 @Composable
 fun NewPlayerButton(navController: NavHostController, team: Team){
-    OutlinedButton(onClick = { navController.navigate(Screen.Landing.route) },
+    OutlinedButton(onClick = {
+        // Pass data
+        val Team = Team(team.teamId,team.name,team.clubName,team.creatorId,team.teamUYear,team.division) // User is a parcelable data class.
+
+        navController.currentBackStackEntry?.arguments?.putParcelable("Team", Team)
+        navController.navigate(Screen.AddPlayer.route)
+    },
         modifier= Modifier
             .padding(top = 5.dp)
             .size(40.dp),

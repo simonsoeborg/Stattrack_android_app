@@ -33,6 +33,7 @@ class TeamViewModel (private val repository: Repository) : ViewModel() {
         loadAllMatchData()
     }
 
+
     fun insertTeam(team: Team){
         viewModelScope.launch {
             repository.insertTeam(Team(

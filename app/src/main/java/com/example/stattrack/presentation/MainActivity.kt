@@ -78,6 +78,12 @@ class MainActivity : AppCompatActivity() {
 
                            AddTeam(teamVM,navController = navController)
                         }
+                        composable(Screen.AddPlayer.route){
+                            val teamObject = navController.previousBackStackEntry?.arguments?.getParcelable<Team>("Team")
+                            if (teamObject != null) {
+                                AddPlayer(sTeamVM, navController, team= teamObject)
+                            }
+                        }
 
                     }
                 }
