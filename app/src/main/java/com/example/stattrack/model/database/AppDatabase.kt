@@ -23,7 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         fun build(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, "stattrack-db")
-                .fallbackToDestructiveMigration() //TODO: Remove this when done with the app - this clears the db-version caches and sets the db back to version 1 (to avoid migration)
+                //.fallbackToDestructiveMigration() //TODO: Remove this when done with the app - this clears the db-version caches and sets the db back to version 1 (to avoid migration)
                 .build()
         }
     }

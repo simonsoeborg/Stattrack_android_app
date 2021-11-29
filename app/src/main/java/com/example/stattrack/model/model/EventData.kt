@@ -17,8 +17,6 @@ enum class EventType {
     UDVISNING,
     GULT,
     RØDT
-
-
 }
 
 val defaultDummyEventData = listOf(

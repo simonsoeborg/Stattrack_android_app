@@ -16,6 +16,7 @@ import com.example.stattrack.presentation.player.PlayerViewModel
 import com.example.stattrack.presentation.team.SpecificTeamViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 object ServiceLocator {
 
@@ -69,9 +70,9 @@ object ServiceLocator {
             val repo = repository
             val eventData = defaultDummyEventData
             val matchData = defaultDummyMatchData
-            val playerData = defaultDummyPlayerData
             val playerStatsData = defaultDummyPlayerStatsData
             val teamData = defaultTeamDummyData
+            val playerData = defaultDummyPlayerData
             Log.d("prepopulateSQLiteDB","Prepopulation begun")
             for (eventdata in eventData){
                 GlobalScope.launch() {
@@ -83,11 +84,6 @@ object ServiceLocator {
                     repo.insertMatchData(matchdata)
                 }
             }
-            for (playerdata in playerData){
-                GlobalScope.launch() {
-                    repo.insertPlayer(playerdata)
-                }
-            }
             for (playerstatsdata in playerStatsData){
                 GlobalScope.launch() {
                     repo.insertPlayerStats(playerstatsdata)
@@ -96,6 +92,11 @@ object ServiceLocator {
             for (team in teamData){
                 GlobalScope.launch() {
                     repo.insertTeam(team)
+                }
+            }
+            for(player in playerData) {
+                GlobalScope.launch() {
+                    repo.insertPlayer(player)
                 }
             }
             Log.d("prepopulateSQLiteDB","Prepopulation finished")
