@@ -94,6 +94,7 @@ fun EventComponent(
                             expandedEvents = false
                             // Callback function to send event and playerId upwards in compose (return)
                             if(selectedIndexEvents!=0) {
+                                eventItems[selectedIndexEvents].playerName = players[selectedIndexPlayers].name
                                 eventItems[selectedIndexEvents].playerId = players[selectedIndexPlayers].id
                                 newEvent(eventItems[selectedIndexEvents])
                             }

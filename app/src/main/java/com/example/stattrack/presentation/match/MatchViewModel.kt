@@ -27,7 +27,6 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     /* Time component variables */
     //val vibrator = getSystemService(VIBRATOR_MANAGER_SERVICE)
-
     private val duration = 30*60
     private var timeElapsed by mutableStateOf(0)
     private var finishPosition by mutableStateOf(duration)
@@ -39,14 +38,12 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private val _teams = MutableStateFlow(defaultTeamDummyData)
     private val _currentMatch = MutableStateFlow(defaultDummyMatchData[0])
     private val _allMatches = MutableStateFlow(defaultDummyMatchData)
-    //private val _eventData = MutableStateFlow(defaultDummyEventData[0])
     private val _players = MutableStateFlow(defaultDummyPlayerData)
     private val _events = MutableStateFlow(defaultDummyEventData)
     private val _startMatch = MutableStateFlow(false)
 
     val teams: StateFlow<List<Team>> = _teams
     val matchData: StateFlow<MatchData> = _currentMatch
-    //val eventData: StateFlow<EventData> = _eventData
     val players: StateFlow<List<Player>> = _players
     val events: StateFlow<List<EventData>> = _events
     val timer: StateFlow<String> = _timer
@@ -56,6 +53,43 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         /* Fetch data from DB when init so it is ready for use later on */
         loadAllTeams()
         loadAllMatchData()
+    }
+
+
+    // To be called when a new match is started
+    @SuppressLint("NewApi")
+    private fun initMatchDateAndId(){
+
+        _currentMatch.value =
+            _currentMatch.value.copy(
+                id = _allMatches.value.size + 1,
+                matchDate = LocalDate.now().toString()
+            )
+        viewModelScope.launch {
+            repository.insertMatchData(_currentMatch.value)
+        }
+        _startMatch.value = true
+    }
+
+    fun onPlayPressed(){
+        if (!_isCounting.value){
+            toggle()
+        if (!_startMatch.value){
+            /* Set matchId and matchDate */
+            startMatch()
+        }
+
+        }
+        if (_isCounting.value){
+            /* Pause */
+            pause()
+        }
+    }
+
+    fun onStopPressed(){
+        /* Stop timer */
+        clear()
+        _timer.value = getTimeElapsed()
     }
 
     private fun toggle() {
@@ -89,51 +123,6 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private fun count() {
         val next = timeElapsed + 1
         timeElapsed = next
-    }
-
-    // To be called when a new match is started
-    @SuppressLint("NewApi")
-    private fun initMatchDateAndId(){
-
-        _currentMatch.value =
-            _currentMatch.value.copy(
-                id = _allMatches.value.size + 1,
-                matchDate = LocalDate.now().toString()
-            )
-        viewModelScope.launch {
-            repository.insertMatchData(_currentMatch.value)
-        }
-        _startMatch.value = true
-    }
-
-    fun onPlayPressed(){
-        if (!_isCounting.value){
-            toggle()
-        if (!_startMatch.value){
-            /* Set matchId and matchDate */
-            initMatchDateAndId()
-        }
-            /*
-            while (_timer.value.isCounting){
-            viewModelScope.launch {
-                delay(500)
-                _timerLeft.value =
-                    _timer.value.timeLeftDisplay
-            }
-        }
-         */
-
-        }
-        if (_isCounting.value){
-            /* Pause */
-            pause()
-        }
-    }
-
-    fun onStopPressed(){
-        /* Stop timer */
-        clear()
-        _timer.value = getTimeElapsed()
     }
 
     private fun getTimeElapsed(): String{
@@ -180,7 +169,8 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
                     id = events.value.size+1,
                     eventType = event.title,
                     playerId = event.playerId,
-                    time = "03:45",
+                    playerName = event.playerName,
+                    time = getTimeElapsed(),
                     matchId = _currentMatch.value.id
                 )
             )
@@ -201,7 +191,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         initMatchDateAndId()
     }
 
-    fun getPlayersFromTeam(teamId: Int){
+    private fun getPlayersFromTeam(teamId: Int){
         viewModelScope.launch {
             repository.getAllPlayersFromTeam(teamId = teamId)
                 .collect {
@@ -211,7 +201,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     }
 
 
-    fun getEventsFromMatchId(matchId: Int){
+    private fun getEventsFromMatchId(matchId: Int){
         viewModelScope.launch {
             repository.getEventDataByMatchId(matchId)
                 .collect {

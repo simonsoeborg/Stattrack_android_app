@@ -65,7 +65,7 @@ class Repository (
     fun getEventDataById(eventDataId: Int): Flow<EventData> =
         database.EventDataDao()
             .loadById(eventDataId)
-            .map { it?.toModel() ?: EventData(0, " ", 0, " ", 0) }
+            .map { it?.toModel() ?: EventData(0, " ", 0, " ", "02:59",0) }
 
     fun getEventDataByPlayerId(playerId: Int): Flow<List<EventData>> =
         database.EventDataDao()

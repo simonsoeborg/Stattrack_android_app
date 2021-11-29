@@ -85,7 +85,7 @@ fun MatchScreenContent(
             )
         }
         Row( modifier = Modifier.fillMaxWidth()) {
-            LogComponent(events.value,players.value)
+            LogComponent(events.value)
         }
     }
 }

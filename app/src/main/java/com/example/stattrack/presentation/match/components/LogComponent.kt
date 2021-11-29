@@ -19,8 +19,7 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 @Composable
 fun LogComponent(
-    events: List<EventData>,
-    players: List<Player>
+    events: List<EventData>
 ) {
     Column( modifier = Modifier
         .fillMaxWidth()
@@ -31,7 +30,7 @@ fun LogComponent(
             LazyColumn() {
                 items(events){event ->
                     Text(
-                        "${event.time} | ${players[event.playerId-1].name} | ${event.eventType}",
+                        "${event.time} | ${event.playerName} | ${event.eventType}",
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(2.dp)
                     )
@@ -45,5 +44,6 @@ fun LogComponent(
 @Preview(showBackground = true)
 @Composable
 fun LogComponentPreview() {
-    LogComponent(defaultDummyEventData, defaultDummyPlayerData)
+    LogComponent(defaultDummyEventData
+    )
 }
