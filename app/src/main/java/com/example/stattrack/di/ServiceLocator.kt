@@ -38,7 +38,7 @@ object ServiceLocator {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return when (modelClass) {
-                    MatchViewModel::class.java -> MatchViewModel(repository)
+                    MatchViewModel::class.java -> MatchViewModel(repository, application)
                     TeamViewModel::class.java -> TeamViewModel(repository)
                     SpecificTeamViewModel::class.java -> SpecificTeamViewModel(repository)
                     PlayerViewModel::class.java -> PlayerViewModel(repository)

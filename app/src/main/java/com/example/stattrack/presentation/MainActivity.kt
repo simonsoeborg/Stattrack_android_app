@@ -1,6 +1,10 @@
 package com.example.stattrack.presentation
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.RowScope
@@ -131,6 +135,8 @@ fun BottomNavigationBar(navController: NavHostController) {
         } == true
     )
 }
+
+
 
 
 

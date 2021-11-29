@@ -1,15 +1,15 @@
 package com.example.stattrack.presentation.match
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.match.components.TeamComponent
 import com.example.stattrack.presentation.match.data.EventItems
+import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 
 @Composable
@@ -20,7 +20,17 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
     val currentMatchData: State<MatchData> = matchViewModel.matchData.collectAsState()
     val timeElapsed: State<String> = matchViewModel.timer.collectAsState()
     val isRunning: State<Boolean> = matchViewModel.isRunning.collectAsState()
-
+    val loading = teams.value.isEmpty() || players.value.isEmpty()
+    
+    if(loading ) {
+        /* Show loading */
+        Box(modifier = Modifier
+            .fillMaxSize()
+        ) {
+            Text(text = "Loading", color= PrimaryBlue, fontSize = 72.sp)
+        }
+    } else {
+        
     MatchScreenContent(
         teams,
         currentMatchData,
@@ -31,9 +41,11 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
         newEvent = { matchViewModel.insertEvent((it)) },
         setTeamOneName = { matchViewModel.setTeamOneName(it) },
         setTeamTwoName = { matchViewModel.setTeamTwoName(it) },
+        onTeamTwoScore = { matchViewModel.setTeamTwoScore(it)},
         onPlayPressed = { matchViewModel.onPlayPressed() },
         onStopPressed = { matchViewModel.onStopPressed() }
     )
+    }
 }
 
 @Composable
@@ -47,6 +59,7 @@ fun MatchScreenContent(
     newEvent: (event: EventItems) -> Unit,
     setTeamOneName: (teamId: Int) -> Unit,
     setTeamTwoName: (teamTwoName: String) -> Unit,
+    onTeamTwoScore: (score: Int) -> Unit,
     onPlayPressed: () -> Unit,
     onStopPressed: () -> Unit
 )
@@ -64,7 +77,7 @@ fun MatchScreenContent(
                 teams = teams.value,
                 onSelectedTeamOne = { setTeamOneName(it) },
                 onTeamTwoName = { setTeamTwoName(it) },
-                onTeamTwoScore = { }
+                onTeamTwoScore = { onTeamTwoScore(it) }
             )
         }
         Row( modifier = Modifier.fillMaxWidth()) {

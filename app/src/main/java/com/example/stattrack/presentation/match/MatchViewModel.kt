@@ -3,11 +3,17 @@ package com.example.stattrack.presentation.match
 
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.app.Application
+import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
+import com.example.stattrack.di.ServiceLocator.application
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.match.data.EventItems
@@ -23,7 +29,7 @@ import kotlin.math.floor
  * that can be exposed to the [compose_match] flow in order
  * for the view to render the relevant information
  */
-class MatchViewModel(private val repository: Repository) : ViewModel() {
+class MatchViewModel(private val repository: Repository, application: Application) : ViewModel() {
 
     /* Time component variables */
     //val vibrator = getSystemService(VIBRATOR_MANAGER_SERVICE)
@@ -38,7 +44,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private val _teams: MutableStateFlow<List<Team>> = MutableStateFlow(defaultTeamDummyData)
     private val _currentMatch = MutableStateFlow(defaultDummyMatchData[0])
     private val _allMatches = MutableStateFlow(defaultDummyMatchData)
-    private val _players: MutableStateFlow<List<Player>> = MutableStateFlow(emptyList())
+    private val _players: MutableStateFlow<List<Player>> = MutableStateFlow(defaultDummyPlayerData)
     private val _events: MutableStateFlow<List<EventData>> = MutableStateFlow(emptyList())
     private val _startMatch = MutableStateFlow(false)
 
@@ -101,7 +107,10 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
                     _timer.value = getTimeElapsed()
                     //Log.d("Stopwatch.kt", "Counting succesfully")
                 }
+                if (timeElapsed == finishPosition){
+                    vibratePhone()
                 finishPosition = duration
+                }
             }
         } else {
             pause()
@@ -122,6 +131,15 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private fun count() {
         val next = timeElapsed + 1
         timeElapsed = next
+    }
+
+    private fun vibratePhone(){
+        val vibrator = application?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= 26) {
+            vibrator.vibrate(VibrationEffect.createOneShot(2000, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator.vibrate(2000)
+        }
     }
 
     private fun getTimeElapsed(): String{
@@ -185,7 +203,18 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         )
     }
 
-    fun startMatch(){
+    fun setTeamTwoScore(score: Int){
+        if (score>=0) {
+            _currentMatch.value = _currentMatch.value.copy(
+                opponentGoals = score
+            )
+            viewModelScope.launch {
+                repository.insertMatchData(_currentMatch.value)
+            }
+        } else Toast.makeText(application, "Score kan ikke være under 0", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun startMatch(){
         _startMatch.value = true
         initMatchDateAndId()
     }

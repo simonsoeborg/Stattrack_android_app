@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.TextFieldDefaults.textFieldColors
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.PlusOne
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
@@ -74,7 +78,8 @@ fun TeamComponent(
 
             // Team 2 row
             Row( modifier = Modifier
-                .padding(2.dp).background(color = PrimaryWhite)
+                .padding(2.dp)
+                .background(color = PrimaryWhite)
             )
             {
                 Column( modifier = Modifier
@@ -114,6 +119,12 @@ fun TeamComponent(
                         fontSize = 24.sp,
 
                     )
+                    IconButton(onClick = { onTeamTwoScore(matchData.opponentGoals+1) }) {
+                        Icon(Icons.Default.Add, contentDescription = "Increment")
+                    }
+                    IconButton(onClick = { onTeamTwoScore(matchData.opponentGoals-1) }) {
+                        Icon(Icons.Default.Remove, contentDescription = "Decrement")
+                    }
                 }
             }
         }
