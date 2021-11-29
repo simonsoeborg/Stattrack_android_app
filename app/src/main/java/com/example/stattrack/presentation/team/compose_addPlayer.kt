@@ -1,48 +1,40 @@
 package com.example.stattrack.presentation.team
 
-
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-
+import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
-import com.example.stattrack.model.model.divisions
+import com.example.stattrack.model.model.positions
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.presentation.ui.theme.Typography
 
-
 @Composable
-fun AddTeam(
-    teamViewModel: TeamViewModel,
-    navController: NavHostController?
+fun AddPlayer(
+    sTeamViewModel: SpecificTeamViewModel,
+    navController: NavHostController,
+    team: Team
 ) {
 
-    var clubname by remember { mutableStateOf("")}
-    var teamName by remember { mutableStateOf("") }
-    var creatorName by remember { mutableStateOf("") }
-    var teamUYear by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var yob by remember { mutableStateOf("1985") }
 
-    val divisionList : List<String> by remember {mutableStateOf(divisions)}
-    var expanded by remember { mutableStateOf(false)}
-    var selectedDivision by remember { mutableStateOf("")}
+    val positionList : List<String> by remember { mutableStateOf(positions) }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedPosition by remember { mutableStateOf("") }
 
     val context = LocalContext.current
 
@@ -65,12 +57,13 @@ fun AddTeam(
             .align(Alignment.CenterHorizontally)
         ) {
             OutlinedTextField(
-                value = clubname,
-                onValueChange = { clubname = it },
-                label = { Text("Klub navn") },
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Navn") },
                 textStyle = Typography.body1.copy(
                     textAlign = TextAlign.Center,
-                    color = PrimaryBlue)
+                    color = PrimaryBlue
+                )
             )
         }
         Row(modifier = Modifier
@@ -78,39 +71,14 @@ fun AddTeam(
             .align(Alignment.CenterHorizontally)
         ) {
             OutlinedTextField(
-                value = teamName,
-                onValueChange = { teamName = it },
-                label = { Text("Hold navn") },
+                value = yob,
+                onValueChange = { yob = it  },
+                label = { Text("Fødselsår") },
                 textStyle = Typography.body1.copy(
                     textAlign = TextAlign.Center,
-                    color = PrimaryBlue)
+                    color = PrimaryBlue
+                )
             )
-        }
-        Row(modifier = Modifier
-            .padding(all = 10.dp)
-            .align(Alignment.CenterHorizontally)
-        ) {
-            OutlinedTextField(
-                value = creatorName,
-                onValueChange = { creatorName = it },
-                label = { Text("Træner navn") },
-                textStyle = Typography.body1.copy(
-                    textAlign = TextAlign.Center,
-                    color = PrimaryBlue)
-                )
-        }
-        Row(modifier = Modifier
-            .padding(all = 10.dp)
-            .align(Alignment.CenterHorizontally)
-        ) {
-            OutlinedTextField(
-                value = teamUYear,
-                onValueChange = { teamUYear = it },
-                label = { Text("Årgang") },
-                textStyle = Typography.body1.copy(
-                    textAlign = TextAlign.Center,
-                    color = PrimaryBlue)
-                )
         }
 
         Row(modifier = Modifier
@@ -118,9 +86,9 @@ fun AddTeam(
             .align(Alignment.CenterHorizontally)
         ) {
             OutlinedTextField(
-                value =selectedDivision,
-                onValueChange = { selectedDivision = it },
-                label = { Text("Division") },
+                value = selectedPosition,
+                onValueChange = { selectedPosition = it },
+                label = { Text("Position") },
                 textStyle = Typography.body1.copy(
                     textAlign = TextAlign.Center,
                     color = PrimaryBlue),
@@ -130,19 +98,25 @@ fun AddTeam(
                 enabled = false
             )
         }
+        Row(modifier = Modifier
+            .padding(all = 10.dp)
+            .align(Alignment.CenterHorizontally)
+        ) {
+
 
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false}) {
-            divisionList.forEach{
-                division ->
+            positionList.forEach{
+                    position ->
                 DropdownMenuItem(onClick = {
-                    selectedDivision = division
+                    selectedPosition = position
                     expanded = false
                 }) {
-                    Text(division)
+                    Text(position, textAlign = TextAlign.Center)
                 }
             }
+        }
         }
 
 
@@ -153,38 +127,27 @@ fun AddTeam(
             TextButton(
                 onClick = {
 
-                    if (teamName=="" || clubname=="" || creatorName=="" || teamUYear==""|| selectedDivision==""){
-
-                        Toast.makeText(context, "Alle parametere skal udfyldes", Toast.LENGTH_LONG).show()
+                    if (name=="" || yob=="" || selectedPosition==""){
+                        Toast.makeText(context, "Alle felter skal udfyldes", Toast.LENGTH_LONG).show()
                     }
 
                     else {
-                        teamViewModel.insertTeam(
-                            Team(
+                        sTeamViewModel.insertPlayer(
+                            Player(
                                 1000,
-                                teamName,
-                                clubname,
-                                creatorName,
-                                teamUYear,
-                                selectedDivision
+                                name,
+                                selectedPosition,
+                                yob.toInt(),
+                                team.teamId
                             )
                         )
-                        navController?.navigate("Team")
+                       navController.navigateUp()
                     }
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = PrimaryBlue, contentColor = PrimaryWhite)
             ){
-                Text(text = "Opret hold", color = PrimaryWhite)
+                Text(text = "Tilføj Spiller", color = PrimaryWhite)
             }
         }
     }
-}
-
-
-
-
-@Preview
-@Composable
-fun AddTeamPreview(){
-    //ddTeam(navController = null)
 }

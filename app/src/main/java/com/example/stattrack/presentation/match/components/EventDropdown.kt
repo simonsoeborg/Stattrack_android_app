@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.stattrack.model.model.Player
 import com.example.stattrack.presentation.match.data.EventItems
-import com.example.stattrack.presentation.match.data.PlayerItems
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 
@@ -25,7 +25,7 @@ fun DropdownMenu(
     expanded: Boolean,
     selectedIndex: Int,
     eventItems: List<EventItems>?,
-    playerItems: List<PlayerItems>?,
+    playerItems: List<Player>?,
     onSelect: (Int) -> Unit,
     onDismissRequest: () -> Unit,
     content: @Composable () -> Unit

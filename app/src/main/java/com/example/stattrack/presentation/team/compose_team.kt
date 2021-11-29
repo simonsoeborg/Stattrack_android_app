@@ -29,72 +29,71 @@ import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 @Composable
 fun MyTeamsScreen(teamViewModel: TeamViewModel, navController: NavHostController) {
     val teams: State<List<Team>> = teamViewModel.teams.collectAsState()
+    val matches: State<List<MatchData>> = teamViewModel.matchData.collectAsState()
 
     MyTeamsScreenContent(
         teams = teams,
-        navController = navController,
-        onAddTeam = {teamViewModel.insertTeam(team = it)}
+        matches = matches,
+        navController = navController
     )
 }
 
 @Composable
 fun MyTeamsScreenContent(
     teams: State<List<Team>>,
-    navController: NavHostController,
-    onAddTeam: (Team) -> Unit) {
+    matches: State<List<MatchData>>,
+    navController: NavHostController)
+{
 
-    var showAddTeamScreen by remember{ mutableStateOf(false)}
-    if(showAddTeamScreen){
-        AddTeam(navController = navController, onSubmitPressed = {onAddTeam(it)}, onShowAddTeam = { showAddTeamScreen=it })
-    }
+        Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
 
-    Column {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(Modifier.align(Alignment.CenterStart)) {
+                        Text(text = "Hold oversigt", fontSize = 32.sp, color = PrimaryBlue)
+                    }
 
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Box(Modifier.align(Alignment.CenterStart)) {
-                    Text(text = "Hold oversigt", fontSize = 32.sp, color = PrimaryBlue)
-                }
-
-                // Add new team button and functionality
-                Box(Modifier.align(Alignment.CenterEnd)) {
-                    Column(horizontalAlignment = CenterHorizontally) {
-                        OutlinedButton(onClick = { showAddTeamScreen = true },
-                            modifier= Modifier
-                                .padding(top = 5.dp)
-                                .size(40.dp),
-                            shape = CircleShape,
-                            border= BorderStroke(1.dp, PrimaryBlue),
-                            contentPadding = PaddingValues(0.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
-                        ) {
-                            Icon(Icons.Default.Add, contentDescription = "NewTeam Button")
+                    // Add new team button and functionality
+                    Box(Modifier.align(Alignment.CenterEnd)) {
+                        Column(horizontalAlignment = CenterHorizontally) {
+                            OutlinedButton(
+                                onClick = { navController.navigate(Screen.CreateTeam.route) },
+                                modifier = Modifier
+                                    .padding(top = 5.dp)
+                                    .size(40.dp),
+                                shape = CircleShape,
+                                border = BorderStroke(1.dp, PrimaryBlue),
+                                contentPadding = PaddingValues(0.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = PrimaryBlue)
+                            ) {
+                                Icon(Icons.Default.Add, contentDescription = "NewTeam Button")
+                            }
+                            Text(text = "Tilføj Hold", color = PrimaryBlue)
                         }
-                        Text(text = "Tilføj Hold", color = PrimaryBlue)
                     }
                 }
-            }
 
-            Column(modifier = Modifier.padding(start = 10.dp)) {
-                TeamList(teams, navController)
+                Column(modifier = Modifier.padding(start = 10.dp)) {
+                    TeamList(teams, navController)
+                }
             }
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            Text(text = "Kamp oversigt", fontSize = 32.sp, color = PrimaryBlue)
-            Column(modifier = Modifier.padding(10.dp)) {
-                //MatchList()
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
+                Text(text = "Kamp oversigt", fontSize = 32.sp, color = PrimaryBlue)
+                Column(modifier = Modifier.padding(10.dp)) {
+                    MatchList(matches = matches, navController = navController)
+                }
             }
         }
     }
-}
+
 
 
 @Composable
@@ -131,7 +130,20 @@ fun TeamList(teams: State<List<Team>>, navController: NavHostController) {
 @Composable
 fun MatchList(matches: State<List<MatchData>>, navController: NavHostController) {
     LazyColumn() {
+        items(
+            items = matches.value
+            ) {
+                match ->
+            // Clickable sender kun test-data pt.
+            Surface(modifier = Modifier.clickable {
+
+               // TODO: Skal vi have en skærm til at vise MatchData?
+
+            }){
+                Text("${match.matchDate} | ${match.creatorId} mod ${match.opponent} | ${match.creatorTeamGoals} : ${match.opponentGoals}",modifier = Modifier.padding(2.dp), color = PrimaryBlue)
+            }
         }
+    }
 }
 
 

@@ -18,18 +18,21 @@ import kotlinx.coroutines.launch
 class TeamViewModel (private val repository: Repository) : ViewModel() {
 
     private val _teams = MutableStateFlow(defaultTeamDummyData)
+    private val _matchData = MutableStateFlow(defaultDummyMatchData)
     /*
     private val _players = MutableStateFlow(defaultDummyPlayerData)
-    private val _matchData = MutableStateFlow(defaultDummyMatchData)
     private val _eventData = MutableStateFlow(defaultDummyEventData)
     private val _playerStats = MutableStateFlow(defaultDummyPlayerStatsData) */
 
     val teams:  StateFlow<List<Team>> = _teams
+    val matchData: StateFlow<List<MatchData>> = _matchData
 
     init {
         /* Fetch data from DB when init so it is ready for use later on */
         loadAllTeams()
+        loadAllMatchData()
     }
+
 
     fun insertTeam(team: Team){
         viewModelScope.launch {
@@ -60,7 +63,7 @@ class TeamViewModel (private val repository: Repository) : ViewModel() {
     private fun loadAllMatchData() {
         viewModelScope.launch() {
             repository.getAllMatchData().collect {
-                //_matchData.value = it
+                _matchData.value = it
             }
         }
     }

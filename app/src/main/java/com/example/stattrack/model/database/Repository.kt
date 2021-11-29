@@ -65,7 +65,7 @@ class Repository (
     fun getEventDataById(eventDataId: Int): Flow<EventData> =
         database.EventDataDao()
             .loadById(eventDataId)
-            .map { it?.toModel() ?: EventData(0, " ", 0, " ", 0) }
+            .map { it?.toModel() ?: EventData(0, " ", 0, " ", "02:59",0) }
 
     fun getEventDataByPlayerId(playerId: Int): Flow<List<EventData>> =
         database.EventDataDao()
@@ -73,10 +73,11 @@ class Repository (
             .mapIterable { eventEntity ->
                 eventEntity.toModel()   }
 
-    fun getEventDataByMatchId(matchId: Int): Flow<EventData> =
+    fun getEventDataByMatchId(matchId: Int): Flow<List<EventData>> =
         database.EventDataDao()
-            .loadByMatchId(matchId = matchId)
-            .map { it?.toModel() ?: EventData(0," ", 0," ",0) }
+            .loadByMatchId(matchId)
+            .mapIterable { eventEntity ->
+                eventEntity.toModel()   }
 
     fun getAllEvents(): Flow<List<EventData>> =
         database.EventDataDao()
@@ -132,10 +133,11 @@ class Repository (
                 playerEntity.toModel() }
 
     // PlayerStats
-    fun getPlayerStatsById(playerId: Int): Flow<PlayerStats> =
+    fun getPlayerStatsById(playerId: Int): Flow<List<PlayerStats>> =
         database.PlayerStatsDao()
             .loadById(playerId)
-            .map { it?.toModel() ?: PlayerStats(0,"null",0,0,0,0,0,0,0,0) }
+            .mapIterable { playerStatsEntity ->
+                playerStatsEntity.toModel() }
 
     fun getAllPlayerStats(): Flow<List<PlayerStats>> =
         database.PlayerStatsDao()

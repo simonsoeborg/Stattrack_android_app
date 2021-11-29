@@ -1,78 +1,118 @@
 package com.example.stattrack.presentation.match.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+
+import android.graphics.Color
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.*
+import androidx.compose.material.TextFieldDefaults.textFieldColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.stattrack.model.model.MatchData
+import com.example.stattrack.model.model.Team
+import com.example.stattrack.model.model.defaultDummyMatchData
+import com.example.stattrack.model.model.defaultTeamDummyData
+import com.example.stattrack.presentation.ui.theme.PrimaryBlue
+import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 
 
 @Composable
-fun TeamComponent(hold1_name: String, hold2_name: String, hold1_sc: String, hold2_sc: String) {
-    var hold1_navn by remember { mutableStateOf(hold1_name) }
-    var hold1_score by remember { mutableStateOf(hold1_sc) }
-    var hold2_navn by remember { mutableStateOf( hold2_name) }
-    var hold2_score by remember { mutableStateOf(hold2_sc) }
+fun TeamComponent(
+    matchData: MatchData,
+    teams:List<Team>,
+    onSelectedTeamOne: (teamId: Int) -> Unit,
+    onTeamTwoName: (String) -> Unit,
+    onTeamTwoScore: (Int) -> Unit){
+
+    val teamTwoName = remember { mutableStateOf("Hold 2")}
+
     Row( // Teams Row
         modifier = Modifier
             .fillMaxWidth()
     ) {
+
         Column( // Main Column
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(17.dp)
         ) {
+
+            // Team 1 row
             Row( modifier = Modifier
                 .padding(2.dp)
-            ) // Team 1 row
+            )
             {
                 Column( modifier = Modifier
                     .weight(3f)
                     .padding(1.dp)
                 ) {
-                    TextField(
-                        value = hold1_navn,
-                        onValueChange = { hold1_navn = it },
-                        label = { Text("Hold 1") }
+                    DropdownTeamsList(
+                        teams = teams,
+                        onSelectedTeam = { onSelectedTeamOne(it) }
                     )
                 }
                 Column( modifier = Modifier
                     .weight(1f)
                     .padding(1.dp)
                 ) {
-                    TextField(value = hold1_score,
-                        onValueChange = { hold1_score = it},
-                        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+                    Text(
+                        text = matchData.creatorTeamGoals.toString(),
+                        color = PrimaryBlue,
+                        fontSize = 24.sp,
                     )
                 }
             }
+
+            // Team 2 row
             Row( modifier = Modifier
-                .padding(2.dp)
-            ) // Team 2 Row
+                .padding(2.dp).background(color = PrimaryWhite)
+            )
             {
                 Column( modifier = Modifier
                     .weight(3f)
                     .padding(1.dp)
+                    .background(color = PrimaryWhite)
+                    //.border(2.dp, color = PrimaryBlue) <- doesnt look good find another style
                 ) {
-                    TextField(
-                        value = hold2_navn,
-                        onValueChange = { hold2_navn = it },
-                        label = { Text("Hold 2") }
-                    )
+                    BasicTextField(
+                        value = teamTwoName.value,
+                        onValueChange = {
+                            teamTwoName.value = it
+                            onTeamTwoName(it)
+                        },//cursorBrush = SolidColor(Transparent),
+                        textStyle = TextStyle(color = PrimaryBlue, background = PrimaryWhite, fontSize = 24.sp),
+                        singleLine = true
+                        /*colors = textFieldColors(
+                            focusedIndicatorColor = Transparent,
+                            disabledIndicatorColor = Transparent,
+                            unfocusedIndicatorColor = Transparent
+                        ) */
+
+                        )
+                        /*
+                        colors =  textFieldColors(backgroundColor = PrimaryWhite) */
+
+
                 }
                 Column( modifier = Modifier
                     .weight(1f)
                     .padding(1.dp)
                 ) {
-                    TextField(value = hold2_score,
-                        onValueChange = { hold2_score = it},
-                        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+                    // TODO - Make a button so we can increment score on team 2 and use callback function onTeamTwoScore(Int) to call value upwards in compose-tree
+                    Text(
+                        text = matchData.opponentGoals.toString(),
+                        color = PrimaryBlue,
+                        fontSize = 24.sp,
+
                     )
                 }
             }
@@ -80,3 +120,55 @@ fun TeamComponent(hold1_name: String, hold2_name: String, hold1_sc: String, hold
     }
 }
 
+
+@Composable
+fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedId by remember { mutableStateOf(0) }
+
+    Row(modifier = Modifier
+        .clickable(onClick = { expanded = true })
+        .background(
+            PrimaryWhite
+        )
+    ) {
+        Text(
+            teams[selectedId].clubName,
+            color = PrimaryBlue,
+            fontSize = 24.sp
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = PrimaryWhite
+                ),
+
+        ) {
+            teams.forEach { team ->
+                DropdownMenuItem(onClick = {
+                    selectedId = team.teamId-1
+                    onSelectedTeam(team.teamId)
+                    expanded = false
+                }) {
+                    Text(team.clubName, color = PrimaryBlue, fontSize = 24.sp)
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun TeamComponentPreview(){
+    TeamComponent(
+        defaultDummyMatchData[0],
+        teams = defaultTeamDummyData,
+        onSelectedTeamOne = { },
+        onTeamTwoName = { },
+        onTeamTwoScore = { }
+
+    )
+}

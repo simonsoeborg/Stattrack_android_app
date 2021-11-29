@@ -24,13 +24,17 @@ import com.example.stattrack.presentation.ui.theme.StattrackTheme
 fun PlayerClass(navController: NavHostController, playerViewModel: PlayerViewModel, player : Player){
 
     playerViewModel.loadPlayersStats(player.id)
-    val playerStats : State<PlayerStats> = playerViewModel.playerStats.collectAsState()
+    val playerStats : State<List<PlayerStats>> = playerViewModel.playerStats.collectAsState()
 
-    PlayerClassContent(playerStats, player)
+    playerViewModel.combineStats(playerStats.value)
+    val combinedPlayerStats : State<PlayerStats> = playerViewModel.combinedPlayerStats.collectAsState()
+    val gamesTotal : State<Int> = playerViewModel.gamesTotal.collectAsState()
+
+    PlayerClassContent(combinedPlayerStats, gamesTotal, player)
 }
 
 @Composable
-fun PlayerClassContent(stats : State<PlayerStats> , player : Player){
+fun PlayerClassContent(stats : State<PlayerStats> , gamesAmount : State<Int>, player : Player){
     Column(modifier = Modifier.padding(10.dp), )
     {
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -49,10 +53,8 @@ fun PlayerClassContent(stats : State<PlayerStats> , player : Player){
                     fontStyle = FontStyle.Italic)
             }
         }
-
-        // Todo - Burde playerStats bestå af et element for hver kamp - for hver spiller.. ellers forstår jeg ikke hvad matchID bruges til nemlig?
-
-        PlayerData(5, stats.value.goals,stats.value.attempts,stats.value.assists)
+        
+        PlayerData(gamesAmount.value, stats.value.goals,stats.value.attempts,stats.value.assists)
     }
 }
 
@@ -134,7 +136,7 @@ fun BarChartView() {
 @Composable
 fun DefaultPreview() {
     StattrackTheme {
-        // PlayerClassContent()
+        //PlayerClassContent()
 
     }
 }
