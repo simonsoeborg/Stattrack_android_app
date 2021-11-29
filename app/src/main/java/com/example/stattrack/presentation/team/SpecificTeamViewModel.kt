@@ -59,6 +59,12 @@ class SpecificTeamViewModel(private val repository: Repository) : ViewModel()  {
         loadAllPlayersFromTeam(player.teamId)
     }
 
+    fun deleteTeam(teamId: Int){
+        viewModelScope.launch {
+            repository.deleteTeam(teamId)
+        }
+    }
+
 
     // Fetches the correct id for the new player async
     private suspend fun getNewPlayerIdFromDB() = viewModelScope.async{

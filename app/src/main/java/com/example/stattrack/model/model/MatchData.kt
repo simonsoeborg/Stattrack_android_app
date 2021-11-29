@@ -11,10 +11,10 @@ data class MatchData(
     )
 
 val defaultDummyMatchData = listOf(
-    MatchData(0,"HC Midtjylland",0,"Hold 2","05-11-2021",0,0),
-    MatchData(1,"Ajax København",1,"Grindsted GIF Håndbold","20-11-2021",4,16),
-    MatchData(2,"Tønder Herrebåndbold",2,"Nørrebronx Driblers","19-11-2021",23,19),
-    MatchData(3,"Elitesport Vendsyssel",3,"DTU Handball","26-11-2021",41,25),
+    //MatchData(0,"HC Midtjylland",0,"Hold 2","05-11-2021",0,0),
+    //MatchData(1,"Ajax København",1,"Grindsted GIF Håndbold","20-11-2021",4,16),
+    //MatchData(2,"Tønder Herrebåndbold",2,"Nørrebronx Driblers","19-11-2021",23,19),
+    //MatchData(3,"Elitesport Vendsyssel",3,"DTU Handball","26-11-2021",41,25),
     MatchData(4,"Grindsted GIF Håndbold",4,"Tønder Herrebåndbold","27-11-2021",15,35),
     MatchData(5,"Nørrebronx Driblers",5,"Shortcut Athletics","28-11-2021",17,35),
     MatchData(6,"DTU Handball",6,"Bornholm United","29-11-2021",39,42),

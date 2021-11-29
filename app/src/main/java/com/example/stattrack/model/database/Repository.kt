@@ -173,6 +173,10 @@ class Repository (
         database.PlayerDao().delete(playerId)
         database.PlayerStatsDao().deletePlayerStatsForPlayer(playerId)
     }
+
+    suspend fun deleteTeam(teamId: Int){
+        database.TeamDao().deleteTeam(teamId)
+    }
     /* ------------------------------------------------------------------ */
 
 }

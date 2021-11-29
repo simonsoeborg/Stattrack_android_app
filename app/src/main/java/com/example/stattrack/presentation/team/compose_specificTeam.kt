@@ -23,7 +23,9 @@ import androidx.navigation.NavHostController
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.presentation.navbar.Screen
+import com.example.stattrack.presentation.player.PlayerViewModel
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
+import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 
 @Composable
 fun SpecificTeamScreen(navController: NavHostController, specificTeamViewModel: SpecificTeamViewModel, team : Team ) {
@@ -33,7 +35,8 @@ fun SpecificTeamScreen(navController: NavHostController, specificTeamViewModel: 
     SpecificTeamScreenContent(
         team = team,
         specificTeamPlayers = specificTeamPlayers.value,
-        navController = navController
+        navController = navController,
+        onTeamDelete = { specificTeamViewModel.deleteTeam(it) }
     )
 }
 
@@ -42,7 +45,8 @@ fun SpecificTeamScreen(navController: NavHostController, specificTeamViewModel: 
 fun SpecificTeamScreenContent(
     team : Team,
     specificTeamPlayers: List<Player>,
-    navController: NavHostController
+    navController: NavHostController,
+    onTeamDelete: (teamId: Int) -> Unit
 ) {
 
     Column() {
@@ -57,7 +61,7 @@ fun SpecificTeamScreenContent(
                 Box(modifier = Modifier.fillMaxWidth()) {
 
                     Box(){ // Headline for team name
-                        Text(text = team.name, fontSize = 32.sp, color = PrimaryBlue)
+                        Text(text = team.name, fontSize = 26.sp, color = PrimaryBlue)
                     }
 
                     Box(Modifier.align(Alignment.CenterEnd)) {
@@ -76,15 +80,22 @@ fun SpecificTeamScreenContent(
 
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Box(Modifier.align(Alignment.CenterStart)) {
-                        Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
-                    }
-
-                    Box(Modifier.align(Alignment.CenterEnd)) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             NewPlayerButton(navController = navController, team = team)
                             Text(text = "Tilføj Spiller", color = PrimaryBlue)
                         }
                     }
+
+                    Box(Modifier.align(Alignment.CenterEnd)) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            RemoveTeamButton(navController = navController, team = team, onTeamDelete = {onTeamDelete(it)})
+                        }
+                    }
+                }
+
+
+                Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                    Text(text = "Spillerliste", fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
                 }
 
                 LazyColumn(contentPadding = PaddingValues(5.dp)) {
@@ -142,6 +153,53 @@ fun NewPlayerButton(navController: NavHostController, team: Team){
         colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
     ) {
         Icon(Icons.Default.Add, contentDescription = "NewPlayer Button")
+    }
+}
+
+@Composable
+fun RemoveTeamButton(navController: NavHostController, team: Team, onTeamDelete: (teamId: Int) -> Unit){
+    var showDialog by remember { mutableStateOf(false) }
+    Button(
+
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
+        shape = MaterialTheme.shapes.medium,
+        onClick = {
+            showDialog = true
+        },
+
+        modifier= Modifier
+            .padding(all = 10.dp)
+            .fillMaxWidth(0.4f)
+
+
+
+    ) {
+        Text(text = "Slet Hold", color = PrimaryWhite)
+    }
+    if (showDialog){
+        AlertDialog(
+            backgroundColor = PrimaryWhite,
+            onDismissRequest = { showDialog = false},
+            title = {Text("Slet hold?", color = PrimaryBlue, fontSize = 30.sp) },
+            text = {Text("Er du sikker på at du vil slette ${team.name} ?", color = PrimaryBlue) },
+            confirmButton = {
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
+                    onClick = {
+                        onTeamDelete(team.teamId)
+                        navController.navigateUp()
+                    }) {
+                    Text(text = "Slet", color = PrimaryWhite)
+                }
+            },
+            dismissButton = {
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray),
+                    modifier = Modifier.padding(end=10.dp),
+                    onClick = { showDialog = false }) {
+                    Text("Annuller")
+                }
+            })
     }
 }
 
