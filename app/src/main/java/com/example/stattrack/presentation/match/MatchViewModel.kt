@@ -35,11 +35,11 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private val _timer = MutableStateFlow(getTimeElapsed())
 
 
-    private val _teams = MutableStateFlow(defaultTeamDummyData)
+    private val _teams: MutableStateFlow<List<Team>> = MutableStateFlow(defaultTeamDummyData)
     private val _currentMatch = MutableStateFlow(defaultDummyMatchData[0])
     private val _allMatches = MutableStateFlow(defaultDummyMatchData)
-    private val _players = MutableStateFlow(defaultDummyPlayerData)
-    private val _events = MutableStateFlow(defaultDummyEventData)
+    private val _players: MutableStateFlow<List<Player>> = MutableStateFlow(emptyList())
+    private val _events: MutableStateFlow<List<EventData>> = MutableStateFlow(emptyList())
     private val _startMatch = MutableStateFlow(false)
 
     val teams: StateFlow<List<Team>> = _teams
@@ -99,8 +99,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
                     delay(1000)
                     count()
                     _timer.value = getTimeElapsed()
-                    Log.d("Stopwatch.kt", "Counting succesfully")
-                    println("Stopwatch.kt : Counting succesfully")
+                    //Log.d("Stopwatch.kt", "Counting succesfully")
                 }
                 finishPosition = duration
             }

@@ -12,9 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.stattrack.model.model.EventData
-import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.defaultDummyEventData
-import com.example.stattrack.model.model.defaultDummyPlayerData
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 @Composable
