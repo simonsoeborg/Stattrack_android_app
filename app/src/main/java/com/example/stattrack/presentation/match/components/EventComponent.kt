@@ -117,13 +117,6 @@ fun EventComponent(
                                 maxLines = 1
                             )
                         }
-//                        OutlinedButton(onClick = { expandedEvents = true },
-//                            modifier = Modifier.size(100.dp),
-//                            shape = CircleShape,
-//                            border = BorderStroke(1.dp, PrimaryBlue)
-//                        ) {
-//                            Icon(Icons.Default.Add, contentDescription = "New Event", tint = PrimaryBlue)
-//                        }
                     }
                 }
             }

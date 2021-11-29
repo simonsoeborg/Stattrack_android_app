@@ -3,17 +3,19 @@ package com.example.stattrack.presentation.match
 
 
 import android.annotation.SuppressLint
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.match.data.EventItems
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.*
+import kotlin.math.floor
 
 
 /**
@@ -24,31 +26,14 @@ import java.util.*
 class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     /* Time component variables */
-    private val maxTime = 60*30
-    private val _currentTime = MutableStateFlow(0)
-    private val pauseMatch = MutableLiveData(false)
-    val paused: LiveData<Boolean> = pauseMatch
-    private val _matchIsActive = MutableStateFlow(false)
-    val matchIsActive: StateFlow<Boolean> = _matchIsActive
-    private val timer = Timer()
-    private var job: Job? = null
-    private val mutableTicker = MutableStateFlow("")
-    val ticker: StateFlow<String> = mutableTicker
+    //val vibrator = getSystemService(VIBRATOR_MANAGER_SERVICE)
 
-    fun startClock() {
-        if (job == null) startJob()
-
-    }
-
-    private fun startJob() {
-        GlobalScope.launch {
-            while (matchIsActive.value){
-                //mutableTicker.value
-
-            }
-        }
-    }
-
+    private val duration = 30*60
+    private var timeElapsed by mutableStateOf(0)
+    private var finishPosition by mutableStateOf(duration)
+    private var job by mutableStateOf<Job?>(null)
+    private val _isCounting = MutableStateFlow(job != null)
+    private val _timer = MutableStateFlow(getTimeElapsed())
 
 
     private val _teams = MutableStateFlow(defaultTeamDummyData)
@@ -58,22 +43,54 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private val _players = MutableStateFlow(defaultDummyPlayerData)
     private val _events = MutableStateFlow(defaultDummyEventData)
     private val _startMatch = MutableStateFlow(false)
-    private val _isMatchPaused = MutableStateFlow(false)
 
     val teams: StateFlow<List<Team>> = _teams
     val matchData: StateFlow<MatchData> = _currentMatch
     //val eventData: StateFlow<EventData> = _eventData
     val players: StateFlow<List<Player>> = _players
     val events: StateFlow<List<EventData>> = _events
-    val isMatchPaused: StateFlow<Boolean> = _isMatchPaused
-    //val currentTime: StateFlow<Int> = _currentTime
+    val timer: StateFlow<String> = _timer
+    val isRunning: StateFlow<Boolean> = _isCounting
 
     init {
         /* Fetch data from DB when init so it is ready for use later on */
         loadAllTeams()
         loadAllMatchData()
-
     }
+
+    private fun toggle() {
+        if (job == null) {
+            job = MainScope().launch {
+                while (timeElapsed <= finishPosition ) {
+                    delay(1000)
+                    count()
+                    _timer.value = getTimeElapsed()
+                    Log.d("Stopwatch.kt", "Counting succesfully")
+                    println("Stopwatch.kt : Counting succesfully")
+                }
+                finishPosition = duration
+            }
+        } else {
+            pause()
+        }
+    }
+
+    private fun clear() {
+        pause()
+        timeElapsed = 0
+        finishPosition = duration
+    }
+
+    private fun pause() {
+        job?.cancel()
+        job = null
+    }
+
+    private fun count() {
+        val next = timeElapsed + 1
+        timeElapsed = next
+    }
+
     // To be called when a new match is started
     @SuppressLint("NewApi")
     private fun initMatchDateAndId(){
@@ -90,17 +107,45 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun onPlayPressed(){
+        if (!_isCounting.value){
+            toggle()
         if (!_startMatch.value){
             /* Set matchId and matchDate */
             initMatchDateAndId()
         }
-        if (_startMatch.value){
-            /* Activate timer */
+            /*
+            while (_timer.value.isCounting){
+            viewModelScope.launch {
+                delay(500)
+                _timerLeft.value =
+                    _timer.value.timeLeftDisplay
+            }
+        }
+         */
+
+        }
+        if (_isCounting.value){
+            /* Pause */
+            pause()
         }
     }
 
-    fun onPausePressed(){
-        /* Pause timer */
+    fun onStopPressed(){
+        /* Stop timer */
+        clear()
+        _timer.value = getTimeElapsed()
+    }
+
+    private fun getTimeElapsed(): String{
+        val seconds = timeElapsed % 60
+        val minutes = floor(timeElapsed.toDouble() / 60).toInt()
+        val timeElapsedString =
+             buildString {
+                append("$minutes".padStart(2, '0'))
+                append(":")
+                append("$seconds".padStart(2, '0'))
+            }
+        return timeElapsedString
     }
 
     fun setTeamOneName(teamId: Int){

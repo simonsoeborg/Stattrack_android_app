@@ -29,27 +29,22 @@ fun SpecificTeamScreen(navController: NavHostController, teamViewModel: Specific
     teamViewModel.loadAllPlayersFromTeam(team.teamId)
     val specificTeamPlayers : State<List<Player>> = teamViewModel.players.collectAsState()
 
-
-    Column() {
-        SpecificTeamScreenContent(team = team,
-        onAddPlayer = {/*teamViewModel.insertPlayer(player = player)*/},
-        specificTeamPlayers.value,
-        navController = navController
-        )}
-    }
+    SpecificTeamScreenContent(team = team,
+    specificTeamPlayers.value,
+    navController = navController
+    )
+}
 
 
 @Composable
 fun SpecificTeamScreenContent(
     team : Team,
-    onAddPlayer: (player: Player) -> Unit,
     specificTeamPlayers: List<Player>,
     navController: NavHostController
 ) {
 
     Column() {
-        val placeholderPlayer = Player(1000,"placeholder", "placeholder",2021,1000)
-        val currentOnAddPlayer by rememberUpdatedState(newValue = onAddPlayer(placeholderPlayer))
+
 
         Column {
             Column(
