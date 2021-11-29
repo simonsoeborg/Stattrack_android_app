@@ -1,10 +1,6 @@
 package com.example.stattrack.presentation
 
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.RowScope
@@ -69,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
                             val teamObject = navController.previousBackStackEntry?.arguments?.getParcelable<Team>("specificTeam")
                             if (teamObject != null) {
-                                SpecificTeamScreen(navController = navController,team = teamObject, teamViewModel = sTeamVM)
+                                SpecificTeamScreen(navController = navController,team = teamObject, specificTeamViewModel = sTeamVM)
                             }
                         }
                         composable(Screen.Player.route) {

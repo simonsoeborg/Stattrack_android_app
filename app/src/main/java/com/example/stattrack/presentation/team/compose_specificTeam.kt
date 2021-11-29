@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,13 +26,14 @@ import com.example.stattrack.presentation.navbar.Screen
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 @Composable
-fun SpecificTeamScreen(navController: NavHostController, teamViewModel: SpecificTeamViewModel, team : Team ) {
-    teamViewModel.loadAllPlayersFromTeam(team.teamId)
-    val specificTeamPlayers : State<List<Player>> = teamViewModel.players.collectAsState()
+fun SpecificTeamScreen(navController: NavHostController, specificTeamViewModel: SpecificTeamViewModel, team : Team ) {
+    specificTeamViewModel.loadAllPlayersFromTeam(team.teamId)
+    val specificTeamPlayers : State<List<Player>> = specificTeamViewModel.players.collectAsState()
 
-    SpecificTeamScreenContent(team = team,
-    specificTeamPlayers.value,
-    navController = navController
+    SpecificTeamScreenContent(
+        team = team,
+        specificTeamPlayers = specificTeamPlayers.value,
+        navController = navController
     )
 }
 
@@ -148,7 +150,6 @@ fun NewPlayerButton(navController: NavHostController, team: Team){
 @Composable
     fun DefaultPreview() {
         var team = Team(22,"Simon Fridolf","Horsens Boldklub","02020","1996","3.Division")
-
       // SpecificTeamScreenContent(team = team)
     }
 

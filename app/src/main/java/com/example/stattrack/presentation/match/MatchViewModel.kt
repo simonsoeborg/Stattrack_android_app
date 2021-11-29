@@ -65,7 +65,6 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
     // To be called when a new match is started
     @SuppressLint("NewApi")
     private fun initMatchDateAndId(){
-
         _currentMatch.value =
             _currentMatch.value.copy(
                 id = _allMatches.value.size + 1,
@@ -74,7 +73,6 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
         viewModelScope.launch {
             repository.insertMatchData(_currentMatch.value)
         }
-        _startMatch.value = true
     }
 
     fun onPlayPressed(){

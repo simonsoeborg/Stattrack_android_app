@@ -59,6 +59,12 @@ class PlayerViewModel(private val repository: Repository) : ViewModel() {
         _combinedPlayerStats.value = PlayerStats(999,"",tempAttempts,tempGoals, tempKeeperSaves, tempAssists, tempMin2, tempYellowCards, tempRedCards,999)
         _gamesTotal.value = tempGames
     }
+
+    fun deletePlayer(playerId: Int){
+        viewModelScope.launch {
+            repository.deletePlayer(playerId)
+        }
+    }
 }
 
 

@@ -169,7 +169,10 @@ class Repository (
 
     /* ------------------------------------------------------------------ */
     /* Delete methods */
-    /* TODO:: Currently we dont have any delete methods                   */
+    suspend fun deletePlayer(playerId: Int){
+        database.PlayerDao().delete(playerId)
+        database.PlayerStatsDao().deletePlayerStatsForPlayer(playerId)
+    }
     /* ------------------------------------------------------------------ */
 
 }

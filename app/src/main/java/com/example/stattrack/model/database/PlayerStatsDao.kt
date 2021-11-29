@@ -1,9 +1,6 @@
 package com.example.stattrack.model.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,4 +14,7 @@ interface PlayerStatsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(PlayerStatsEntity: PlayerStatsEntity)
+
+    @Query("DELETE FROM playerStats WHERE playerId = :playerId")
+    suspend fun deletePlayerStatsForPlayer(playerId: Int)
 }
