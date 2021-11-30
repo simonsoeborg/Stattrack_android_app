@@ -25,4 +25,7 @@ interface MatchDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(matchData: MatchDataEntity)
+
+    @Query ("DELETE FROM matchData WHERE Id = :matchId")
+    fun deleteMatchById(matchId: Int)
 }

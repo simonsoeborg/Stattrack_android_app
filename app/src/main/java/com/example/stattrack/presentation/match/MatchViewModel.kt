@@ -2,7 +2,6 @@ package com.example.stattrack.presentation.match
 
 
 
-import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
@@ -21,7 +20,6 @@ import com.example.stattrack.presentation.match.data.EventItems
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -58,6 +56,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private val _allMatches = MutableStateFlow(defaultDummyMatchData)
     private val _players: MutableStateFlow<List<Player>> = MutableStateFlow(defaultDummyPlayerData)
     private val _events: MutableStateFlow<List<EventData>> = MutableStateFlow(emptyList())
+    private val _playerStats: MutableStateFlow<List<PlayerStats>> = MutableStateFlow(emptyList())
     private val _startMatch = MutableStateFlow(false)
 
     val teams: StateFlow<List<Team>> = _teams
@@ -86,6 +85,10 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
                 matchDate = getCurrentDateTime()?:"00-00-0000"
             )
         updateMatchData(_currentMatch.value)
+    }
+
+    fun insertPlayerStats(event: EventItems){
+
     }
 
     private fun getCurrentDateTime(): String? {

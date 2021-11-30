@@ -13,6 +13,7 @@ import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.team.TeamViewModel
 import com.example.stattrack.presentation.match.MatchViewModel
 import com.example.stattrack.presentation.player.PlayerViewModel
+import com.example.stattrack.presentation.team.SpecificMatchViewModel
 import com.example.stattrack.presentation.team.SpecificTeamViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -40,6 +41,7 @@ object ServiceLocator {
                     MatchViewModel::class.java -> MatchViewModel(repository)
                     TeamViewModel::class.java -> TeamViewModel(repository)
                     SpecificTeamViewModel::class.java -> SpecificTeamViewModel(repository)
+                    SpecificMatchViewModel::class.java -> SpecificMatchViewModel(repository)
                     PlayerViewModel::class.java -> PlayerViewModel(repository)
 
                     else -> throw IllegalArgumentException("Unsupported ViewModel $modelClass")
@@ -49,6 +51,9 @@ object ServiceLocator {
     }
 
     val ViewModelStoreOwner.specificTeamViewModel: SpecificTeamViewModel
+        get() = ViewModelProvider(this, viewModelFactory).get()
+
+    val ViewModelStoreOwner.specificMatchViewModel: SpecificMatchViewModel
         get() = ViewModelProvider(this, viewModelFactory).get()
 
     val ViewModelStoreOwner.matchViewModel: MatchViewModel

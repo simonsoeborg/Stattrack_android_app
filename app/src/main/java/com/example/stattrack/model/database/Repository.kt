@@ -177,6 +177,19 @@ class Repository (
     suspend fun deleteTeam(teamId: Int){
         database.TeamDao().deleteTeam(teamId)
     }
+
+    suspend fun deleteMatchData(matchId: Int){
+        database.MatchDataDao().deleteMatchById(matchId)
+    }
+
+    suspend fun deletePlayerStatsWithMatchId(matchId: Int){
+        database.PlayerStatsDao().deletePlayerStatsByMatchId(matchId)
+    }
+
+    suspend fun deleteEventDataWithMatchId(matchId: Int){
+        database.EventDataDao().deleteEventDataWithMatchId(matchId)
+    }
+
     /* ------------------------------------------------------------------ */
 
 }

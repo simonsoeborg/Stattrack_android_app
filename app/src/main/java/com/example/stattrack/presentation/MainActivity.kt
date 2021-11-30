@@ -24,6 +24,7 @@ import com.example.stattrack.di.ServiceLocator.playerViewModel
 import com.example.stattrack.di.ServiceLocator.specificTeamViewModel
 import com.example.stattrack.di.ServiceLocator.teamViewModel
 import com.example.stattrack.di.ServiceLocator.prepopulateSQLiteDB
+import com.example.stattrack.di.ServiceLocator.specificMatchViewModel
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.presentation.player.PlayerClass
@@ -37,8 +38,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val matchVM: MatchViewModel by lazy { matchViewModel }
         val teamVM: TeamViewModel by lazy { teamViewModel }
-        val sTeamVM: SpecificTeamViewModel by lazy {specificTeamViewModel}
-        val playerVM: PlayerViewModel by lazy {playerViewModel}
+        val sTeamVM: SpecificTeamViewModel by lazy { specificTeamViewModel }
+        val playerVM: PlayerViewModel by lazy { playerViewModel }
+        val sMatchVM: SpecificMatchViewModel by lazy { specificMatchViewModel }
 
         supportActionBar?.hide() // Hide the title bar so the app shows in fullscreen
 
@@ -82,6 +84,16 @@ class MainActivity : AppCompatActivity() {
                             val teamObject = navController.previousBackStackEntry?.arguments?.getParcelable<Team>("Team")
                             if (teamObject != null) {
                                 AddPlayer(sTeamVM, navController, team= teamObject)
+                            }
+                        }
+                        composable(Screen.SpecificMatch.route){
+                            val matchId = navController.previousBackStackEntry?.arguments?.getInt("matchId")
+                            if (matchId != null){
+                                SpecificMatchScreen(
+                                    navController = navController,
+                                    specificMatchViewModel = sMatchVM,
+                                    matchId = matchId
+                                )
                             }
                         }
 

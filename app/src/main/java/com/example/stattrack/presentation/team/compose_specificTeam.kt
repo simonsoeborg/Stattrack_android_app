@@ -9,7 +9,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +22,6 @@ import androidx.navigation.NavHostController
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.presentation.navbar.Screen
-import com.example.stattrack.presentation.player.PlayerViewModel
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 
@@ -49,7 +47,7 @@ fun SpecificTeamScreenContent(
     onTeamDelete: (teamId: Int) -> Unit
 ) {
 
-    Column() {
+    Column {
 
 
         Column {
@@ -60,12 +58,12 @@ fun SpecificTeamScreenContent(
             ) {
                 Box(modifier = Modifier.fillMaxWidth()) {
 
-                    Box(){ // Headline for team name
+                    Box{ // Headline for team name
                         Text(text = team.name, fontSize = 26.sp, color = PrimaryBlue)
                     }
 
                     Box(Modifier.align(Alignment.CenterEnd)) {
-                        Row() {
+                        Row {
                             Column(modifier = Modifier.padding(end = 5.dp)) {
                                 Text(text = "Division", color = Color.Gray, fontStyle = Italic)
                                 Text(text = "Årgang", color = Color.Gray, fontStyle = Italic)
@@ -126,7 +124,7 @@ fun PlayerListItem(player: Player, navController: NavHostController){
             navController.navigate(Screen.Player.route)
 
         }) {
-            Row(){
+            Row{
                 Text(text = player.name, color = PrimaryBlue,  modifier = Modifier.padding(start = 10.dp))
                 Text(text = player.position, color = PrimaryBlue,fontStyle = Italic, modifier = Modifier.padding(start = 10.dp))
             }
@@ -139,9 +137,9 @@ fun PlayerListItem(player: Player, navController: NavHostController){
 fun NewPlayerButton(navController: NavHostController, team: Team){
     OutlinedButton(onClick = {
         // Pass data
-        val Team = Team(team.teamId,team.name,team.clubName,team.creatorId,team.teamUYear,team.division) // User is a parcelable data class.
+        val teamParcelize = Team(team.teamId,team.name,team.clubName,team.creatorId,team.teamUYear,team.division) // User is a parcelable data class.
 
-        navController.currentBackStackEntry?.arguments?.putParcelable("Team", Team)
+        navController.currentBackStackEntry?.arguments?.putParcelable("Team", teamParcelize)
         navController.navigate(Screen.AddPlayer.route)
     },
         modifier= Modifier
@@ -207,7 +205,7 @@ fun RemoveTeamButton(navController: NavHostController, team: Team, onTeamDelete:
 @Preview(showBackground = true)
 @Composable
     fun DefaultPreview() {
-        var team = Team(22,"Simon Fridolf","Horsens Boldklub","02020","1996","3.Division")
+        var teamDummy = Team(22,"Simon Fridolf","Horsens Boldklub","02020","1996","3.Division")
       // SpecificTeamScreenContent(team = team)
     }
 

@@ -17,4 +17,7 @@ interface PlayerStatsDao {
 
     @Query("DELETE FROM playerStats WHERE playerId = :playerId")
     suspend fun deletePlayerStatsForPlayer(playerId: Int)
+
+    @Query("DELETE FROM playerStats WHERE matchId = :matchId")
+    suspend fun deletePlayerStatsByMatchId(matchId: Int)
 }

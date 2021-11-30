@@ -5,14 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.Player
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class SpecificTeamViewModel(private val repository: Repository) : ViewModel()  {
 
@@ -28,7 +24,7 @@ class SpecificTeamViewModel(private val repository: Repository) : ViewModel()  {
     }
 
     fun loadAllPlayersFromTeam(teamId: Int) {
-            viewModelScope.launch() {
+            viewModelScope.launch {
                 repository.getAllPlayersFromTeam(teamId).collect{
                     _players.value = it
                 }
@@ -36,7 +32,7 @@ class SpecificTeamViewModel(private val repository: Repository) : ViewModel()  {
         }
 
     private fun loadAllPlayers() {
-        viewModelScope.launch() {
+        viewModelScope.launch {
             repository.getAllPlayers().collect {
                 _allPlayersInDB.value = it
             }
@@ -65,6 +61,8 @@ class SpecificTeamViewModel(private val repository: Repository) : ViewModel()  {
 
         // Refresh from DB to update list of players in specificTeamList and also check if insert is correct
         loadAllPlayersFromTeam(player.teamId)
+        // Refresh list of players for next insert-player
+        loadAllPlayers()
     }
 
     fun deleteTeam(teamId: Int){
@@ -72,17 +70,4 @@ class SpecificTeamViewModel(private val repository: Repository) : ViewModel()  {
             repository.deleteTeam(teamId)
         }
     }
-
-
-    // Fetches the correct id for the new player async
-    private suspend fun getNewPlayerIdFromDB() = viewModelScope.async{
-        var playersCount : List<Player> = emptyList()
-        repository.getAllPlayers()
-            .collect {
-                playersCount = it
-            }
-        return@async playersCount.count()+1
-    }.await()
-
-
 }

@@ -14,4 +14,5 @@ sealed class Screen(var route: String, var icon: ImageVector, var title: String)
     object AddPlayer: Screen("AddPlayer", Icons.Default.Person,"AddPlayer")
     object SpecificTeam : Screen("SpecificTeam", Icons.Default.Person, "TheTEAM")
     object Landing : Screen("Landing", Icons.Default.Person, "Intro")
+    object SpecificMatch : Screen("SpecificMatch", Icons.Default.Person, "A specific match")
 }

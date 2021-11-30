@@ -26,4 +26,7 @@ interface EventDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(EventData: EventDataEntity)
+
+    @Query("DELETE FROM eventData WHERE matchId =:matchId")
+    suspend fun deleteEventDataWithMatchId(matchId: Int)
 }

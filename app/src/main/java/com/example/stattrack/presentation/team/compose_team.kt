@@ -137,7 +137,10 @@ fun MatchList(matches: State<List<MatchData>>, navController: NavHostController)
             // Clickable sender kun test-data pt.
             Surface(modifier = Modifier.clickable {
 
-               // TODO: Skal vi have en skærm til at vise MatchData?
+                // Pass data
+                val matchId = match.id
+                navController.currentBackStackEntry?.arguments?.putInt("matchId", matchId)
+                navController.navigate(Screen.SpecificMatch.route)
 
             }){
                 Text("${match.matchDate} | ${match.creatorId} mod ${match.opponent} | ${match.creatorTeamGoals} : ${match.opponentGoals}",modifier = Modifier.padding(2.dp), color = PrimaryBlue)
