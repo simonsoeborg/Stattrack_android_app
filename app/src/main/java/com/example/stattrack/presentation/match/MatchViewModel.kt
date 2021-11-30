@@ -3,10 +3,12 @@ package com.example.stattrack.presentation.match
 
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,7 +20,10 @@ import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.match.data.EventItems
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.floor
 
@@ -31,7 +36,6 @@ import kotlin.math.floor
 class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     /* Time component variables */
-    //val vibrator = getSystemService(VIBRATOR_MANAGER_SERVICE)
     private val duration = 30*60
     private var timeElapsed by mutableStateOf(0)
     private var finishPosition by mutableStateOf(duration)
@@ -75,14 +79,24 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     }
 
     /* Get correct ID for DB-insertion and date */
-    @SuppressLint("NewApi")
     private fun initMatchDateAndId(){
         _currentMatch.value =
             _currentMatch.value.copy(
                 id = _allMatches.value.size + 1,
-                matchDate = LocalDate.now().toString()
+                matchDate = getCurrentDateTime()?:"00-00-0000"
             )
         updateMatchData(_currentMatch.value)
+    }
+
+    private fun getCurrentDateTime(): String? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.d(TAG, "getCurrentDateTime: greater than O")
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("h:m a"))
+        } else {
+            Log.d(TAG, "getCurrentDateTime: less than O")
+            val SDFormat = SimpleDateFormat("h:m a")
+            SDFormat.format(Date())
+        }
     }
 
     private fun updateMatchData(matchData: MatchData){
