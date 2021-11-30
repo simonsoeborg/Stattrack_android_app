@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,7 +36,6 @@ fun TeamComponent(
     ){
 
     val teamTwoName = remember { mutableStateOf("")}
-    val focusManager = LocalFocusManager.current
 
     Row( // Teams Row
         modifier = Modifier
@@ -63,11 +61,9 @@ fun TeamComponent(
                         DropdownTeamsList(
                             teams = teams,
                             onSelectedTeam = {
-
                                 if (matchStarted.value){
                                     Toast.makeText(ServiceLocator.application, "Holdnavn kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
                                 }
-
                                 else
                                 onSelectedTeamOne(it) },
                             TeamName = { onTeamOneName(it)}
@@ -100,40 +96,30 @@ fun TeamComponent(
                     //.border(2.dp, color = PrimaryBlue) <- doesnt look good find another style
                 ) {
                     TextField(
-                        value = teamTwoName.value,
+                        value = matchData.opponent,
                         onValueChange = {
-
                             if (matchStarted.value){
                                 Toast.makeText(ServiceLocator.application, "Modstander navn kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
                             }
                             else
                             teamTwoName.value = it
                             onTeamTwoName(it)
-                        },//cursorBrush = SolidColor(Transparent),
+                        },
                         placeholder = {
-                            Text(text = "Vælg modstander")}
-                        ,
+                            Text(text = "Vælg modstander")
+                        },
                         textStyle = TextStyle(color = PrimaryBlue, background = PrimaryWhite, fontSize = 24.sp),
                         singleLine = true,
                         readOnly = matchStarted.value,
                         colors=  textFieldColors(
-                            backgroundColor = PrimaryWhite,
-                            /*focusedIndicatorColor = Transparent,
-                            disabledIndicatorColor = Transparent,
-                            unfocusedIndicatorColor = Transparent*/
-                        ),
-
-                        )
-                        /*
-                        colors =  textFieldColors(backgroundColor = PrimaryWhite) */
-
+                            backgroundColor = PrimaryWhite)
+                    )
                 }
                 Column( modifier = Modifier
                     .weight(1f)
                     .padding(start = 5.dp)
                 ) {
                     Box(Modifier.fillMaxWidth()){
-                        // TODO - Make a button so we can increment score on team 2 and use callback function onTeamTwoScore(Int) to call value upwards in compose-tree
 
                         Text(
                             text = matchData.opponentGoals.toString(),

@@ -13,11 +13,13 @@ import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.stattrack.di.ServiceLocator
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
+import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 
 
 @Composable
@@ -29,7 +31,7 @@ fun StopWatchComponent(
     properTeam1 : State<Boolean>,
     properTeam2 : State<Boolean>
 ) {
-
+    var showDialog by remember { mutableStateOf(false) }
 
     Column( modifier = Modifier
         .fillMaxWidth()
@@ -72,10 +74,44 @@ fun StopWatchComponent(
                 )
             }
 
-            IconButton(onClick = { onStopPressed() }) {
+            IconButton(onClick = {
+                if (isRunning.value){
+                    showDialog = true
+                }
+            }) {
                 Icon(Icons.Default.StopCircle, contentDescription = "Stop", tint = PrimaryBlue)
             }
         }
+    }
+    if (showDialog) {
+        AlertDialog(
+            backgroundColor = PrimaryWhite,
+            onDismissRequest = { showDialog = false },
+            title = { Text("Stop kamp?", color = PrimaryBlue, fontSize = 30.sp) },
+            text = {
+                Text(
+                    "Er du sikker på at du vil stoppe kampen ?",
+                    color = PrimaryBlue
+                )
+            },
+            confirmButton = {
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
+                    onClick = {
+                        onStopPressed()
+                        showDialog = false
+                    }) {
+                    Text(text = "Stop kampen", color = PrimaryWhite)
+                }
+            },
+            dismissButton = {
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray),
+                    modifier = Modifier.padding(end = 10.dp),
+                    onClick = { showDialog = false }) {
+                    Text("Annuller")
+                }
+            })
     }
 }
 

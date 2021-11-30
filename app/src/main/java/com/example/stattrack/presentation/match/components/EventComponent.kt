@@ -98,6 +98,8 @@ fun EventComponent(
                                 eventItems[selectedIndexEvents].playerId = players[selectedIndexPlayers].id
                                 newEvent(eventItems[selectedIndexEvents])
                             }
+                            selectedIndexEvents = 0
+                            selectedIndexPlayers = 0
                         },
                         onDismissRequest = {
                             expandedEvents = false

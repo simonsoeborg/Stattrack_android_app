@@ -38,10 +38,10 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private var timeElapsed by mutableStateOf(0)
     private var finishPosition by mutableStateOf(duration)
     private var job by mutableStateOf<Job?>(null)
-    private val _isCounting = MutableStateFlow(false)
-    private val _timer = MutableStateFlow(getTimeElapsed())
+    private val _timerIsRunning = MutableStateFlow(false)
+    private val _time = MutableStateFlow(getTimeElapsed())
 
-    // Validation conponent:
+    // Validation component:
     private val _teamOneCheck = MutableStateFlow(false)
     private val _teamTwoCheck = MutableStateFlow(false)
 
@@ -50,20 +50,34 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
 
 
 
-
-    private val _teams: MutableStateFlow<List<Team>> = MutableStateFlow(defaultTeamDummyData)
-    private val _currentMatch = MutableStateFlow(
-        MatchData(
-            id = 0,
-            creatorId = "null",
-            creatorTeamId = 0,
-            opponent = "Hold 2",
-            matchDate = "00-00-0000",
-            creatorTeamGoals = 0,
-            opponentGoals = 0
+    private val matchDataForInit = MatchData(
+        id = 0,
+        creatorId = "Hold 1",
+        creatorTeamId = 0,
+        opponent = "",
+        matchDate = "00-00-0000",
+        creatorTeamGoals = 0,
+        opponentGoals = 0
+    )
+    private val teamDataForInit = listOf(Team(
+        teamId = 0,
+        name = "Hold 1",
+        clubName = "Hold 1",
+        creatorId = "Træner",
+        teamUYear = "0000",
+        division = divisions[0]
     ))
-    private val _allMatches = MutableStateFlow(defaultDummyMatchData)
-    private val _players: MutableStateFlow<List<Player>> = MutableStateFlow(defaultDummyPlayerData)
+    private val playerDataForInit = listOf(Player(
+        id = 0,
+        name = "Spiller",
+        position = positions[0],
+        yob = 1985,
+        teamId = 0
+    ))
+    private val _teams: MutableStateFlow<List<Team>> = MutableStateFlow(teamDataForInit)
+    private val _currentMatch = MutableStateFlow(matchDataForInit)
+    private val _allMatches: MutableStateFlow<List<MatchData>> = MutableStateFlow(emptyList())
+    private val _players: MutableStateFlow<List<Player>> = MutableStateFlow(playerDataForInit)
     private val _events: MutableStateFlow<List<EventData>> = MutableStateFlow(emptyList())
     private val _playerStats: MutableStateFlow<List<PlayerStats>> = MutableStateFlow(emptyList())
     private val _startMatch = MutableStateFlow(false)
@@ -72,8 +86,8 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     val matchData: StateFlow<MatchData> = _currentMatch
     val players: StateFlow<List<Player>> = _players
     val events: StateFlow<List<EventData>> = _events
-    val timer: StateFlow<String> = _timer
-    val isRunning: StateFlow<Boolean> = _isCounting
+    val time: StateFlow<String> = _time
+    val timerIsRunning: StateFlow<Boolean> = _timerIsRunning
     val startMatch: StateFlow<Boolean> = _startMatch
 
 
@@ -88,27 +102,41 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         initMatchDateAndId()
     }
 
-    /* Get correct ID for DB-insertion and date */
-    private fun initMatchDateAndId(){
-        _currentMatch.value =
-            _currentMatch.value.copy(
-                id = _allMatches.value.size + 1,
-                matchDate = getCurrentDateTime()?:"00-00-0000"
-            )
-        updateMatchData(_currentMatch.value)
+    private fun resetMatchData(){
+        _currentMatch.value = matchDataForInit
+        _startMatch.value = false
+        _events.value = emptyList()
+        _teams.value = teamDataForInit
+        _players.value = playerDataForInit
+        loadAllMatchData()
+        loadAllTeams()
     }
 
-    fun insertPlayerStats(event: EventItems){
+    /* Get correct ID for DB-insertion and date */
+    private fun initMatchDateAndId() {
+        viewModelScope.launch {
+            while (_allMatches.value.isEmpty()) {
+                delay(2000)
+            }
+        }
+        if (_allMatches.value.isNotEmpty()) {
+            _currentMatch.value =
+                _currentMatch.value.copy(
+                    id = _allMatches.value.size + 1,
+                    matchDate = getCurrentDateTime() ?: "00-00-0000"
+                )
+            updateMatchData(_currentMatch.value)
 
+        }
     }
 
     private fun getCurrentDateTime(): String? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Log.d(TAG, "getCurrentDateTime: greater than O")
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("h:m a"))
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-M-y"))
         } else {
             Log.d(TAG, "getCurrentDateTime: less than O")
-            val SDFormat = SimpleDateFormat("h:m a")
+            val SDFormat = SimpleDateFormat("d-M-y")
             SDFormat.format(Date())
         }
     }
@@ -131,32 +159,28 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     fun teamOneCheck(teamOne: String){
         if (teamOne!="") {
-            viewModelScope.launch {
-                _teamOneCheck.value = true
-            }
+            _teamOneCheck.value = true
         }
         println(teamOne)
     }
 
     fun teamTwoCheck(teamTwo: String){
         if (teamTwo!="") {
-            viewModelScope.launch {
-                _teamTwoCheck.value = true
-            }
+            _teamTwoCheck.value = true
         }
         println(teamTwo)
     }
 
 
     fun onPlayPressed(){
-        if (!_isCounting.value){
+        if (!_timerIsRunning.value){
             toggle()
             if (!_startMatch.value){
                 /* Set matchId and matchDate */
                 startMatch()
             }
         }
-        if (_isCounting.value){
+        if (_timerIsRunning.value){
             /* Pause */
             pause()
         }
@@ -165,17 +189,21 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     fun onStopPressed(){
         /* Stop timer */
         clear()
-        _timer.value = getTimeElapsed()
+        _time.value = getTimeElapsed()
+        updateMatchData(_currentMatch.value)
+        resetMatchData()
     }
+
+
 
     private fun toggle() {
         if (job == null) {
             job = MainScope().launch {
-                _isCounting.value = true
+                _timerIsRunning.value = true
                 while (timeElapsed <= finishPosition ) {
                     delay(1000)
                     count()
-                    _timer.value = getTimeElapsed()
+                    _time.value = getTimeElapsed()
                     //Log.d("Stopwatch.kt", "Counting succesfully")
                 }
                 if (timeElapsed == finishPosition){
@@ -197,7 +225,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private fun pause() {
         job?.cancel()
         job = null
-        _isCounting.value = false
+        _timerIsRunning.value = false
 
     }
 
@@ -286,7 +314,6 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
                 }
         }
     }
-
 
     private fun getEventsFromMatchId(matchId: Int){
         viewModelScope.launch {
