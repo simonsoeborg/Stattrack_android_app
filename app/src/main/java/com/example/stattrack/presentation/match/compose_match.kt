@@ -106,6 +106,7 @@ fun MatchScreenContent(
         Row( modifier = Modifier.fillMaxWidth()) {
 
             StopWatchComponent(
+                matchStarted = matchStarted,
                 timeElapsed = timeElapsed,
                 isRunning = isRunning,
                 onPlayPressed = { onPlayPressed() },

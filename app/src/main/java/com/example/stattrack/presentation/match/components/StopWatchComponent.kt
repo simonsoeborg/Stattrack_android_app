@@ -24,6 +24,7 @@ import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 
 @Composable
 fun StopWatchComponent(
+    matchStarted: State<Boolean>,
     isRunning: State<Boolean>,
     timeElapsed: State<String>,
     onPlayPressed: () -> Unit,
@@ -75,7 +76,7 @@ fun StopWatchComponent(
             }
 
             IconButton(onClick = {
-                if (isRunning.value){
+                if (matchStarted.value){
                     showDialog = true
                 }
             }) {
