@@ -153,32 +153,36 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
             val isPlayerInList = _playerStats.value.filter { it.playerId == event.playerId }.isNotEmpty()
             if (isPlayerInList){
                var player =  _playerStats.value.filter { it.playerId == event.playerId }
-                player[0].copy(
-                    event.playerId,
-                    time = getTimeElapsed(),
-                    attempts = if (event == EventItems.EventAttempt){
-                        player[0].attempts+1
-                    } else player[0].attempts,
-                    goals = if (event == EventItems.EventGoal){
-                        player[0].goals+1
-                    } else player[0].goals,
-                    keeperSaves = if (event == EventItems.EventSave){
-                        player[0].keeperSaves+1
-                    } else player[0].keeperSaves,
-                    assists = if (event == EventItems.EventAssist){
-                        player[0].assists+1
-                    } else player[0].assists,
-                    mins2 = if (event == EventItems.EventEjection){
-                        player[0].mins2+1
-                    } else player[0].mins2,
-                    yellowCards = if (event == EventItems.EventYellow){
-                        player[0].yellowCards+1
-                    } else player[0].yellowCards,
-                    redCards = if (event == EventItems.EventRed){
-                        player[0].redCards+1
-                    } else player[0].redCards,
-                    matchId = _currentMatch.value.id
-                )
+                viewModelScope.launch {
+                    repository.insertPlayerStats(
+                        player[0].copy(
+                            event.playerId,
+                            time = getTimeElapsed(),
+                            attempts = if (event == EventItems.EventAttempt){
+                                player[0].attempts+1
+                            } else player[0].attempts,
+                            goals = if (event == EventItems.EventGoal){
+                                player[0].goals+1
+                            } else player[0].goals,
+                            keeperSaves = if (event == EventItems.EventSave){
+                                player[0].keeperSaves+1
+                            } else player[0].keeperSaves,
+                            assists = if (event == EventItems.EventAssist){
+                                player[0].assists+1
+                            } else player[0].assists,
+                            mins2 = if (event == EventItems.EventEjection){
+                                player[0].mins2+1
+                            } else player[0].mins2,
+                            yellowCards = if (event == EventItems.EventYellow){
+                                player[0].yellowCards+1
+                            } else player[0].yellowCards,
+                            redCards = if (event == EventItems.EventRed){
+                                player[0].redCards+1
+                            } else player[0].redCards,
+                            matchId = _currentMatch.value.id
+                        )
+                    )
+                }
             } else {
                 viewModelScope.launch {
                     repository.insertPlayerStats(
@@ -367,6 +371,8 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
             )
             updateMatchData(_currentMatch.value)
         }
+        /* Insert event in PlayerStats and update _playerStats.value */
+        insertPlayerStats(event)
         /* Get updated values from Room */
         getEventsFromMatchId(_currentMatch.value.id)
     }
