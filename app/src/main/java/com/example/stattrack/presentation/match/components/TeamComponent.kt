@@ -66,7 +66,8 @@ fun TeamComponent(
                                 }
                                 else
                                 onSelectedTeamOne(it) },
-                            TeamName = { onTeamOneName(it)}
+                            TeamName = { onTeamOneName(it)},
+                            teamName1 = matchData.creatorId
                         )
                     }
                     Column(
@@ -148,10 +149,9 @@ fun TeamComponent(
 
 
 @Composable
-fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, TeamName: (name : String)-> Unit) {
+fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, TeamName: (name : String)-> Unit, teamName1: String ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedId by remember { mutableStateOf(0) }
-    var selectedTeam by remember { mutableStateOf("")}
 
     val icon = if (expanded)
         Icons.Filled.KeyboardArrowUp
@@ -166,9 +166,8 @@ fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, 
         )
     ) {
         TextField(
-            value = selectedTeam,
+            value = teamName1,
             onValueChange = {
-                selectedTeam = it
                 TeamName(it)
                             },
             placeholder = {
@@ -196,7 +195,6 @@ fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, 
             teams.forEach { team ->
                 DropdownMenuItem(onClick = {
                     selectedId = team.teamId-1
-                    selectedTeam = team.name
                     onSelectedTeam(team.teamId)
                     expanded = false
                 }) {

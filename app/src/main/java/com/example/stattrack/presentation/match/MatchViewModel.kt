@@ -52,7 +52,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     private val matchDataForInit = MatchData(
         id = 0,
-        creatorId = "Hold 1",
+        creatorId = "",
         creatorTeamId = 0,
         opponent = "",
         matchDate = "00-00-0000",
@@ -61,7 +61,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     )
     private val teamDataForInit = listOf(Team(
         teamId = 0,
-        name = "Hold 1",
+        name = "",
         clubName = "Hold 1",
         creatorId = "Træner",
         teamUYear = "0000",
