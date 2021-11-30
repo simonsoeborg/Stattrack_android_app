@@ -52,6 +52,14 @@ class SpecificTeamViewModel(private val repository: Repository) : ViewModel()  {
                         id = _allPlayersInDB.value.size + 1
                     )
                 )
+            }
+
+            if (_allPlayersInDB.value.isEmpty()){
+                repository.insertPlayer(
+                    player.copy(
+                        id = 0
+                    )
+                )
             } else Log.d("Error @sTeamVM: ", " - insertPlayer - Error retrieving correct ID for new player")
         }
 

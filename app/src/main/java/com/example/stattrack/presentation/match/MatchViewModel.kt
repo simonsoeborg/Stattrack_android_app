@@ -3,7 +3,6 @@ package com.example.stattrack.presentation.match
 
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
@@ -29,7 +28,7 @@ import kotlin.math.floor
  * that can be exposed to the [compose_match] flow in order
  * for the view to render the relevant information
  */
-class MatchViewModel(private val repository: Repository, application: Application) : ViewModel() {
+class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     /* Time component variables */
     //val vibrator = getSystemService(VIBRATOR_MANAGER_SERVICE)
@@ -44,7 +43,7 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
     private val _teams: MutableStateFlow<List<Team>> = MutableStateFlow(defaultTeamDummyData)
     private val _currentMatch = MutableStateFlow(
         MatchData(
-            id = 1000,
+            id = 0,
             creatorId = "null",
             creatorTeamId = 0,
             opponent = "Hold 2",
@@ -70,8 +69,12 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
         loadAllMatchData()
     }
 
+    private fun startMatch(){
+        _startMatch.value = true
+        initMatchDateAndId()
+    }
 
-    // To be called when a new match is started
+    /* Get correct ID for DB-insertion and date */
     @SuppressLint("NewApi")
     private fun initMatchDateAndId(){
         _currentMatch.value =
@@ -79,19 +82,31 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
                 id = _allMatches.value.size + 1,
                 matchDate = LocalDate.now().toString()
             )
-        viewModelScope.launch {
-            repository.insertMatchData(_currentMatch.value)
+        updateMatchData(_currentMatch.value)
+    }
+
+    private fun updateMatchData(matchData: MatchData){
+        /* Validation-check */
+        if (
+            matchData.id!=0 &&
+            matchData.matchDate != "00-00-0000" &&
+            matchData.creatorId != "null" &&
+            matchData.creatorTeamId != 0
+        ) {
+            _currentMatch.value = matchData
+            viewModelScope.launch {
+                repository.insertMatchData(matchData)
+            }
         }
     }
 
     fun onPlayPressed(){
         if (!_isCounting.value){
             toggle()
-        if (!_startMatch.value){
-            /* Set matchId and matchDate */
-            startMatch()
-        }
-
+            if (!_startMatch.value){
+                /* Set matchId and matchDate */
+                startMatch()
+            }
         }
         if (_isCounting.value){
             /* Pause */
@@ -144,7 +159,7 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
     }
 
     private fun vibratePhone(){
-        val vibrator = application?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val vibrator = application.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (Build.VERSION.SDK_INT >= 26) {
             vibrator.vibrate(VibrationEffect.createOneShot(2000, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
@@ -173,23 +188,9 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
         // Update list of players for use in EventComponent later
         getPlayersFromTeam(teamId)
 
-           /* Testing purposes */
-        // Log.d("setTeamOneName: ", _currentMatch.value.creatorId+_currentMatch.value.creatorTeamId)
-
-        // Update values in repository - will not trigger recompose unless paired with a "refresh"
-        /* TODO:: Can not be called before we give the _matchData an ID - will probably make sense to give it an ID when pressing PLAY on StopWatchComponent
-        viewModelScope.launch {
-            repository.insertMatchData(
-                _currentMatch.value.copy(
-                    creatorId = teams.value[teamId-1].clubName,
-                    creatorTeamId = teamId
-                )
-            )
-
-        }
-         */
     }
     fun insertEvent(event: EventItems){
+        /* Insert event in Room */
         viewModelScope.launch {
             repository.insertEventData(
                 EventData(
@@ -202,16 +203,15 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
                 )
             )
         }
+        /* If event is a goal, increment goals */
         if (event.title == "Mål"){
             _currentMatch.value = _currentMatch.value.copy(
                 creatorTeamGoals = _currentMatch.value.creatorTeamGoals+1
             )
-            viewModelScope.launch {
-                repository.insertMatchData(_currentMatch.value)
-            }
+            updateMatchData(_currentMatch.value)
         }
+        /* Get updated values from Room */
         getEventsFromMatchId(_currentMatch.value.id)
-
     }
 
     fun setTeamTwoName(name: String){
@@ -226,15 +226,8 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
             _currentMatch.value = _currentMatch.value.copy(
                 opponentGoals = score
             )
-            viewModelScope.launch {
-                repository.insertMatchData(_currentMatch.value)
-            }
+            updateMatchData(_currentMatch.value)
         } else Toast.makeText(application, "Score kan ikke være under 0", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun startMatch(){
-        _startMatch.value = true
-        initMatchDateAndId()
     }
 
     private fun getPlayersFromTeam(teamId: Int){

@@ -11,6 +11,7 @@ import com.example.stattrack.presentation.match.components.StopWatchComponent
 import com.example.stattrack.presentation.match.components.TeamComponent
 import com.example.stattrack.presentation.match.data.EventItems
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
+import com.example.stattrack.presentation.ui.theme.Typography
 
 
 @Composable
@@ -29,6 +30,12 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
             .fillMaxSize()
         ) {
             Text(text = "Loading", color= PrimaryBlue, fontSize = 72.sp)
+            Text(
+                text= "Dette kan være fordi du ikke har tilføjet spillere til dit hold," +
+                        "eller ikke oprettet et hold endnu.",
+                color = PrimaryBlue,
+                fontSize = Typography.body1.fontSize
+            )
         }
     } else {
         

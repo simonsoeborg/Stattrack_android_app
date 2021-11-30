@@ -16,7 +16,6 @@ import com.example.stattrack.presentation.player.PlayerViewModel
 import com.example.stattrack.presentation.team.SpecificTeamViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 object ServiceLocator {
 
@@ -38,7 +37,7 @@ object ServiceLocator {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return when (modelClass) {
-                    MatchViewModel::class.java -> MatchViewModel(repository, application)
+                    MatchViewModel::class.java -> MatchViewModel(repository)
                     TeamViewModel::class.java -> TeamViewModel(repository)
                     SpecificTeamViewModel::class.java -> SpecificTeamViewModel(repository)
                     PlayerViewModel::class.java -> PlayerViewModel(repository)

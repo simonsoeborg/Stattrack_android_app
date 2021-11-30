@@ -15,12 +15,12 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.stattrack.di.ServiceLocator.application
 
 import com.example.stattrack.model.model.Team
 import com.example.stattrack.model.model.divisions
@@ -43,9 +43,6 @@ fun AddTeam(
     val divisionList : List<String> by remember {mutableStateOf(divisions)}
     var expanded by remember { mutableStateOf(false)}
     var selectedDivision by remember { mutableStateOf("")}
-
-    val context = LocalContext.current
-
 
     val icon = if (expanded)
         Icons.Filled.KeyboardArrowUp
@@ -145,7 +142,6 @@ fun AddTeam(
             }
         }
 
-
         Row(modifier = Modifier
             .padding(all = 10.dp)
             .align(Alignment.CenterHorizontally)
@@ -155,7 +151,7 @@ fun AddTeam(
 
                     if (teamName=="" || clubname=="" || creatorName=="" || teamUYear==""|| selectedDivision==""){
 
-                        Toast.makeText(context, "Alle parametere skal udfyldes", Toast.LENGTH_LONG).show()
+                        Toast.makeText(application, "Alle parametere skal udfyldes", Toast.LENGTH_LONG).show()
                     }
 
                     else {
