@@ -37,12 +37,21 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
     private var timeElapsed by mutableStateOf(0)
     private var finishPosition by mutableStateOf(duration)
     private var job by mutableStateOf<Job?>(null)
-    private val _isCounting = MutableStateFlow(job != null)
+    private val _isCounting = MutableStateFlow(false)
     private val _timer = MutableStateFlow(getTimeElapsed())
 
 
     private val _teams: MutableStateFlow<List<Team>> = MutableStateFlow(defaultTeamDummyData)
-    private val _currentMatch = MutableStateFlow(defaultDummyMatchData[0])
+    private val _currentMatch = MutableStateFlow(
+        MatchData(
+            id = 1000,
+            creatorId = "null",
+            creatorTeamId = 0,
+            opponent = "Hold 2",
+            matchDate = "00-00-0000",
+            creatorTeamGoals = 0,
+            opponentGoals = 0
+    ))
     private val _allMatches = MutableStateFlow(defaultDummyMatchData)
     private val _players: MutableStateFlow<List<Player>> = MutableStateFlow(defaultDummyPlayerData)
     private val _events: MutableStateFlow<List<EventData>> = MutableStateFlow(emptyList())
@@ -99,6 +108,7 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
     private fun toggle() {
         if (job == null) {
             job = MainScope().launch {
+                _isCounting.value = true
                 while (timeElapsed <= finishPosition ) {
                     delay(1000)
                     count()
@@ -107,8 +117,8 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
                 }
                 if (timeElapsed == finishPosition){
                     vibratePhone()
-                finishPosition = duration
                 }
+                finishPosition = duration
             }
         } else {
             pause()
@@ -124,6 +134,8 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
     private fun pause() {
         job?.cancel()
         job = null
+        _isCounting.value = false
+
     }
 
     private fun count() {
@@ -189,6 +201,14 @@ class MatchViewModel(private val repository: Repository, application: Applicatio
                     matchId = _currentMatch.value.id
                 )
             )
+        }
+        if (event.title == "Mål"){
+            _currentMatch.value = _currentMatch.value.copy(
+                creatorTeamGoals = _currentMatch.value.creatorTeamGoals+1
+            )
+            viewModelScope.launch {
+                repository.insertMatchData(_currentMatch.value)
+            }
         }
         getEventsFromMatchId(_currentMatch.value.id)
 

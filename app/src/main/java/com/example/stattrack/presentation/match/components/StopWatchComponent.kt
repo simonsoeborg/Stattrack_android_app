@@ -1,4 +1,4 @@
-package com.example.stattrack.presentation.match
+package com.example.stattrack.presentation.match.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,11 +12,9 @@ import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 
@@ -68,10 +66,4 @@ fun StopWatchComponent(
             }
         }
     }
-}
-
-@Composable
-inline fun <reified T> systemService(): T? {
-    val context = LocalContext.current
-    return remember { ContextCompat.getSystemService(context, T::class.java) }
 }
