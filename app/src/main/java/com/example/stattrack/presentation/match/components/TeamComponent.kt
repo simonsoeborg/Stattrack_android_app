@@ -61,13 +61,10 @@ fun TeamComponent(
                         DropdownTeamsList(
                             teams = teams,
                             onSelectedTeam = {
-                                if (matchStarted.value){
-                                    Toast.makeText(ServiceLocator.application, "Holdnavn kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
-                                }
-                                else
                                 onSelectedTeamOne(it) },
                             TeamName = { onTeamOneName(it)},
-                            teamName1 = matchData.creatorId
+                            teamName1 = matchData.creatorId,
+                            matchStarted
                         )
                     }
                     Column(
@@ -99,12 +96,14 @@ fun TeamComponent(
                     TextField(
                         value = matchData.opponent,
                         onValueChange = {
-                            if (matchStarted.value){
-                                Toast.makeText(ServiceLocator.application, "Modstander navn kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
+
+                            if (matchStarted.value)
+                            Toast.makeText(ServiceLocator.application, "Modstander navn kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
+
+                            else {
+                                teamTwoName.value = it
+                                onTeamTwoName(it)
                             }
-                            else
-                            teamTwoName.value = it
-                            onTeamTwoName(it)
                         },
                         placeholder = {
                             Text(text = "Vælg modstander")
@@ -112,8 +111,7 @@ fun TeamComponent(
                         textStyle = TextStyle(color = PrimaryBlue, background = PrimaryWhite, fontSize = 24.sp),
                         singleLine = true,
                         readOnly = matchStarted.value,
-                        colors=  textFieldColors(
-                            backgroundColor = PrimaryWhite)
+                        colors=  textFieldColors(backgroundColor = PrimaryWhite)
                     )
                 }
                 Column( modifier = Modifier
@@ -149,7 +147,7 @@ fun TeamComponent(
 
 
 @Composable
-fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, TeamName: (name : String)-> Unit, teamName1: String ) {
+fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, TeamName: (name : String)-> Unit, teamName1: String, matchStarted: State<Boolean> ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedId by remember { mutableStateOf(0) }
 
@@ -160,7 +158,14 @@ fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, 
 
 
     Row(modifier = Modifier
-        .clickable(onClick = { expanded = true })
+        .clickable(onClick = {
+            if (!matchStarted.value){
+                expanded = true
+            }
+
+            else
+                Toast.makeText(ServiceLocator.application, "Hold kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
+            })
         .background(
             PrimaryWhite
         )
@@ -177,9 +182,16 @@ fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, 
                 fontSize = 24.sp,
                 color = PrimaryBlue),
             trailingIcon = {
-                Icon(icon, "" , Modifier.clickable{expanded = !expanded})
+                Icon(icon, "" , Modifier.clickable{
+                    if (!matchStarted.value)
+                    expanded = !expanded
+
+                    else  Toast.makeText(ServiceLocator.application, "Hold kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
+                }
+                )
             },
             enabled = false,
+            readOnly = matchStarted.value,
             colors = textFieldColors(backgroundColor = PrimaryWhite)
         )
 
