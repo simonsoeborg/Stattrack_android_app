@@ -33,7 +33,7 @@ fun TeamComponent(
     onTeamOneName : (String) -> Unit,
     onTeamTwoName: (String) -> Unit,
     onTeamTwoScore: (Int) -> Unit,
-    isRunning: State<Boolean>,
+    matchStarted: State<Boolean>,
     ){
 
     val teamTwoName = remember { mutableStateOf("")}
@@ -64,7 +64,7 @@ fun TeamComponent(
                             teams = teams,
                             onSelectedTeam = {
 
-                                if (isRunning.value){
+                                if (matchStarted.value){
                                     Toast.makeText(ServiceLocator.application, "Holdnavn kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
                                 }
 
@@ -103,7 +103,7 @@ fun TeamComponent(
                         value = teamTwoName.value,
                         onValueChange = {
 
-                            if (isRunning.value){
+                            if (matchStarted.value){
                                 Toast.makeText(ServiceLocator.application, "Modstander navn kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
                             }
                             else
@@ -115,7 +115,7 @@ fun TeamComponent(
                         ,
                         textStyle = TextStyle(color = PrimaryBlue, background = PrimaryWhite, fontSize = 24.sp),
                         singleLine = true,
-                        readOnly = isRunning.value,
+                        readOnly = matchStarted.value,
                         colors=  textFieldColors(
                             backgroundColor = PrimaryWhite,
                             /*focusedIndicatorColor = Transparent,

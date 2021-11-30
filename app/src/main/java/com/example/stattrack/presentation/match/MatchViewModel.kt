@@ -74,6 +74,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     val events: StateFlow<List<EventData>> = _events
     val timer: StateFlow<String> = _timer
     val isRunning: StateFlow<Boolean> = _isCounting
+    val startMatch: StateFlow<Boolean> = _startMatch
 
 
     init {

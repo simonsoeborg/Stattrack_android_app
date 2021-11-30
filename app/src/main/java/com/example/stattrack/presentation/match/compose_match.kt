@@ -25,6 +25,7 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
     val loading = teams.value.isEmpty() || players.value.isEmpty()
     val properTeam1: State<Boolean> = matchViewModel.teamOneCheck.collectAsState()
     val properTeam2: State<Boolean> = matchViewModel.teamTwoCheck.collectAsState()
+    val matchStarted: State<Boolean> = matchViewModel.startMatch.collectAsState()
 
     if(loading ) {
         /* Show loading */
@@ -57,6 +58,7 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
         onStopPressed = { matchViewModel.onStopPressed() },
         team1check = { matchViewModel.teamOneCheck(it)},
         team2check = { matchViewModel.teamTwoCheck(it)},
+        matchStarted = matchStarted
     )
     }
 }
@@ -78,7 +80,8 @@ fun MatchScreenContent(
     onPlayPressed: () -> Unit,
     onStopPressed: () -> Unit,
     team1check: (String) -> Unit,
-    team2check: (String) -> Unit,)
+    team2check: (String) -> Unit,
+    matchStarted: State<Boolean>)
 {
 
     Column( // Main Column
@@ -97,7 +100,7 @@ fun MatchScreenContent(
                     team2check(it)},
                 onTeamTwoScore = { onTeamTwoScore(it) },
                 onTeamOneName = {team1check(it)},
-                isRunning = isRunning
+                matchStarted = matchStarted
             )
         }
         Row( modifier = Modifier.fillMaxWidth()) {
