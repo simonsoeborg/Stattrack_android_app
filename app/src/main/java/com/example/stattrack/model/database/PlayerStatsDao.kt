@@ -9,6 +9,9 @@ interface PlayerStatsDao {
     @Query("SELECT * FROM playerStats WHERE playerId = :playerId")
     fun loadById(playerId: Int): Flow<List<PlayerStatsEntity>>
 
+    @Query("SELECT * FROM playerStats WHERE matchId = :matchId")
+    fun loadPlayerStatsByMatchId(matchId: Int): Flow<List<PlayerStatsEntity>>
+
     @Query("SELECT * FROM playerStats ORDER BY playerId DESC")
     fun loadAll(): Flow<List<PlayerStatsEntity>>
 

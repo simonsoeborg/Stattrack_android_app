@@ -130,6 +130,78 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    fun insertPlayerStats(event: EventItems){
+        if (_playerStats.value.isEmpty()){
+            viewModelScope.launch {
+                repository.insertPlayerStats(
+                    PlayerStats(
+                        event.playerId,
+                        time = getTimeElapsed(),
+                        attempts = if (event == EventItems.EventAttempt) 1 else 0,
+                        goals = if (event == EventItems.EventGoal) 1 else 0,
+                        keeperSaves = if (event == EventItems.EventSave) 1 else 0,
+                        assists = if (event == EventItems.EventAssist) 1 else 0,
+                        mins2 = if (event == EventItems.EventEjection) 1 else 0,
+                        yellowCards = if (event == EventItems.EventYellow) 1 else 0,
+                        redCards = if (event == EventItems.EventRed) 1 else 0,
+                        matchId = _currentMatch.value.id
+                    )
+                )
+            }
+        }
+        if (_playerStats.value.isNotEmpty()){
+            val isPlayerInList = _playerStats.value.filter { it.playerId == event.playerId }.isNotEmpty()
+            if (isPlayerInList){
+               var player =  _playerStats.value.filter { it.playerId == event.playerId }
+                player[0].copy(
+                    event.playerId,
+                    time = getTimeElapsed(),
+                    attempts = if (event == EventItems.EventAttempt){
+                        player[0].attempts+1
+                    } else player[0].attempts,
+                    goals = if (event == EventItems.EventGoal){
+                        player[0].goals+1
+                    } else player[0].goals,
+                    keeperSaves = if (event == EventItems.EventSave){
+                        player[0].keeperSaves+1
+                    } else player[0].keeperSaves,
+                    assists = if (event == EventItems.EventAssist){
+                        player[0].assists+1
+                    } else player[0].assists,
+                    mins2 = if (event == EventItems.EventEjection){
+                        player[0].mins2+1
+                    } else player[0].mins2,
+                    yellowCards = if (event == EventItems.EventYellow){
+                        player[0].yellowCards+1
+                    } else player[0].yellowCards,
+                    redCards = if (event == EventItems.EventRed){
+                        player[0].redCards+1
+                    } else player[0].redCards,
+                    matchId = _currentMatch.value.id
+                )
+            } else {
+                viewModelScope.launch {
+                    repository.insertPlayerStats(
+                        PlayerStats(
+                            event.playerId,
+                            time = getTimeElapsed(),
+                            attempts = if (event == EventItems.EventAttempt) 1 else 0,
+                            goals = if (event == EventItems.EventGoal) 1 else 0,
+                            keeperSaves = if (event == EventItems.EventSave) 1 else 0,
+                            assists = if (event == EventItems.EventAssist) 1 else 0,
+                            mins2 = if (event == EventItems.EventEjection) 1 else 0,
+                            yellowCards = if (event == EventItems.EventYellow) 1 else 0,
+                            redCards = if (event == EventItems.EventRed) 1 else 0,
+                            matchId = _currentMatch.value.id
+                        )
+                    )
+                }
+            }
+
+        }
+        loadAllPlayerStatsDataFromMatchId(_currentMatch.value.id)
+    }
+
     private fun getCurrentDateTime(): String? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Log.d(TAG, "getCurrentDateTime: greater than O")
@@ -138,6 +210,15 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
             Log.d(TAG, "getCurrentDateTime: less than O")
             val SDFormat = SimpleDateFormat("d-M-y")
             SDFormat.format(Date())
+        }
+    }
+
+    private fun loadAllPlayerStatsDataFromMatchId(matchId: Int){
+        viewModelScope.launch {
+            repository.getPlayerStatsByMatchId(matchId)
+                .collect {
+                    _playerStats.value = it
+                }
         }
     }
 

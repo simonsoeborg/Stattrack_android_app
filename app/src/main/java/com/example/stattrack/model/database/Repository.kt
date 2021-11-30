@@ -145,6 +145,12 @@ class Repository (
             .mapIterable { playerStatsEntity ->
                 playerStatsEntity.toModel() }
 
+    fun getPlayerStatsByMatchId(matchId: Int): Flow<List<PlayerStats>> =
+        database.PlayerStatsDao()
+            .loadPlayerStatsByMatchId(matchId)
+            .mapIterable { playerStatsEntity ->
+                playerStatsEntity.toModel() }
+
     // Team
     fun getTeamById(teamId: Int): Flow<Team> =
         database.TeamDao()
