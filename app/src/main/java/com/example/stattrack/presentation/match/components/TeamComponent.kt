@@ -1,12 +1,10 @@
 package com.example.stattrack.presentation.match.components
 
 
-import android.graphics.Color
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.TextFieldDefaults.textFieldColors
 import androidx.compose.material.icons.Icons
@@ -14,19 +12,14 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Transparent
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.stattrack.di.ServiceLocator
 import com.example.stattrack.model.model.MatchData
 import com.example.stattrack.model.model.Team
-import com.example.stattrack.model.model.defaultDummyMatchData
-import com.example.stattrack.model.model.defaultTeamDummyData
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.presentation.ui.theme.Typography
@@ -37,8 +30,11 @@ fun TeamComponent(
     matchData: MatchData,
     teams:List<Team>,
     onSelectedTeamOne: (teamId: Int) -> Unit,
+    onTeamOneName : (String) -> Unit,
     onTeamTwoName: (String) -> Unit,
-    onTeamTwoScore: (Int) -> Unit){
+    onTeamTwoScore: (Int) -> Unit,
+    isRunning: State<Boolean>,
+    ){
 
     val teamTwoName = remember { mutableStateOf("")}
     val focusManager = LocalFocusManager.current
@@ -66,7 +62,15 @@ fun TeamComponent(
                     ) {
                         DropdownTeamsList(
                             teams = teams,
-                            onSelectedTeam = { onSelectedTeamOne(it) }
+                            onSelectedTeam = {
+
+                                if (isRunning.value){
+                                    Toast.makeText(ServiceLocator.application, "Holdnavn kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
+                                }
+
+                                else
+                                onSelectedTeamOne(it) },
+                            TeamName = { onTeamOneName(it)}
                         )
                     }
                     Column(
@@ -98,6 +102,11 @@ fun TeamComponent(
                     TextField(
                         value = teamTwoName.value,
                         onValueChange = {
+
+                            if (isRunning.value){
+                                Toast.makeText(ServiceLocator.application, "Modstander navn kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
+                            }
+                            else
                             teamTwoName.value = it
                             onTeamTwoName(it)
                         },//cursorBrush = SolidColor(Transparent),
@@ -106,12 +115,14 @@ fun TeamComponent(
                         ,
                         textStyle = TextStyle(color = PrimaryBlue, background = PrimaryWhite, fontSize = 24.sp),
                         singleLine = true,
-                        colors = textFieldColors(
+                        readOnly = isRunning.value,
+                        colors=  textFieldColors(
                             backgroundColor = PrimaryWhite,
                             /*focusedIndicatorColor = Transparent,
                             disabledIndicatorColor = Transparent,
                             unfocusedIndicatorColor = Transparent*/
                         ),
+
                         )
                         /*
                         colors =  textFieldColors(backgroundColor = PrimaryWhite) */
@@ -151,7 +162,7 @@ fun TeamComponent(
 
 
 @Composable
-fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit) {
+fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, TeamName: (name : String)-> Unit) {
     var expanded by remember { mutableStateOf(false) }
     var selectedId by remember { mutableStateOf(0) }
     var selectedTeam by remember { mutableStateOf("")}
@@ -170,7 +181,10 @@ fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit) 
     ) {
         TextField(
             value = selectedTeam,
-            onValueChange = { selectedTeam = it },
+            onValueChange = {
+                selectedTeam = it
+                TeamName(it)
+                            },
             placeholder = {
                 Text(text = "Vælg hold")}
             ,
@@ -210,12 +224,11 @@ fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit) 
 @Preview
 @Composable
 fun TeamComponentPreview(){
-    TeamComponent(
+   /* TeamComponent(
         defaultDummyMatchData[0],
         teams = defaultTeamDummyData,
         onSelectedTeamOne = { },
         onTeamTwoName = { },
-        onTeamTwoScore = { }
-
-    )
+        onTeamTwoScore = { },
+    )*/
 }

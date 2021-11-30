@@ -41,6 +41,15 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     private val _isCounting = MutableStateFlow(false)
     private val _timer = MutableStateFlow(getTimeElapsed())
 
+    // Validation conponent:
+    private val _teamOneCheck = MutableStateFlow(false)
+    private val _teamTwoCheck = MutableStateFlow(false)
+
+    val teamOneCheck: StateFlow<Boolean> = _teamOneCheck
+    val teamTwoCheck: StateFlow<Boolean> = _teamTwoCheck
+
+
+
 
     private val _teams: MutableStateFlow<List<Team>> = MutableStateFlow(defaultTeamDummyData)
     private val _currentMatch = MutableStateFlow(
@@ -65,6 +74,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
     val events: StateFlow<List<EventData>> = _events
     val timer: StateFlow<String> = _timer
     val isRunning: StateFlow<Boolean> = _isCounting
+
 
     init {
         /* Fetch data from DB when init so it is ready for use later on */
@@ -116,6 +126,26 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
             }
         }
     }
+
+
+    fun teamOneCheck(teamOne: String){
+        if (teamOne!="") {
+            viewModelScope.launch {
+                _teamOneCheck.value = true
+            }
+        }
+        println(teamOne)
+    }
+
+    fun teamTwoCheck(teamTwo: String){
+        if (teamTwo!="") {
+            viewModelScope.launch {
+                _teamTwoCheck.value = true
+            }
+        }
+        println(teamTwo)
+    }
+
 
     fun onPlayPressed(){
         if (!_isCounting.value){
@@ -200,7 +230,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         // Update values in model - will trigger recompose
         _currentMatch.value = _currentMatch.value.copy(
             creatorId = teams.value[teamId-1].clubName,
-            creatorTeamId = teamId
+            creatorTeamId = teamId,
         )
         // Update list of players for use in EventComponent later
         getPlayersFromTeam(teamId)
