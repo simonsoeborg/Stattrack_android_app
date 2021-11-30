@@ -23,7 +23,9 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
     val timeElapsed: State<String> = matchViewModel.timer.collectAsState()
     val isRunning: State<Boolean> = matchViewModel.isRunning.collectAsState()
     val loading = teams.value.isEmpty() || players.value.isEmpty()
-    
+    val properTeam1: State<Boolean> = matchViewModel.teamOneCheck.collectAsState()
+    val properTeam2: State<Boolean> = matchViewModel.teamTwoCheck.collectAsState()
+
     if(loading ) {
         /* Show loading */
         Box(modifier = Modifier
@@ -38,12 +40,13 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
             )
         }
     } else {
-        
     MatchScreenContent(
         teams,
         currentMatchData,
         players,
         events,
+        properTeam1,
+        properTeam2,
         timeElapsed = timeElapsed,
         isRunning = isRunning,
         newEvent = { matchViewModel.insertEvent((it)) },
@@ -51,7 +54,9 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
         setTeamTwoName = { matchViewModel.setTeamTwoName(it) },
         onTeamTwoScore = { matchViewModel.setTeamTwoScore(it)},
         onPlayPressed = { matchViewModel.onPlayPressed() },
-        onStopPressed = { matchViewModel.onStopPressed() }
+        onStopPressed = { matchViewModel.onStopPressed() },
+        team1check = { matchViewModel.teamOneCheck(it)},
+        team2check = { matchViewModel.teamTwoCheck(it)},
     )
     }
 }
@@ -62,6 +67,8 @@ fun MatchScreenContent(
     currentMatchData: State<MatchData>,
     players: State<List<Player>>,
     events: State<List<EventData>>,
+    properTeam1 : State<Boolean>,
+    properTeam2 : State<Boolean>,
     timeElapsed: State<String>,
     isRunning: State<Boolean>,
     newEvent: (event: EventItems) -> Unit,
@@ -69,8 +76,9 @@ fun MatchScreenContent(
     setTeamTwoName: (teamTwoName: String) -> Unit,
     onTeamTwoScore: (score: Int) -> Unit,
     onPlayPressed: () -> Unit,
-    onStopPressed: () -> Unit
-)
+    onStopPressed: () -> Unit,
+    team1check: (String) -> Unit,
+    team2check: (String) -> Unit,)
 {
 
     Column( // Main Column
@@ -84,8 +92,12 @@ fun MatchScreenContent(
                 matchData = currentMatchData.value,
                 teams = teams.value,
                 onSelectedTeamOne = { setTeamOneName(it) },
-                onTeamTwoName = { setTeamTwoName(it) },
-                onTeamTwoScore = { onTeamTwoScore(it) }
+                onTeamTwoName = {
+                    setTeamTwoName(it)
+                    team2check(it)},
+                onTeamTwoScore = { onTeamTwoScore(it) },
+                onTeamOneName = {team1check(it)},
+                isRunning = isRunning
             )
         }
         Row( modifier = Modifier.fillMaxWidth()) {
@@ -94,8 +106,10 @@ fun MatchScreenContent(
                 timeElapsed = timeElapsed,
                 isRunning = isRunning,
                 onPlayPressed = { onPlayPressed() },
-                onStopPressed = { onStopPressed() }
-            )
+                onStopPressed = { onStopPressed() },
+                properTeam1 = properTeam1,
+                properTeam2 = properTeam2,
+                )
 
 
         }

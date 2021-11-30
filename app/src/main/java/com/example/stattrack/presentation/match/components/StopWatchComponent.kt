@@ -1,5 +1,6 @@
 package com.example.stattrack.presentation.match.components
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.stattrack.di.ServiceLocator
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
 
@@ -23,8 +25,10 @@ fun StopWatchComponent(
     isRunning: State<Boolean>,
     timeElapsed: State<String>,
     onPlayPressed: () -> Unit,
-    onStopPressed: () -> Unit
-    ) {
+    onStopPressed: () -> Unit,
+    properTeam1 : State<Boolean>,
+    properTeam2 : State<Boolean>
+) {
 
 
     Column( modifier = Modifier
@@ -46,7 +50,14 @@ fun StopWatchComponent(
                 .align(Alignment.CenterHorizontally)
                 .padding(5.dp)
         ) {
-            IconButton(onClick = { onPlayPressed() }){
+            IconButton(onClick = {
+
+                if (!properTeam1.value && !properTeam2.value){
+                    Toast.makeText(ServiceLocator.application, "Hov! Udfyld først hold og modstander", Toast.LENGTH_LONG).show()
+                }
+
+                else
+                onPlayPressed() }){
                 Icon(
                     if(!isRunning.value) {
                         Icons.Default.PlayCircle
@@ -67,3 +78,5 @@ fun StopWatchComponent(
         }
     }
 }
+
+
