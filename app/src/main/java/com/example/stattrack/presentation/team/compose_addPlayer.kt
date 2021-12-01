@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
@@ -52,6 +53,12 @@ fun AddPlayer(
             color = PrimaryWhite
         )
     ){
+        Row(modifier = Modifier
+            .padding(all = 10.dp)
+            .align(Alignment.CenterHorizontally)
+        ) {
+            Text("Tilføj Spiller", color= PrimaryBlue, fontSize = 54.sp)
+        }
         Row(modifier = Modifier
             .padding(all = 10.dp)
             .align(Alignment.CenterHorizontally)
