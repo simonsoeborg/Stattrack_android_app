@@ -23,8 +23,6 @@ object ServiceLocator {
 
     lateinit var application: Application
 
-    var id : Int = 0
-
     fun init(application: Application) {
         ServiceLocator.application = application
     }
