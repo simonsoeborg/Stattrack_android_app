@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme.shapes
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -22,6 +23,13 @@ import com.example.stattrack.model.model.PlayerStats
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
+import com.github.tehras.charts.line.LineChart
+import com.github.tehras.charts.line.LineChartData
+import com.github.tehras.charts.line.renderer.line.SolidLineDrawer
+import com.github.tehras.charts.line.renderer.point.FilledCircularPointDrawer
+import com.github.tehras.charts.line.renderer.xaxis.SimpleXAxisDrawer
+import com.github.tehras.charts.line.renderer.yaxis.SimpleYAxisDrawer
+import com.github.tehras.charts.piechart.animation.simpleChartAnimation
 
 @Composable
 fun PlayerClass(navController: NavHostController, playerViewModel: PlayerViewModel, player : Player){
@@ -62,10 +70,9 @@ fun PlayerClassContent(
 
                 Text(
                     text = player.position,
-                    modifier = Modifier.padding(end = 10.dp),
+                    modifier = Modifier.padding(start = 20.dp, top = 50.dp).rotate(90f),
                     fontSize = 20.sp,
-                    color = PrimaryBlue,
-                    fontStyle = FontStyle.Italic)
+                    color = PrimaryBlue)
             }
         }
         
@@ -81,13 +88,27 @@ fun PlayerClassContent(
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
             Icon(
                 painter = painterResource(com.example.stattrack.R.drawable.ic_statistics),
-                contentDescription = null
-            )
+               contentDescription = null
+          )
+            // Todo Chart import - virker ikke endnu!
+           //  PlayerStatLineChart(100, 100,100,100)
         }
 
     }
 }
 
+@Composable
+fun PlayerStatLineChart(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int) {
+    LineChart(
+        lineChartData = LineChartData(
+            points = listOf(LineChartData.Point(antalAssist.toFloat(),"Mål"),
+                LineChartData.Point(antalSkud.toFloat(), "Skud"),
+                LineChartData.Point(antalMaal.toFloat(), "Assist"),
+                LineChartData.Point(antalKamp.toFloat(), "Kampe")
+            )
+        )
+    )
+}
 
 @Composable
 fun PlayerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int) {

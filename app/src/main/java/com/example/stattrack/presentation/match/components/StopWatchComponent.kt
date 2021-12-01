@@ -38,8 +38,7 @@ fun StopWatchComponent(
         .fillMaxWidth()
         .padding(10.dp)) {
         Row( modifier = Modifier
-            .align(Alignment.CenterHorizontally)
-            .fillMaxWidth(0.50F)) {
+            .align(Alignment.CenterHorizontally)) {
             // Timer
             Text(
                 timeElapsed,
@@ -48,6 +47,8 @@ fun StopWatchComponent(
                 textAlign = TextAlign.Center
             )
         }
+
+
         Row(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)

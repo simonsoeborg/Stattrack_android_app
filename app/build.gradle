@@ -75,7 +75,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
 
-
+    //implementation 'com.github.tehras.charts:line:beta-01'
     /* Compose */
     // UI
     implementation "androidx.compose.ui:ui:1.0.5"

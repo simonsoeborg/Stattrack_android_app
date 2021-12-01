@@ -19,10 +19,6 @@ class TeamViewModel (private val repository: Repository) : ViewModel() {
 
     private val _teams = MutableStateFlow(defaultTeamDummyData)
     private val _matchData = MutableStateFlow(defaultDummyMatchData)
-    /*
-    private val _players = MutableStateFlow(defaultDummyPlayerData)
-    private val _eventData = MutableStateFlow(defaultDummyEventData)
-    private val _playerStats = MutableStateFlow(defaultDummyPlayerStatsData) */
 
     val teams:  StateFlow<List<Team>> = _teams
     val matchData: StateFlow<List<MatchData>> = _matchData
@@ -82,23 +78,3 @@ class TeamViewModel (private val repository: Repository) : ViewModel() {
         }
     }
 }
-
-/*
-*     fun updateTeam(){
-        val id = (10..100).random()
-        viewModelScope.launch {
-        repository.insertTeam(Team(id,"Hej fra databasen id: $id","UpdatedClubName","UpdatedCreator","2005","Top-top-proff"))
-        }
-    }
-
-        /* Read-only for the view-layer
-    val viewState: StateFlow<TeamViewState> = combine(
-        teams,
-        players,
-        matchData,
-        eventData,
-        playerStats
-    ) { t, p, m, e, pl  ->
-        TeamViewState(t, p,  m, e, pl)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(),TeamViewState()) */
-     */

@@ -15,14 +15,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.stattrack.model.model.MatchData
-import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
-import com.example.stattrack.model.model.defaultTeamDummyData
 import com.example.stattrack.presentation.navbar.Screen
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 
@@ -108,7 +105,6 @@ fun TeamList(teams: State<List<Team>>, navController: NavHostController) {
 
         ) {
                     team ->
-            // Clickable sender kun test-data pt.
             Surface(modifier = Modifier.clickable {
 
                 // Pass data
@@ -134,8 +130,8 @@ fun MatchList(matches: State<List<MatchData>>, navController: NavHostController)
             items = matches.value
             ) {
                 match ->
-            // Clickable sender kun test-data pt.
-            Surface(modifier = Modifier.clickable {
+            Surface(modifier = Modifier.padding(bottom = 10.dp)
+            .clickable {
 
                 // Pass data
                 val matchId = match.id
@@ -143,26 +139,8 @@ fun MatchList(matches: State<List<MatchData>>, navController: NavHostController)
                 navController.navigate(Screen.SpecificMatch.route)
 
             }){
-                Text("${match.matchDate} | ${match.creatorId} mod ${match.opponent} | ${match.creatorTeamGoals} : ${match.opponentGoals}",modifier = Modifier.padding(2.dp), color = PrimaryBlue)
+                Text("${match.matchDate} \n${match.creatorId} mod ${match.opponent} | ${match.creatorTeamGoals} : ${match.opponentGoals}",modifier = Modifier.padding(2.dp), color = PrimaryBlue)
             }
         }
     }
 }
-
-
-
- /*// Inspired by: https://stackoverflow.com/questions/66671902/how-to-create-a-circular-outlined-button-with-jetpack-compose
-@Composable
-fun NewTeamButton(){
-    OutlinedButton(onClick = { },
-        modifier= Modifier
-            .padding(top = 5.dp)
-            .size(40.dp),
-        shape = CircleShape,
-        border= BorderStroke(1.dp, PrimaryBlue),
-        contentPadding = PaddingValues(0.dp),
-        colors = ButtonDefaults.outlinedButtonColors(contentColor =  PrimaryBlue)
-    ) {
-        Icon(Icons.Default.Add, contentDescription = "NewTeam Button")
-    }
-} */
