@@ -135,7 +135,8 @@ fun MatchList(matches: State<List<MatchData>>, navController: NavHostController)
             ) {
                 match ->
             // Clickable sender kun test-data pt.
-            Surface(modifier = Modifier.clickable {
+            Surface(modifier = Modifier.padding(bottom = 10.dp)
+            .clickable {
 
                 // Pass data
                 val matchId = match.id
@@ -143,7 +144,7 @@ fun MatchList(matches: State<List<MatchData>>, navController: NavHostController)
                 navController.navigate(Screen.SpecificMatch.route)
 
             }){
-                Text("${match.matchDate} | ${match.creatorId} mod ${match.opponent} | ${match.creatorTeamGoals} : ${match.opponentGoals}",modifier = Modifier.padding(2.dp), color = PrimaryBlue)
+                Text("${match.matchDate} \n${match.creatorId} mod ${match.opponent} | ${match.creatorTeamGoals} : ${match.opponentGoals}",modifier = Modifier.padding(2.dp), color = PrimaryBlue)
             }
         }
     }
