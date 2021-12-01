@@ -23,6 +23,13 @@ import com.example.stattrack.model.model.PlayerStats
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
+import com.github.tehras.charts.line.LineChart
+import com.github.tehras.charts.line.LineChartData
+import com.github.tehras.charts.line.renderer.line.SolidLineDrawer
+import com.github.tehras.charts.line.renderer.point.FilledCircularPointDrawer
+import com.github.tehras.charts.line.renderer.xaxis.SimpleXAxisDrawer
+import com.github.tehras.charts.line.renderer.yaxis.SimpleYAxisDrawer
+import com.github.tehras.charts.piechart.animation.simpleChartAnimation
 
 @Composable
 fun PlayerClass(navController: NavHostController, playerViewModel: PlayerViewModel, player : Player){
@@ -79,15 +86,28 @@ fun PlayerClassContent(
             )
         }
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
-            Icon(
-                painter = painterResource(com.example.stattrack.R.drawable.ic_statistics),
-                contentDescription = null
-            )
+//            Icon(
+//                painter = painterResource(com.example.stattrack.R.drawable.ic_statistics),
+//                contentDescription = null
+//            )
+            PlayerStatLineChart(gamesAmount, stats.goals,stats.attempts,stats.assists)
         }
 
     }
 }
 
+@Composable
+fun PlayerStatLineChart(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int) {
+    LineChart(
+        lineChartData = LineChartData(
+            points = listOf(LineChartData.Point(antalAssist.toFloat(),"Mål"),
+                LineChartData.Point(antalSkud.toFloat(), "Skud"),
+                LineChartData.Point(antalMaal.toFloat(), "Assist"),
+                LineChartData.Point(antalKamp.toFloat(), "Kampe")
+            )
+        )
+    )
+}
 
 @Composable
 fun PlayerData(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int) {
