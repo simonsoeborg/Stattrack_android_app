@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
+import com.example.stattrack.di.ServiceLocator
 import com.example.stattrack.di.ServiceLocator.application
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
@@ -34,7 +35,7 @@ import kotlin.math.floor
 class MatchViewModel(private val repository: Repository) : ViewModel() {
 
     /* Time component variables */
-    private val duration = 30*60
+    private val duration = 60*60
     private var timeElapsed by mutableStateOf(0)
     private var finishPosition by mutableStateOf(duration)
     private var job by mutableStateOf<Job?>(null)
@@ -325,8 +326,15 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
                     _time.value = getTimeElapsed()
                     //Log.d("Stopwatch.kt", "Counting succesfully")
                 }
+                if(timeElapsed==30*60){
+                    /* Første halvleg */
+                    vibratePhone()
+                    pause()
+                    Toast.makeText(ServiceLocator.application, "1ste halvleg er slut!", Toast.LENGTH_LONG).show()
+                }
                 if (timeElapsed == finishPosition){
                     vibratePhone()
+                    Toast.makeText(ServiceLocator.application, "2nden halvleg er slut!", Toast.LENGTH_LONG).show()
                 }
                 finishPosition = duration
             }
