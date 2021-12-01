@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.defaultDummyPlayerData
-import com.example.stattrack.presentation.match.data.EventItems
+import com.example.stattrack.presentation.match.components.EventItems
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 

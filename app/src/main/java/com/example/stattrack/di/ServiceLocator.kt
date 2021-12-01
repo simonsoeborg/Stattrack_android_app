@@ -23,8 +23,6 @@ object ServiceLocator {
 
     lateinit var application: Application
 
-    var id : Int = 0
-
     fun init(application: Application) {
         ServiceLocator.application = application
     }
@@ -33,7 +31,6 @@ object ServiceLocator {
 
     private val repository: Repository by lazy { Repository(database) }
 
-    // Effectively singleton
     private val viewModelFactory by lazy {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -68,7 +65,7 @@ object ServiceLocator {
 
 
 
-
+    /* Fill SQLite with dummydata for development purposes */
     fun prepopulateSQLiteDB(){
         GlobalScope.launch() {
             val repo = repository
