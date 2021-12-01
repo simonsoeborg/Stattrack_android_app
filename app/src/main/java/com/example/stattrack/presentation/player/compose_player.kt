@@ -34,8 +34,8 @@ fun PlayerClass(navController: NavHostController, playerViewModel: PlayerViewMod
     val gamesTotal : State<Int> = playerViewModel.gamesTotal.collectAsState()
 
     PlayerClassContent(
-        combinedPlayerStats,
-        gamesTotal,
+        combinedPlayerStats.value,
+        gamesTotal.value,
         player,
         playerViewModel,
         navController
@@ -44,8 +44,8 @@ fun PlayerClass(navController: NavHostController, playerViewModel: PlayerViewMod
 
 @Composable
 fun PlayerClassContent(
-    stats : State<PlayerStats>,
-    gamesAmount : State<Int>,
+    stats : PlayerStats,
+    gamesAmount : Int,
     player : Player,
     playerViewModel: PlayerViewModel,
     navController: NavHostController,
@@ -69,7 +69,7 @@ fun PlayerClassContent(
             }
         }
         
-        PlayerData(gamesAmount.value, stats.value.goals,stats.value.attempts,stats.value.assists)
+        PlayerData(gamesAmount, stats.goals,stats.attempts,stats.assists)
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
 
             RemovePlayerButton(

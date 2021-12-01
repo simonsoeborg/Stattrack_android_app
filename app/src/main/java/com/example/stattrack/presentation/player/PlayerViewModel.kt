@@ -14,7 +14,9 @@ import kotlinx.coroutines.launch
  */
 class PlayerViewModel(private val repository: Repository) : ViewModel() {
 
-    private val _playerStats = MutableStateFlow<List<PlayerStats>>(defaultDummyPlayerStatsData)
+    private val _playerStats = MutableStateFlow<List<PlayerStats>>(listOf(
+        PlayerStats(0," ",0,0,0,0,0,0,0,0)
+    ))
 
     val playerStats : StateFlow<List<PlayerStats>> = _playerStats
 

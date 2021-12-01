@@ -32,7 +32,7 @@ fun TeamComponent(
     onTeamOneName : (String) -> Unit,
     onTeamTwoName: (String) -> Unit,
     onTeamTwoScore: (Int) -> Unit,
-    matchStarted: State<Boolean>,
+    matchStarted: Boolean,
     ){
 
     val teamTwoName = remember { mutableStateOf("")}
@@ -97,7 +97,7 @@ fun TeamComponent(
                         value = matchData.opponent,
                         onValueChange = {
 
-                            if (matchStarted.value)
+                            if (matchStarted)
                             Toast.makeText(ServiceLocator.application, "Modstander navn kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
 
                             else {
@@ -110,7 +110,7 @@ fun TeamComponent(
                         },
                         textStyle = TextStyle(color = PrimaryBlue, background = PrimaryWhite, fontSize = 24.sp),
                         singleLine = true,
-                        readOnly = matchStarted.value,
+                        readOnly = matchStarted,
                         colors=  textFieldColors(backgroundColor = PrimaryWhite)
                     )
                 }
@@ -147,7 +147,7 @@ fun TeamComponent(
 
 
 @Composable
-fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, TeamName: (name : String)-> Unit, teamName1: String, matchStarted: State<Boolean> ) {
+fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, TeamName: (name : String)-> Unit, teamName1: String, matchStarted: Boolean ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedId by remember { mutableStateOf(0) }
 
@@ -159,7 +159,7 @@ fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, 
 
     Row(modifier = Modifier
         .clickable(onClick = {
-            if (!matchStarted.value){
+            if (!matchStarted){
                 expanded = true
             }
 
@@ -183,7 +183,7 @@ fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, 
                 color = PrimaryBlue),
             trailingIcon = {
                 Icon(icon, "" , Modifier.clickable{
-                    if (!matchStarted.value)
+                    if (!matchStarted)
                     expanded = !expanded
 
                     else  Toast.makeText(ServiceLocator.application, "Hold kan ikke ændres under kamp", Toast.LENGTH_LONG).show()
@@ -191,7 +191,7 @@ fun DropdownTeamsList(teams: List<Team>, onSelectedTeam: (teamId: Int) -> Unit, 
                 )
             },
             enabled = false,
-            readOnly = matchStarted.value,
+            readOnly = matchStarted,
             colors = textFieldColors(backgroundColor = PrimaryWhite)
         )
 

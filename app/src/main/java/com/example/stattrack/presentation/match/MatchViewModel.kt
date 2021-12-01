@@ -108,17 +108,24 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         _events.value = emptyList()
         _teams.value = teamDataForInit
         _players.value = playerDataForInit
+        _playerStats.value = emptyList()
         loadAllMatchData()
         loadAllTeams()
     }
 
     /* Get correct ID for DB-insertion and date */
     private fun initMatchDateAndId() {
-        viewModelScope.launch {
-            while (_allMatches.value.isEmpty()) {
-                delay(2000)
-            }
+
+        if (_allMatches.value.isEmpty()) {
+            _currentMatch.value =
+                _currentMatch.value.copy(
+                    id = 1,
+                    matchDate = getCurrentDateTime() ?: "00-00-0000"
+                )
+            updateMatchData(_currentMatch.value)
+            initPlayerStats()
         }
+
         if (_allMatches.value.isNotEmpty()) {
             _currentMatch.value =
                 _currentMatch.value.copy(
@@ -126,11 +133,38 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
                     matchDate = getCurrentDateTime() ?: "00-00-0000"
                 )
             updateMatchData(_currentMatch.value)
+            initPlayerStats()
 
         }
     }
 
-    fun insertPlayerStats(event: EventItems){
+    private fun initPlayerStats(){
+        val playerStatsListInit = mutableListOf<PlayerStats>()
+        for (player in _players.value){
+            playerStatsListInit.add(
+                PlayerStats(
+                playerId = player.id,
+                time = getCurrentDateTime()?:"00",
+                    attempts = 0,
+                    goals = 0,
+                    keeperSaves = 0,
+                    assists = 0,
+                    mins2 = 0,
+                    yellowCards = 0,
+                    redCards = 0,
+                    matchId = _currentMatch.value.id
+                )
+            )
+        }
+        _playerStats.value = playerStatsListInit
+        for (playerStats in _playerStats.value) {
+            viewModelScope.launch(Dispatchers.IO) {
+                repository.insertPlayerStats(playerStats)
+            }
+        }
+    }
+
+    private fun insertPlayerStats(event: EventItems){
         if (_playerStats.value.isEmpty()){
             viewModelScope.launch {
                 repository.insertPlayerStats(
@@ -156,7 +190,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
                 viewModelScope.launch {
                     repository.insertPlayerStats(
                         player[0].copy(
-                            event.playerId,
+                            playerId = event.playerId,
                             time = getTimeElapsed(),
                             attempts = if (event == EventItems.EventAttempt){
                                 player[0].attempts+1
@@ -203,7 +237,7 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
             }
 
         }
-        loadAllPlayerStatsDataFromMatchId(_currentMatch.value.id)
+        loadAllPlayerStatsDataFromMatchId(matchId = _currentMatch.value.id)
     }
 
     private fun getCurrentDateTime(): String? {
@@ -350,31 +384,35 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         getPlayersFromTeam(teamId)
 
     }
-    fun insertEvent(event: EventItems){
-        /* Insert event in Room */
-        viewModelScope.launch {
-            repository.insertEventData(
-                EventData(
-                    id = events.value.size+1,
-                    eventType = event.title,
-                    playerId = event.playerId,
-                    playerName = event.playerName,
-                    time = getTimeElapsed(),
-                    matchId = _currentMatch.value.id
+    fun insertEvent(event: EventItems) {
+        if (_startMatch.value) {
+            /* Insert event in Room */
+            viewModelScope.launch {
+                repository.insertEventData(
+                    EventData(
+                        id = events.value.size + 1,
+                        eventType = event.title,
+                        playerId = event.playerId,
+                        playerName = event.playerName,
+                        time = getTimeElapsed(),
+                        matchId = _currentMatch.value.id
+                    )
                 )
-            )
+            }
+            /* If event is a goal, increment goals */
+            if (event.title == "Mål") {
+                _currentMatch.value = _currentMatch.value.copy(
+                    creatorTeamGoals = _currentMatch.value.creatorTeamGoals + 1
+                )
+                updateMatchData(_currentMatch.value)
+            }
+            /* Insert event in PlayerStats and update _playerStats.value */
+            insertPlayerStats(event)
+            /* Get updated values from Room */
+            getEventsFromMatchId(_currentMatch.value.id)
+        } else {
+            Toast.makeText(application, "Hændelser kan ikke oprettes før kampen er igang", Toast.LENGTH_SHORT).show()
         }
-        /* If event is a goal, increment goals */
-        if (event.title == "Mål"){
-            _currentMatch.value = _currentMatch.value.copy(
-                creatorTeamGoals = _currentMatch.value.creatorTeamGoals+1
-            )
-            updateMatchData(_currentMatch.value)
-        }
-        /* Insert event in PlayerStats and update _playerStats.value */
-        insertPlayerStats(event)
-        /* Get updated values from Room */
-        getEventsFromMatchId(_currentMatch.value.id)
     }
 
     fun setTeamTwoName(name: String){
@@ -384,13 +422,18 @@ class MatchViewModel(private val repository: Repository) : ViewModel() {
         )
     }
 
-    fun setTeamTwoScore(score: Int){
-        if (score>=0) {
-            _currentMatch.value = _currentMatch.value.copy(
-                opponentGoals = score
-            )
-            updateMatchData(_currentMatch.value)
-        } else Toast.makeText(application, "Score kan ikke være under 0", Toast.LENGTH_SHORT).show()
+    fun setTeamTwoScore(score: Int) {
+        if (_startMatch.value) {
+            if (score >= 0) {
+                _currentMatch.value = _currentMatch.value.copy(
+                    opponentGoals = score
+                )
+                updateMatchData(_currentMatch.value)
+            } else Toast.makeText(application, "Score kan ikke være under 0", Toast.LENGTH_SHORT)
+                .show()
+        } else {
+                Toast.makeText(application, "Score kan kun ændres hvis kampen er igang", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun getPlayersFromTeam(teamId: Int){

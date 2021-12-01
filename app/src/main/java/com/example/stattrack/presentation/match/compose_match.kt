@@ -42,14 +42,14 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
         }
     } else {
     MatchScreenContent(
-        teams,
-        currentMatchData,
-        players,
-        events,
-        properTeam1,
-        properTeam2,
-        timeElapsed = timeElapsed,
-        isRunning = isRunning,
+        teams.value,
+        currentMatchData.value,
+        players.value,
+        events.value,
+        properTeam1.value,
+        properTeam2.value,
+        timeElapsed = timeElapsed.value,
+        isRunning = isRunning.value,
         newEvent = { matchViewModel.insertEvent((it)) },
         setTeamOneName = { matchViewModel.setTeamOneName(it) },
         setTeamTwoName = { matchViewModel.setTeamTwoName(it) },
@@ -58,21 +58,21 @@ fun MatchScreen(matchViewModel: MatchViewModel) {
         onStopPressed = { matchViewModel.onStopPressed() },
         team1check = { matchViewModel.teamOneCheck(it)},
         team2check = { matchViewModel.teamTwoCheck(it)},
-        matchStarted = matchStarted
+        matchStarted = matchStarted.value
     )
     }
 }
 
 @Composable
 fun MatchScreenContent(
-    teams: State<List<Team>>,
-    currentMatchData: State<MatchData>,
-    players: State<List<Player>>,
-    events: State<List<EventData>>,
-    properTeam1 : State<Boolean>,
-    properTeam2 : State<Boolean>,
-    timeElapsed: State<String>,
-    isRunning: State<Boolean>,
+    teams: List<Team>,
+    currentMatchData: MatchData,
+    players: List<Player>,
+    events: List<EventData>,
+    properTeam1 : Boolean,
+    properTeam2 : Boolean,
+    timeElapsed: String,
+    isRunning: Boolean,
     newEvent: (event: EventItems) -> Unit,
     setTeamOneName: (teamId: Int) -> Unit,
     setTeamTwoName: (teamTwoName: String) -> Unit,
@@ -81,7 +81,7 @@ fun MatchScreenContent(
     onStopPressed: () -> Unit,
     team1check: (String) -> Unit,
     team2check: (String) -> Unit,
-    matchStarted: State<Boolean>)
+    matchStarted: Boolean)
 {
 
     Column( // Main Column
@@ -92,8 +92,8 @@ fun MatchScreenContent(
         Row( modifier = Modifier.fillMaxWidth()) {
 
             TeamComponent(
-                matchData = currentMatchData.value,
-                teams = teams.value,
+                matchData = currentMatchData,
+                teams = teams,
                 onSelectedTeamOne = { setTeamOneName(it) },
                 onTeamTwoName = {
                     setTeamTwoName(it)
@@ -119,12 +119,12 @@ fun MatchScreenContent(
         }
         Row( modifier = Modifier.fillMaxWidth()) {
             EventComponent(
-                players.value,
+                players,
                 newEvent = { newEvent(it) }
             )
         }
         Row( modifier = Modifier.fillMaxWidth()) {
-            LogComponent(events.value)
+            LogComponent(events)
         }
     }
 }

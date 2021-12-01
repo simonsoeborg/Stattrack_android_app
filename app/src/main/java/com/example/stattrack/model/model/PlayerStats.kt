@@ -25,4 +25,5 @@ val defaultDummyPlayerStatsData = listOf(
     PlayerStats(2,"12.20",2,1,0,6,2,1,2,2),
     PlayerStats(0,"12.20",2,1,0,6,2,1,2,2),
     PlayerStats(4,"12.20",2,1,0,6,2,1,2,2),
+    PlayerStats(37, "14.50", 10,10,10,10,10,10,10,3)
         )

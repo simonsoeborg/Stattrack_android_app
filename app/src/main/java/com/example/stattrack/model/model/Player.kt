@@ -77,8 +77,8 @@ val defaultDummyPlayerData = listOf(
     Player(35,"Knud Knudsen","Fløjspiller",1993,3),
     Player(36,"Lars Larsen","Fløjspiller",1993,3),
 
-    Player(37,"Cyrus Bakhtiari-Haftlang","Målvogter",1981,4),
-    Player(38,"Carsten Vraa-Jensen","Målvogter",1983,4),
+    Player(37,"Cyrus","Målvogter",1981,4),
+    Player(38,"Carsten","Målvogter",1983,4),
     Player(39,"Michael","Bagspiller",1985,4),
     Player(40,"Marianne","Bagspiller",1989,4),
     Player(41,"Cosmin","Bagspiller",1987,4),

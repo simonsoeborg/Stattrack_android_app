@@ -24,13 +24,13 @@ import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 
 @Composable
 fun StopWatchComponent(
-    matchStarted: State<Boolean>,
-    isRunning: State<Boolean>,
-    timeElapsed: State<String>,
+    matchStarted: Boolean,
+    isRunning: Boolean,
+    timeElapsed: String,
     onPlayPressed: () -> Unit,
     onStopPressed: () -> Unit,
-    properTeam1 : State<Boolean>,
-    properTeam2 : State<Boolean>
+    properTeam1 : Boolean,
+    properTeam2 : Boolean
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -42,7 +42,7 @@ fun StopWatchComponent(
             .fillMaxWidth(0.50F)) {
             // Timer
             Text(
-                timeElapsed.value,
+                timeElapsed,
                 color = PrimaryBlue,
                 fontSize = 48.sp,
                 textAlign = TextAlign.Center
@@ -55,19 +55,19 @@ fun StopWatchComponent(
         ) {
             IconButton(onClick = {
 
-                if (!properTeam1.value && !properTeam2.value){
+                if (!properTeam1 && !properTeam2){
                     Toast.makeText(ServiceLocator.application, "Hov! Udfyld først hold og modstander", Toast.LENGTH_LONG).show()
                 }
 
                 else
                 onPlayPressed() }){
                 Icon(
-                    if(!isRunning.value) {
+                    if(!isRunning) {
                         Icons.Default.PlayCircle
                     } else Icons.Default.Pause,
 
                      contentDescription =
-                     if(!isRunning.value){
+                     if(!isRunning){
                          "Play"
                      } else "Pause",
 
@@ -76,7 +76,7 @@ fun StopWatchComponent(
             }
 
             IconButton(onClick = {
-                if (matchStarted.value){
+                if (matchStarted){
                     showDialog = true
                 }
             }) {
