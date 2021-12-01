@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme.shapes
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -62,10 +63,9 @@ fun PlayerClassContent(
 
                 Text(
                     text = player.position,
-                    modifier = Modifier.padding(end = 10.dp),
+                    modifier = Modifier.padding(start = 20.dp, top = 30.dp).rotate(90f),
                     fontSize = 20.sp,
-                    color = PrimaryBlue,
-                    fontStyle = FontStyle.Italic)
+                    color = PrimaryBlue)
             }
         }
         
