@@ -51,9 +51,9 @@ fun DropdownMenu(
                             .border(BorderStroke(1.dp, colorSelected))
                             .background(
                                 color = colorBackground,
-                                shape = RoundedCornerShape(16.dp)
+                                shape = RoundedCornerShape(16.dp),
                             ),
-                            onClick = { onSelect(index) }
+                            onClick = { onSelect(index) },
                         ) {
                             Text( text = s.title,
                                 color = PrimaryBlue,

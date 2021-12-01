@@ -39,9 +39,8 @@ fun EventComponent(
         EventItems.EventRed
     )
 
-    val buttonTitleEvents = eventItems[selectedIndexEvents].title
-    val buttonTitlePlayers = players[selectedIndexPlayers].name
-
+    var buttonTitleEvents = "Vælg hændelse"
+    var buttonTitlePlayers by remember { mutableStateOf("Vælg spiller") }
 
     Column( modifier = Modifier
         .fillMaxWidth()
@@ -51,7 +50,8 @@ fun EventComponent(
                 Row( modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 4.dp)
                     .align(Alignment.CenterHorizontally)) {
-                    // Select Player
+
+                    // Player dropdownmenu settings
                     DropdownMenu(
                         expanded = expandedPlayers,
                         selectedIndex = selectedIndexPlayers,
@@ -60,8 +60,12 @@ fun EventComponent(
                         onSelect = { index ->
                             selectedIndexPlayers = index
                             expandedPlayers = false
+                            buttonTitlePlayers = players[selectedIndexPlayers].name
                         },
-                        onDismissRequest = { expandedPlayers = false }
+                        onDismissRequest = {
+                            expandedPlayers = false
+                            buttonTitlePlayers = "Vælg spiller"
+                        }
                     ) {
                         OutlinedButton(
                             onClick = {
@@ -80,9 +84,12 @@ fun EventComponent(
                         }
                     }
                 }
+
                 Row(modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 2.dp)
                     .align(Alignment.CenterHorizontally)) {
+
+                    // Event drop-down menu settings
                     DropdownMenu(
                         colorSelected = PrimaryBlue,
                         expanded = expandedEvents,
@@ -92,6 +99,7 @@ fun EventComponent(
                         onSelect = { index ->
                             selectedIndexEvents = index
                             expandedEvents = false
+                            buttonTitlePlayers = "Vælg spiller"
                             // Callback function to send event and playerId upwards in compose (return)
                             if(selectedIndexEvents!=0) {
                                 eventItems[selectedIndexEvents].playerName = players[selectedIndexPlayers].name
@@ -103,6 +111,8 @@ fun EventComponent(
                         },
                         onDismissRequest = {
                             expandedEvents = false
+                            buttonTitlePlayers = "Vælg spiller"
+
                         })
                     {
                         OutlinedButton(
