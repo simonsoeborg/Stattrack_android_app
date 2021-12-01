@@ -70,7 +70,7 @@ fun PlayerClassContent(
 
                 Text(
                     text = player.position,
-                    modifier = Modifier.padding(start = 20.dp, top = 30.dp).rotate(90f),
+                    modifier = Modifier.padding(start = 20.dp, top = 50.dp).rotate(90f),
                     fontSize = 20.sp,
                     color = PrimaryBlue)
             }
@@ -86,11 +86,12 @@ fun PlayerClassContent(
             )
         }
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
-//            Icon(
-//                painter = painterResource(com.example.stattrack.R.drawable.ic_statistics),
-//                contentDescription = null
-//            )
-            PlayerStatLineChart(gamesAmount, stats.goals,stats.attempts,stats.assists)
+            Icon(
+                painter = painterResource(com.example.stattrack.R.drawable.ic_statistics),
+               contentDescription = null
+          )
+            // Todo Chart import - virker ikke endnu!
+           //  PlayerStatLineChart(100, 100,100,100)
         }
 
     }
