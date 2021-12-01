@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.sp
 import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.match.components.StopWatchComponent
 import com.example.stattrack.presentation.match.components.TeamComponent
-import com.example.stattrack.presentation.match.data.EventItems
+import com.example.stattrack.presentation.match.components.EventItems
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.Typography
 

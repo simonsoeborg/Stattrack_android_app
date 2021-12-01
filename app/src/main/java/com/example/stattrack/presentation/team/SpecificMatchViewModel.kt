@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class SpecificMatchViewModel(private val repository: Repository) : ViewModel()  {
 
 
-    private val _matchData = MutableStateFlow<MatchData>(
+    private val _matchData = MutableStateFlow(
         MatchData(
             id = 0,
             creatorId = "Hold 1",

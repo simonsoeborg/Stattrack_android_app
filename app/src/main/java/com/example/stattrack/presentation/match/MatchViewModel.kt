@@ -16,7 +16,7 @@ import androidx.lifecycle.*
 import com.example.stattrack.di.ServiceLocator.application
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.model.*
-import com.example.stattrack.presentation.match.data.EventItems
+import com.example.stattrack.presentation.match.components.EventItems
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.text.SimpleDateFormat
