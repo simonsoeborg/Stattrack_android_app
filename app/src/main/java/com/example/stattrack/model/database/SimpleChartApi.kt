@@ -6,7 +6,6 @@ import retrofit2.http.Path
 
 interface SimpleChartApi {
 
-    @GET("chart?chartInput")
-    suspend fun getPlayerChart(@Path("chartInput")chartInput): PlayerChart
-
+    @GET("chart?{chartInput")
+    suspend fun getPlayerChart(@Path("chartInput")chartInput: String): PlayerChart
 }

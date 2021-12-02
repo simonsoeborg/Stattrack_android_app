@@ -1,6 +1,8 @@
 package com.example.stattrack.presentation.player
 
 
+import android.annotation.SuppressLint
+import android.widget.ImageView
 import androidx.lifecycle.*
 import com.example.stattrack.di.ServiceLocator
 import com.example.stattrack.model.database.Repository
@@ -33,18 +35,34 @@ class PlayerViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    private val _imgString = MutableStateFlow<String>("")
+    val imgString : StateFlow<String> = _imgString
 
-    fun loadPlayerStatPic() {
 
-        while (_playerStats.value[0].playerId != 0) {
+    private fun conStructImgString(combinedPlayerStats: PlayerStats) {
 
-            viewModelScope.launch(Dispatchers.IO){
-                ServiceLocator.picasso.load("http://i.imgur.com/DvpvklR.png%22").into(imageView))
+            viewModelScope.launch() {
+                val point1 = gamesTotal.value
+                val point2 = combinedPlayerStats.attempts
+                val point3 = combinedPlayerStats.goals
+                val point4 = combinedPlayerStats.assists
 
-            }
+                val endpoint : String = "https://quickchart.io/chart"
+                val startString :  String = "?chart={\n" +
+                        "  type: 'line',\n" +
+                        "  data: {\n" +
+                        "    labels: ['Spil', 'Skudforsøg', 'Mål', 'Assists'],\n" +
+                        "    datasets: [{\n" +
+                        "      label: 'Graf af spiller statistik',\n" +
+                        "      data: [" + point1 + ", " + point2 + ", " + point3 + ", " + point4 + "]\n" +
+                        "    }]\n" +
+                        "  }\n" +
+                        "}&backgroundColor=white&width=500&height=300&devicePixelRatio=1.0&format=png&version=2.9.3"
 
+                _imgString.value = endpoint + startString
         }
     }
+
 
 
     private val _combinedPlayerStats =  MutableStateFlow<PlayerStats>(PlayerStats(999,"",0,0,0,0,0,0,0,999))
@@ -74,8 +92,10 @@ class PlayerViewModel(private val repository: Repository) : ViewModel() {
             tempYellowCards += PlayerStats.yellowCards
             tempRedCards += PlayerStats.redCards
         }
-        _combinedPlayerStats.value = PlayerStats(999,"",tempAttempts,tempGoals, tempKeeperSaves, tempAssists, tempMin2, tempYellowCards, tempRedCards,999)
+        _combinedPlayerStats.value = PlayerStats(1000,"",tempAttempts,tempGoals, tempKeeperSaves, tempAssists, tempMin2, tempYellowCards, tempRedCards,1000)
         _gamesTotal.value = tempGames
+
+        conStructImgString(_combinedPlayerStats.value)
     }
 
     fun deletePlayer(playerId: Int){

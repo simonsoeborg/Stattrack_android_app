@@ -116,12 +116,10 @@ object ServiceLocator {
         Retrofit.Builder()
             .baseUrl("https://quickchart.io/")
             .addConverterFactory(MoshiConverterFactory.create())
-
             .build()
             .create()
     }
 */
-
 
 
 
