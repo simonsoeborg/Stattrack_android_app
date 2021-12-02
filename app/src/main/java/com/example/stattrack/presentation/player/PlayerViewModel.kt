@@ -49,9 +49,9 @@ class PlayerViewModel(private val repository: Repository) : ViewModel() {
 
                 val endpoint : String = "https://quickchart.io/chart"
                 val startString :  String = "?chart={\n" +
-                        "  type: 'line',\n" +
+                        "  type: 'bar',\n" +
                         "  data: {\n" +
-                        "    labels: ['Spil', 'Skudforsøg', 'Mål', 'Assists'],\n" +
+                        "    labels: ['Kampe', 'Skudforsøg', 'Mål', 'Assists'],\n" +
                         "    datasets: [{\n" +
                         "      label: 'Graf af spiller statistik',\n" +
                         "      data: [" + point1 + ", " + point2 + ", " + point3 + ", " + point4 + "]\n" +
