@@ -23,7 +23,7 @@ import com.example.stattrack.di.ServiceLocator.matchViewModel
 import com.example.stattrack.di.ServiceLocator.playerViewModel
 import com.example.stattrack.di.ServiceLocator.specificTeamViewModel
 import com.example.stattrack.di.ServiceLocator.teamViewModel
-import com.example.stattrack.di.ServiceLocator.prepopulateSQLiteDB
+import com.example.stattrack.di.ServiceLocator.fillSQLiteWithDemoData
 import com.example.stattrack.di.ServiceLocator.specificMatchViewModel
 import com.example.stattrack.model.model.Player
 import com.example.stattrack.model.model.Team
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.hide() // Hide the title bar so the app shows in fullscreen
 
-        //prepopulateSQLiteDB() // For development purposes
+        fillSQLiteWithDemoData() // For development purposes
 
         setContent {
             val navController = rememberNavController()

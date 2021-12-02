@@ -66,7 +66,7 @@ object ServiceLocator {
 
 
     /* Fill SQLite with dummydata for development purposes */
-    fun prepopulateSQLiteDB(){
+    fun fillSQLiteWithDemoData(){
         GlobalScope.launch() {
             val repo = repository
             val eventData = defaultDummyEventData
