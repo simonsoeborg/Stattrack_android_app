@@ -1,9 +1,15 @@
 package com.example.stattrack.presentation.player
 
 
+import android.annotation.SuppressLint
+import android.widget.ImageView
 import androidx.lifecycle.*
+import com.example.stattrack.di.ServiceLocator
 import com.example.stattrack.model.database.Repository
+import com.example.stattrack.model.database.SimpleChartApi
 import com.example.stattrack.model.model.*
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -14,18 +20,46 @@ import kotlinx.coroutines.launch
  */
 class PlayerViewModel(private val repository: Repository) : ViewModel() {
 
+
     private val _playerStats = MutableStateFlow<List<PlayerStats>>(listOf(
         PlayerStats(0," ",0,0,0,0,0,0,0,0)
     ))
 
     val playerStats : StateFlow<List<PlayerStats>> = _playerStats
 
-
     fun loadPlayersStats(playerId: Int) {
         viewModelScope.launch() {
             repository.getPlayerStatsById(playerId).collect{
                 _playerStats.value = it
             }
+        }
+    }
+
+    private val _imgString = MutableStateFlow<String>("")
+    val imgString : StateFlow<String> = _imgString
+
+
+    private fun conStructImgString(combinedPlayerStats: PlayerStats) {
+
+            viewModelScope.launch() {
+                val point1 = gamesTotal.value
+                val point2 = combinedPlayerStats.attempts
+                val point3 = combinedPlayerStats.goals
+                val point4 = combinedPlayerStats.assists
+
+                val endpoint : String = "https://quickchart.io/chart"
+                val startString :  String = "?chart={\n" +
+                        "  type: 'bar',\n" +
+                        "  data: {\n" +
+                        "    labels: ['Kampe', 'Skudforsøg', 'Mål', 'Assists'],\n" +
+                        "    datasets: [{\n" +
+                        "      label: 'Graf af spiller statistik',\n" +
+                        "      data: [" + point1 + ", " + point2 + ", " + point3 + ", " + point4 + "]\n" +
+                        "    }]\n" +
+                        "  }\n" +
+                        "}&backgroundColor=white&width=500&height=300&devicePixelRatio=1.0&format=png&version=2.9.3"
+
+                _imgString.value = endpoint + startString
         }
     }
 
@@ -58,8 +92,10 @@ class PlayerViewModel(private val repository: Repository) : ViewModel() {
             tempYellowCards += PlayerStats.yellowCards
             tempRedCards += PlayerStats.redCards
         }
-        _combinedPlayerStats.value = PlayerStats(999,"",tempAttempts,tempGoals, tempKeeperSaves, tempAssists, tempMin2, tempYellowCards, tempRedCards,999)
+        _combinedPlayerStats.value = PlayerStats(1000,"",tempAttempts,tempGoals, tempKeeperSaves, tempAssists, tempMin2, tempYellowCards, tempRedCards,1000)
         _gamesTotal.value = tempGames
+
+        conStructImgString(_combinedPlayerStats.value)
     }
 
     fun deletePlayer(playerId: Int){
