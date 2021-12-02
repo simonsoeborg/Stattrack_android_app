@@ -2,7 +2,6 @@ package com.example.stattrack.di
 
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,20 +9,17 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.get
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.database.AppDatabase
-import com.example.stattrack.model.database.SimpleChartApi
 import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.team.TeamViewModel
 import com.example.stattrack.presentation.match.MatchViewModel
 import com.example.stattrack.presentation.player.PlayerViewModel
 import com.example.stattrack.presentation.team.SpecificMatchViewModel
 import com.example.stattrack.presentation.team.SpecificTeamViewModel
+import com.squareup.picasso.Cache
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.create
-import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.Executors
 
 object ServiceLocator {
 
@@ -38,6 +34,11 @@ object ServiceLocator {
 
     private val repository: Repository by lazy { Repository(database) }
 
+    val picasso: Picasso by lazy {Picasso.Builder(application).executor(Executors.newSingleThreadExecutor())
+        .memoryCache(Cache.NONE).indicatorsEnabled(true).build()}
+
+
+
 
 
     private val viewModelFactory by lazy {
@@ -48,7 +49,7 @@ object ServiceLocator {
                     TeamViewModel::class.java -> TeamViewModel(repository)
                     SpecificTeamViewModel::class.java -> SpecificTeamViewModel(repository)
                     SpecificMatchViewModel::class.java -> SpecificMatchViewModel(repository)
-                    PlayerViewModel::class.java -> PlayerViewModel(repository, simpleChartApi)
+                    PlayerViewModel::class.java -> PlayerViewModel(repository)
 
                     else -> throw IllegalArgumentException("Unsupported ViewModel $modelClass")
                 } as T
@@ -109,7 +110,7 @@ object ServiceLocator {
             Log.d("prepopulateSQLiteDB", "Prepopulation finished")
         }
     }
-
+/*
     // Effectively singleton
     private val simpleChartApi: SimpleChartApi by lazy {
         Retrofit.Builder()
@@ -119,7 +120,7 @@ object ServiceLocator {
             .build()
             .create()
     }
-
+*/
 
 
 

@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
  * that can be exposed into [compose_player] in order
  * for the view to render the relevant information
  */
-class PlayerViewModel(private val repository: Repository, private val simpleChartApi: SimpleChartApi) : ViewModel() {
+class PlayerViewModel(private val repository: Repository) : ViewModel() {
 
 
     private val _playerStats = MutableStateFlow<List<PlayerStats>>(listOf(
@@ -33,15 +33,13 @@ class PlayerViewModel(private val repository: Repository, private val simpleChar
         }
     }
 
-    private val _picasso : Picasso = Picasso.Builder(ServiceLocator.application)
 
     fun loadPlayerStatPic() {
 
         while (_playerStats.value[0].playerId != 0) {
 
             viewModelScope.launch(Dispatchers.IO){
-
-                Picasso.with(ServiceLocator.application).load("http://i.imgur.com/DvpvklR.png%22).into(imageView)")
+                ServiceLocator.picasso.load("http://i.imgur.com/DvpvklR.png%22").into(imageView))
 
             }
 
