@@ -1,6 +1,8 @@
 package com.example.stattrack.presentation.player
 
 
+import android.widget.ImageView
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.shapes
@@ -9,9 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -23,13 +23,8 @@ import com.example.stattrack.model.model.PlayerStats
 import com.example.stattrack.presentation.ui.theme.PrimaryBlue
 import com.example.stattrack.presentation.ui.theme.PrimaryWhite
 import com.example.stattrack.presentation.ui.theme.StattrackTheme
-import com.github.tehras.charts.line.LineChart
-import com.github.tehras.charts.line.LineChartData
-import com.github.tehras.charts.line.renderer.line.SolidLineDrawer
-import com.github.tehras.charts.line.renderer.point.FilledCircularPointDrawer
-import com.github.tehras.charts.line.renderer.xaxis.SimpleXAxisDrawer
-import com.github.tehras.charts.line.renderer.yaxis.SimpleYAxisDrawer
-import com.github.tehras.charts.piechart.animation.simpleChartAnimation
+import coil.compose.rememberImagePainter
+
 
 @Composable
 fun PlayerClass(navController: NavHostController, playerViewModel: PlayerViewModel, player : Player){
@@ -39,6 +34,7 @@ fun PlayerClass(navController: NavHostController, playerViewModel: PlayerViewMod
 
     playerViewModel.combineStats(playerStats.value)
     val combinedPlayerStats : State<PlayerStats> = playerViewModel.combinedPlayerStats.collectAsState()
+    val imgString : State<String> = playerViewModel.imgString.collectAsState()
     val gamesTotal : State<Int> = playerViewModel.gamesTotal.collectAsState()
 
     PlayerClassContent(
@@ -46,7 +42,8 @@ fun PlayerClass(navController: NavHostController, playerViewModel: PlayerViewMod
         gamesTotal.value,
         player,
         playerViewModel,
-        navController
+        navController,
+        imgString
     )
 }
 
@@ -57,8 +54,9 @@ fun PlayerClassContent(
     player : Player,
     playerViewModel: PlayerViewModel,
     navController: NavHostController,
+    imgString : State<String>
 ){
-    Column(modifier = Modifier.padding(10.dp), )
+    Column(modifier = Modifier.padding(10.dp))
     {
         Box(modifier = Modifier.fillMaxWidth()) {
             Row(Modifier.align(Alignment.CenterEnd), verticalAlignment = Alignment.CenterVertically) {
@@ -70,7 +68,9 @@ fun PlayerClassContent(
 
                 Text(
                     text = player.position,
-                    modifier = Modifier.padding(start = 20.dp, top = 50.dp).rotate(90f),
+                    modifier = Modifier
+                        .padding(start = 20.dp, top = 50.dp)
+                        .rotate(90f),
                     fontSize = 20.sp,
                     color = PrimaryBlue)
             }
@@ -86,28 +86,25 @@ fun PlayerClassContent(
             )
         }
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
-            Icon(
-                painter = painterResource(com.example.stattrack.R.drawable.ic_statistics),
-               contentDescription = null
-          )
-            // Todo Chart import - virker ikke endnu!
-           //  PlayerStatLineChart(100, 100,100,100)
+
+            PlayerStatLineChart(imgString.value)
         }
 
     }
 }
 
 @Composable
-fun PlayerStatLineChart(antalKamp: Int, antalMaal: Int, antalSkud: Int, antalAssist: Int) {
-    LineChart(
-        lineChartData = LineChartData(
-            points = listOf(LineChartData.Point(antalAssist.toFloat(),"Mål"),
-                LineChartData.Point(antalSkud.toFloat(), "Skud"),
-                LineChartData.Point(antalMaal.toFloat(), "Assist"),
-                LineChartData.Point(antalKamp.toFloat(), "Kampe")
-            )
-        )
+fun PlayerStatLineChart(imageString: String ) {
+    Image(
+        painter = rememberImagePainter(imageString),
+        contentDescription = null,
+        modifier = Modifier.size(400.dp)
     )
+    println(imageString)
+    println(imageString)
+    println(imageString)
+    println(imageString)
+    println(imageString)
 }
 
 @Composable
@@ -178,10 +175,6 @@ fun PlayerInfoThis(padding: Dp, antalMaal: Int, antalKamp: Int, antalAssist: Int
         modifier = Modifier.padding(padding))
 }
 
-@Composable
-fun BarChartView() {
-    // Todo Lav graph implementation af data.
-}
 
 @Composable
 fun RemovePlayerButton(navController: NavHostController, player: Player, playerViewModel: PlayerViewModel){
