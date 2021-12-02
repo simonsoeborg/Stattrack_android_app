@@ -34,12 +34,6 @@ object ServiceLocator {
 
     private val repository: Repository by lazy { Repository(database) }
 
-    val picasso: Picasso by lazy {Picasso.Builder(application).executor(Executors.newSingleThreadExecutor())
-        .memoryCache(Cache.NONE).indicatorsEnabled(true).build()}
-
-
-
-
 
     private val viewModelFactory by lazy {
         object : ViewModelProvider.Factory {

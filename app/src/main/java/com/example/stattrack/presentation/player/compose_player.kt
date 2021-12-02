@@ -86,10 +86,7 @@ fun PlayerClassContent(
             )
         }
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
-           /* Icon(
-                painter = painterResource(com.example.stattrack.R.drawable.ic_statistics),
-               contentDescription = null
-          )*/
+
             PlayerStatLineChart(imgString.value)
         }
 
@@ -178,10 +175,6 @@ fun PlayerInfoThis(padding: Dp, antalMaal: Int, antalKamp: Int, antalAssist: Int
         modifier = Modifier.padding(padding))
 }
 
-@Composable
-fun BarChartView() {
-    // Todo Lav graph implementation af data.
-}
 
 @Composable
 fun RemovePlayerButton(navController: NavHostController, player: Player, playerViewModel: PlayerViewModel){
