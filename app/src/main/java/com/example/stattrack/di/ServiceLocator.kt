@@ -2,6 +2,7 @@ package com.example.stattrack.di
 
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,14 +10,20 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.get
 import com.example.stattrack.model.database.Repository
 import com.example.stattrack.model.database.AppDatabase
+import com.example.stattrack.model.database.SimpleChartApi
 import com.example.stattrack.model.model.*
 import com.example.stattrack.presentation.team.TeamViewModel
 import com.example.stattrack.presentation.match.MatchViewModel
 import com.example.stattrack.presentation.player.PlayerViewModel
 import com.example.stattrack.presentation.team.SpecificMatchViewModel
 import com.example.stattrack.presentation.team.SpecificTeamViewModel
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.create
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 object ServiceLocator {
 
@@ -31,6 +38,8 @@ object ServiceLocator {
 
     private val repository: Repository by lazy { Repository(database) }
 
+
+
     private val viewModelFactory by lazy {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -39,14 +48,13 @@ object ServiceLocator {
                     TeamViewModel::class.java -> TeamViewModel(repository)
                     SpecificTeamViewModel::class.java -> SpecificTeamViewModel(repository)
                     SpecificMatchViewModel::class.java -> SpecificMatchViewModel(repository)
-                    PlayerViewModel::class.java -> PlayerViewModel(repository)
+                    PlayerViewModel::class.java -> PlayerViewModel(repository, simpleChartApi)
 
                     else -> throw IllegalArgumentException("Unsupported ViewModel $modelClass")
                 } as T
             }
         }
     }
-
     val ViewModelStoreOwner.specificTeamViewModel: SpecificTeamViewModel
         get() = ViewModelProvider(this, viewModelFactory).get()
 
@@ -57,16 +65,14 @@ object ServiceLocator {
         get() = ViewModelProvider(this, viewModelFactory).get()
 
     val ViewModelStoreOwner.teamViewModel: TeamViewModel
-            get() = ViewModelProvider(this, viewModelFactory).get()
+        get() = ViewModelProvider(this, viewModelFactory).get()
 
     val ViewModelStoreOwner.playerViewModel: PlayerViewModel
         get() = ViewModelProvider(this, viewModelFactory).get()
 
 
-
-
     /* Fill SQLite with dummydata for development purposes */
-    fun prepopulateSQLiteDB(){
+    fun prepopulateSQLiteDB() {
         GlobalScope.launch() {
             val repo = repository
             val eventData = defaultDummyEventData
@@ -74,33 +80,49 @@ object ServiceLocator {
             val playerStatsData = defaultDummyPlayerStatsData
             val teamData = defaultTeamDummyData
             val playerData = defaultDummyPlayerData
-            Log.d("prepopulateSQLiteDB","Prepopulation begun")
-            for (eventdata in eventData){
+            Log.d("prepopulateSQLiteDB", "Prepopulation begun")
+            for (eventdata in eventData) {
                 GlobalScope.launch() {
                     repo.insertEventData(eventdata)
                 }
             }
-            for (matchdata in matchData){
+            for (matchdata in matchData) {
                 GlobalScope.launch() {
                     repo.insertMatchData(matchdata)
                 }
             }
-            for (playerstatsdata in playerStatsData){
+            for (playerstatsdata in playerStatsData) {
                 GlobalScope.launch() {
                     repo.insertPlayerStats(playerstatsdata)
                 }
             }
-            for (team in teamData){
+            for (team in teamData) {
                 GlobalScope.launch() {
                     repo.insertTeam(team)
                 }
             }
-            for(player in playerData) {
+            for (player in playerData) {
                 GlobalScope.launch() {
                     repo.insertPlayer(player)
                 }
             }
-            Log.d("prepopulateSQLiteDB","Prepopulation finished")
+            Log.d("prepopulateSQLiteDB", "Prepopulation finished")
         }
     }
+
+    // Effectively singleton
+    private val simpleChartApi: SimpleChartApi by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://quickchart.io/")
+            .addConverterFactory(MoshiConverterFactory.create())
+
+            .build()
+            .create()
+    }
+
+
+
+
+
 }
+

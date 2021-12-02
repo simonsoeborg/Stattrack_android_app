@@ -2,8 +2,12 @@ package com.example.stattrack.presentation.player
 
 
 import androidx.lifecycle.*
+import com.example.stattrack.di.ServiceLocator
 import com.example.stattrack.model.database.Repository
+import com.example.stattrack.model.database.SimpleChartApi
 import com.example.stattrack.model.model.*
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -12,14 +16,14 @@ import kotlinx.coroutines.launch
  * that can be exposed into [compose_player] in order
  * for the view to render the relevant information
  */
-class PlayerViewModel(private val repository: Repository) : ViewModel() {
+class PlayerViewModel(private val repository: Repository, private val simpleChartApi: SimpleChartApi) : ViewModel() {
+
 
     private val _playerStats = MutableStateFlow<List<PlayerStats>>(listOf(
         PlayerStats(0," ",0,0,0,0,0,0,0,0)
     ))
 
     val playerStats : StateFlow<List<PlayerStats>> = _playerStats
-
 
     fun loadPlayersStats(playerId: Int) {
         viewModelScope.launch() {
@@ -29,6 +33,20 @@ class PlayerViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    private val _picasso : Picasso = Picasso.Builder(ServiceLocator.application)
+
+    fun loadPlayerStatPic() {
+
+        while (_playerStats.value[0].playerId != 0) {
+
+            viewModelScope.launch(Dispatchers.IO){
+
+                Picasso.with(ServiceLocator.application).load("http://i.imgur.com/DvpvklR.png%22).into(imageView)")
+
+            }
+
+        }
+    }
 
 
     private val _combinedPlayerStats =  MutableStateFlow<PlayerStats>(PlayerStats(999,"",0,0,0,0,0,0,0,999))
